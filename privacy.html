@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Privacy Policy — Polymorph Technologies</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background: #0f0f0f;
+      color: #f0f0f0;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* Nav */
+    nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1rem 2rem;
+      background: rgba(15, 15, 15, 0.95);
+      border-bottom: 1px solid #222;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .nav-brand {
+      font-size: 1rem;
+      font-weight: 600;
+      color: #f0f0f0;
+      letter-spacing: 0.05em;
+      text-decoration: none;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 2rem;
+      list-style: none;
+    }
+
+    .nav-links a {
+      color: #aaa;
+      text-decoration: none;
+      font-size: 0.9rem;
+      transition: color 0.2s;
+    }
+
+    .nav-links a:hover { color: #f0f0f0; }
+
+    /* Hamburger */
+    .hamburger {
+      display: none;
+      flex-direction: column;
+      gap: 5px;
+      cursor: pointer;
+      background: none;
+      border: none;
+      padding: 4px;
+    }
+
+    .hamburger span {
+      display: block;
+      width: 24px;
+      height: 2px;
+      background: #f0f0f0;
+      border-radius: 2px;
+    }
+
+    /* Mobile menu */
+    .mobile-menu {
+      display: none;
+      flex-direction: column;
+      background: #111;
+      border-bottom: 1px solid #222;
+      padding: 1rem 2rem;
+      gap: 1rem;
+    }
+
+    .mobile-menu.open { display: flex; }
+
+    .mobile-menu a {
+      color: #aaa;
+      text-decoration: none;
+      font-size: 1rem;
+      padding: 0.25rem 0;
+    }
+
+    .mobile-menu a:hover { color: #f0f0f0; }
+
+    /* Content */
+    main {
+      flex: 1;
+      max-width: 740px;
+      width: 100%;
+      margin: 0 auto;
+      padding: 3rem 2rem;
+    }
+
+    h1 {
+      font-size: clamp(1.75rem, 5vw, 2.5rem);
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+      letter-spacing: -0.01em;
+    }
+
+    .last-updated {
+      color: #666;
+      font-size: 0.85rem;
+      margin-bottom: 2.5rem;
+    }
+
+    h2 {
+      font-size: 1.15rem;
+      font-weight: 600;
+      margin-top: 2rem;
+      margin-bottom: 0.75rem;
+      color: #ddd;
+    }
+
+    p {
+      color: #aaa;
+      line-height: 1.75;
+      margin-bottom: 1rem;
+      font-size: 0.95rem;
+    }
+
+    a {
+      color: #f0f0f0;
+      text-decoration: underline;
+      text-underline-offset: 3px;
+    }
+
+    a:hover { color: #ccc; }
+
+    ul {
+      color: #aaa;
+      line-height: 1.75;
+      padding-left: 1.5rem;
+      margin-bottom: 1rem;
+      font-size: 0.95rem;
+    }
+
+    ul li { margin-bottom: 0.35rem; }
+
+    hr {
+      border: none;
+      border-top: 1px solid #222;
+      margin: 2rem 0;
+    }
+
+    /* Footer */
+    footer {
+      text-align: center;
+      padding: 1.5rem 2rem;
+      color: #444;
+      font-size: 0.8rem;
+      border-top: 1px solid #1a1a1a;
+    }
+
+    @media (max-width: 600px) {
+      .nav-links { display: none; }
+      .hamburger { display: flex; }
+    }
+  </style>
+</head>
+<body>
+
+  <nav>
+    <a class="nav-brand" href="index.html">Polymorph Technologies</a>
+    <ul class="nav-links">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="privacy.html">Privacy Policy</a></li>
+      <li><a href="mailto:support@polymorphtech.xyz">Contact</a></li>
+    </ul>
+    <button class="hamburger" aria-label="Toggle menu" onclick="toggleMenu()">
+      <span></span><span></span><span></span>
+    </button>
+  </nav>
+
+  <div class="mobile-menu" id="mobileMenu">
+    <a href="index.html">Home</a>
+    <a href="privacy.html">Privacy Policy</a>
+    <a href="mailto:support@polymorphtech.xyz">Contact</a>
+  </div>
+
+  <main>
+    <h1>Privacy Policy</h1>
+    <p class="last-updated">Last updated: March 16, 2026</p>
+
+    <p>This Privacy Policy describes how personal information is collected, used, and shared when you install or use the Apps in connection with your Shopify-supported store.</p>
+
+    <h2>Personal Information We Collect</h2>
+    <p>Personal information the App collects includes your orders, your products, and your customer delivery information.</p>
+
+    <p>When you install the App, we are automatically able to access certain types of information from your Shopify account. The LLMBuddy app requests the following scopes:</p>
+
+    <ul>
+      <li><strong>write_metaobject_definitions</strong> — to create and manage metaobject definitions in your store</li>
+      <li><strong>write_metaobjects</strong> — to create and update metaobjects in your store</li>
+      <li><strong>write_products</strong> — to create and update products</li>
+      <li><strong>read_products</strong> — to read your store's products</li>
+      <li><strong>read_content</strong> — to read your store's content (articles, blogs, pages)</li>
+      <li><strong>read_publications</strong> — to read sales channel publication data</li>
+      <li><strong>write_online_store_navigation</strong> — to update your online store navigation menus</li>
+    </ul>
+
+    <p>Additionally, we collect the following types of personal information from you and others who may access the App on behalf of your store: your name, address, email address, and phone number.</p>
+
+    <h2>How Do We Use Your Personal Information?</h2>
+    <p>We use the personal information we collect from you and your customers in order to provide the Service and to operate the App. Additionally, we use this personal information to:</p>
+    <ul>
+      <li>Communicate with you</li>
+      <li>Optimize or improve the Apps</li>
+      <li>Provide you with information or advertising relating to our products or services</li>
+    </ul>
+
+    <h2>Data Retention</h2>
+    <p>Be aware that as soon as you uninstall our Apps, your entire database will be erased. We do not keep any of your data, except the shop data (meaning that we will just be able to know that you, once, downloaded one of our apps).</p>
+
+    <h2>Changes</h2>
+    <p>We may update this privacy policy from time to time in order to reflect, for example, changes to our practices or for other operational, legal, or regulatory reasons.</p>
+
+    <hr>
+
+    <h2>Contact Us</h2>
+    <p>For more information about our privacy practices, if you have questions, or if you would like to make a complaint, please contact us by email at <a href="mailto:support@polymorphtech.xyz">support@polymorphtech.xyz</a>.</p>
+  </main>
+
+  <footer>
+    &copy; 2026 Polymorph Technologies &mdash; <a href="privacy.html" style="color:#555;text-decoration:none;">Privacy Policy</a>
+  </footer>
+
+  <script>
+    function toggleMenu() {
+      document.getElementById('mobileMenu').classList.toggle('open');
+    }
+  </script>
+
+</body>
+</html>
