@@ -1,0 +1,13 @@
+{
+  "name": "polymorphtech-xyz",
+  "version": "1.0.0",
+  "type": "module",
+  "main": "app.js",
+  "scripts": {
+    "start": "node app.js"
+  },
+  "dependencies": {
+    "@knownagents/sdk": "latest",
+    "express": "^4.19.2"
+  }
+}
