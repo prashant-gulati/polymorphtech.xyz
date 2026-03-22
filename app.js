@@ -9,7 +9,10 @@ const knownAgents = new KnownAgents("522be957-6072-4069-b43c-fd6236e6ed10")
 
 app.use((req, res, next) => {
   const start = Date.now()
-  res.on("finish", () => knownAgents.trackVisit(req, res, Date.now() - start))
+  res.on("finish", () => {
+    console.log(`[visit] ${req.method} ${req.url} ${res.statusCode}`)
+    knownAgents.trackVisit(req, res, Date.now() - start)
+  })
   next()
 })
 
