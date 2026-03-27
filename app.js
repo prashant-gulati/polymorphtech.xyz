@@ -16,6 +16,8 @@ app.use((req, res, next) => {
   next()
 })
 
+app.get("/privacy", (_req, res) => res.sendFile(join(__dirname, "public", "privacy.html")))
+
 app.use(express.static(join(__dirname, "public")))
 
 const PORT = process.env.PORT || 3000
