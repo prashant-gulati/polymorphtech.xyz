@@ -68,6 +68,40 @@
       min-height: 1.2em;
     }
 
+    /* Progress steps */
+    .progress-steps {
+      width: 100%;
+      max-width: 400px;
+      margin-top: 1.5rem;
+      text-align: left;
+    }
+
+    .progress-step {
+      margin-bottom: 1rem;
+    }
+
+    .step-label {
+      color: #888;
+      font-size: 0.85rem;
+      display: block;
+      margin-bottom: 0.3rem;
+    }
+
+    .progress-bar {
+      height: 4px;
+      background: #222;
+      border-radius: 2px;
+      overflow: hidden;
+    }
+
+    .progress-fill {
+      height: 100%;
+      width: 0%;
+      background: #4a4;
+      border-radius: 2px;
+      transition: width 0.1s linear;
+    }
+
     /* Email gate */
     #emailGate {
       display: none;
@@ -294,6 +328,20 @@
         <button type="submit">Analyze</button>
       </form>
       <p id="formMsg" class="form-msg"></p>
+      <div id="progressSteps" class="progress-steps" style="display:none;">
+        <div class="progress-step">
+          <span class="step-label">Scan your website</span>
+          <div class="progress-bar"><div class="progress-fill" id="prog1"></div></div>
+        </div>
+        <div class="progress-step">
+          <span class="step-label">Analyze your website</span>
+          <div class="progress-bar"><div class="progress-fill" id="prog2"></div></div>
+        </div>
+        <div class="progress-step">
+          <span class="step-label">Optimize your website for AI</span>
+          <div class="progress-bar"><div class="progress-fill" id="prog3"></div></div>
+        </div>
+      </div>
     </div>
 
     <!-- Step 2: Email gate -->
@@ -371,20 +419,54 @@
         return;
       }
 
-      reportBtn.textContent = 'Validating...';
       reportBtn.disabled = true;
+      reportBtn.style.display = 'none';
+      reportForm.store_url.disabled = true;
+
+      const progressSteps = document.getElementById('progressSteps');
+      const prog1 = document.getElementById('prog1');
+      const prog2 = document.getElementById('prog2');
+      const prog3 = document.getElementById('prog3');
+
+      // Reset progress
+      prog1.style.width = '0%';
+      prog2.style.width = '0%';
+      prog3.style.width = '0%';
+      progressSteps.style.display = 'block';
+
+      function animateBar(el, durationMs) {
+        return new Promise(resolve => {
+          const start = Date.now();
+          const tick = () => {
+            const elapsed = Date.now() - start;
+            const pct = Math.min(100, (elapsed / durationMs) * 100);
+            el.style.width = pct + '%';
+            if (pct < 100) requestAnimationFrame(tick);
+            else resolve();
+          };
+          requestAnimationFrame(tick);
+        });
+      }
+
+      // Start API call in parallel with animations
+      const apiPromise = fetch('/api/report', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ url: value })
+      }).then(r => r.json());
 
       try {
-        const res = await fetch('/api/report', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ url: value })
-        });
-        const data = await res.json();
+        await animateBar(prog1, 3000);
+        await animateBar(prog2, 3000);
+
+        const data = await apiPromise;
+
+        await animateBar(prog3, 3000);
 
         if (!data.ok) {
           formMsg.textContent = data.error || 'Could not analyze this site';
           formMsg.style.color = '#a44';
+          progressSteps.style.display = 'none';
           return;
         }
 
@@ -395,9 +477,11 @@
       } catch {
         formMsg.textContent = 'Something went wrong. Please try again.';
         formMsg.style.color = '#a44';
+        progressSteps.style.display = 'none';
       } finally {
-        reportBtn.textContent = 'Analyze';
+        reportBtn.style.display = '';
         reportBtn.disabled = false;
+        reportForm.store_url.disabled = false;
       }
     });
 
