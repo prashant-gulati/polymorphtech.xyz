@@ -623,7 +623,7 @@
       const store = params.get('store');
 
       if (url) {
-        loadResults(url);
+        loadResults(url, params.get('token'));
       } else if (store) {
         currentStoreUrl = store;
         showEmailGate();
@@ -772,7 +772,7 @@
     });
 
     // Direct access via URL param (from email link) — show results
-    async function loadResults(url) {
+    async function loadResults(url, token) {
       step1.style.display = 'none';
       results.innerHTML = '<p style="color:#888; text-align:center;">Loading report...</p>';
 
@@ -789,13 +789,13 @@
           return;
         }
 
-        results.innerHTML = renderResults(data);
+        results.innerHTML = renderResults(data, token);
       } catch {
         results.innerHTML = '<p style="color:#a44; text-align:center;">Something went wrong.</p>';
       }
     }
 
-    function renderResults(data) {
+    function renderResults(data, token) {
       const { tree, total, url, siteIdentity, metadata, structuredData, contentAuthority, policies, crawlability, commerce, productSamples } = data;
 
       const today = new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
@@ -1032,11 +1032,11 @@
       html += `<div class="feedback-section">
         <h3>How helpful were these results?</h3>
         <div class="feedback-buttons">
-          <button class="feedback-btn" id="feedbackUp" onclick="submitFeedback(1, '${url}')">
+          <button class="feedback-btn" id="feedbackUp" onclick="submitFeedback(1, '${token || ''}')">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 9V5a3 3 0 0 0-3-3l-4 9v11h11.28a2 2 0 0 0 2-1.7l1.38-9a2 2 0 0 0-2-2.3H14z"/><path d="M7 22H4a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h3"/></svg>
             Helpful
           </button>
-          <button class="feedback-btn" id="feedbackDown" onclick="submitFeedback(-1, '${url}')">
+          <button class="feedback-btn" id="feedbackDown" onclick="submitFeedback(-1, '${token || ''}')">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 15v4a3 3 0 0 0 3 3l4-9V2H5.72a2 2 0 0 0-2 1.7l-1.38 9a2 2 0 0 0 2 2.3H10z"/><path d="M17 2h3a2 2 0 0 1 2 2v7a2 2 0 0 1-2 2h-3"/></svg>
             Not helpful
           </button>
@@ -1075,13 +1075,13 @@
     const urlParam = params.get('url');
     const storeParam = params.get('store');
     if (urlParam) {
-      loadResults(urlParam);
+      loadResults(urlParam, params.get('token'));
     } else if (storeParam) {
       currentStoreUrl = storeParam;
       showEmailGate();
     }
 
-    async function submitFeedback(value, storeUrl) {
+    async function submitFeedback(value, token) {
       const up = document.getElementById('feedbackUp');
       const down = document.getElementById('feedbackDown');
       const thanks = document.getElementById('feedbackThanks');
@@ -1103,7 +1103,7 @@
         await fetch('/api/report-feedback', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ store_url: storeUrl, helpfulness: value })
+          body: JSON.stringify({ token, helpfulness: value })
         });
       } catch {}
     }

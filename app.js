@@ -544,12 +544,12 @@ async function sendReportEmail(email, token) {
 
 // Report feedback
 app.post("/api/report-feedback", async (req, res) => {
-  const { store_url, helpfulness } = req.body
-  if (!store_url || ![1, -1].includes(helpfulness)) {
+  const { token, helpfulness } = req.body
+  if (!token || ![1, -1].includes(helpfulness)) {
     return res.status(400).json({ error: "Invalid feedback" })
   }
   try {
-    await db.execute({ sql: "UPDATE subscribers SET helpfulness = ? WHERE store_url = ?", args: [helpfulness, store_url] })
+    await db.execute({ sql: "UPDATE subscribers SET helpfulness = ? WHERE token = ?", args: [helpfulness, token] })
     res.json({ ok: true })
   } catch (err) {
     console.error("[feedback error]", err.message)
@@ -573,7 +573,7 @@ app.get("/api/view-report", async (req, res) => {
 
     const storeUrl = subscriber.store_url || ""
     if (storeUrl) {
-      res.redirect(`/airadar/report?url=${encodeURIComponent(storeUrl)}`)
+      res.redirect(`/airadar/report?url=${encodeURIComponent(storeUrl)}&token=${token}`)
     } else {
       res.redirect("/airadar/report")
     }
