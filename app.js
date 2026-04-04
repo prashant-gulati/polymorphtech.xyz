@@ -127,6 +127,12 @@ app.post("/api/report", async (req, res) => {
   baseUrl = baseUrl.replace(/\/+$/, "")
 
   try {
+    // Verify it's a Shopify store
+    const metaRes = await fetch(`${baseUrl}/meta.json`)
+    if (!metaRes.ok) {
+      return res.status(400).json({ error: "This doesn't appear to be a Shopify store" })
+    }
+
     const sitemapIndex = await fetchSitemap(baseUrl)
 
     let allUrls = []
