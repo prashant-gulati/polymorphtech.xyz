@@ -256,9 +256,23 @@
       padding: 0.75rem 1rem;
       border-bottom: 1px solid #222;
       background: #1a1a1a;
-      text-align: center;
+      text-align: left;
       margin: 0;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
     }
+
+    .group-header .header-link {
+      font-size: 0.8rem;
+      font-weight: 400;
+      color: #888;
+      cursor: pointer;
+      text-decoration: underline;
+      text-underline-offset: 3px;
+    }
+
+    .group-header .header-link:hover { color: #f0f0f0; }
 
     .group-content {
       padding: 1.25rem;
@@ -851,8 +865,7 @@
       html += `<p class="report-intro">We analyzed <strong style="color:#ddd;">${domain}</strong>'s onsite content against AEO best practices to surface key opportunities for improvement. To measure offsite visibility, we interrogated AI models with real-world questions to track how they recommend <strong style="color:#ddd;">${domain}</strong>.</p>`;
       html += `<p class="report-date" style="margin-bottom:0.5rem;">Created at: ${today}</p>`;
       // ── Score Overview ──
-      html += `<div class="group-box"><h2 class="group-header">Score Overview</h2><div class="group-content">`;
-      html += `<span class="score-link" onclick="document.getElementById('scoreModal').classList.add('open')">How your score is calculated</span>`;
+      html += `<div class="group-box"><h2 class="group-header">Score Overview <span class="header-link" onclick="document.getElementById('scoreModal').classList.add('open')">How your score is calculated</span></h2><div class="group-content">`;
       html += `</div></div>`;
 
       // ── Top Opportunities ──
