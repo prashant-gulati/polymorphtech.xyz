@@ -69,7 +69,7 @@ nav {
   border-radius: 6px;
   padding: 0.5rem 0;
   min-width: 140px;
-  margin-top: 0.5rem;
+  padding-top: 0.5rem;
 }
 
 .dropdown:hover .dropdown-menu { display: block; }
@@ -85,6 +85,30 @@ nav {
 .dropdown-menu a:hover {
   color: #f0f0f0;
   background: #222;
+}
+
+.dropdown-label {
+  display: block;
+  padding: 0.4rem 1rem 0.2rem;
+  color: #666;
+  font-size: 0.7rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+/* Mobile sub-links */
+.mobile-label {
+  color: #666;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  padding: 0.5rem 0 0;
+}
+
+.mobile-sub {
+  padding-left: 1rem !important;
 }
 
 /* Hamburger */

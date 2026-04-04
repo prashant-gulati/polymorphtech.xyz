@@ -7,6 +7,43 @@
   <link rel="icon" type="image/svg+xml" href="/favicon.svg">
   <link rel="stylesheet" href="/shared.css">
   <link rel="stylesheet" href="/airadar/airadar.css">
+  <style>
+    .toc {
+      background: #161616;
+      border: 1px solid #222;
+      border-radius: 6px;
+      padding: 1.25rem 1.5rem;
+      margin-bottom: 2.5rem;
+    }
+
+    .toc-title {
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: #666;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: 0.75rem;
+    }
+
+    .toc ul {
+      list-style: none;
+      padding-left: 0;
+      margin: 0;
+    }
+
+    .toc li { margin-bottom: 0.4rem; }
+
+    .toc a {
+      color: #aaa;
+      text-decoration: none;
+      font-size: 0.9rem;
+      transition: color 0.2s;
+    }
+
+    .toc a:hover { color: #f0f0f0; }
+
+    section { scroll-margin-top: 5rem; }
+  </style>
 </head>
 <body>
 
@@ -14,20 +51,51 @@
     <h1>Documentation</h1>
     <p class="subtitle">Everything you need to know about AI Radar</p>
 
-    <div class="entry">
-      <h2>Overview</h2>
-      <p>AI Radar monitors how your brand appears across AI-powered search engines and assistants. It tracks your visibility in ChatGPT, Gemini, Claude, and Perplexity, and provides actionable recommendations for improvement.</p>
-    </div>
+    <nav class="toc">
+      <div class="toc-title">Contents</div>
+      <ul>
+        <li><a href="#overview">Overview</a></li>
+        <li><a href="#getting-started">Getting Started</a></li>
+        <li><a href="#key-concepts">Key Concepts</a></li>
+        <li><a href="#dashboard">Dashboard</a></li>
+        <li><a href="#api-reference">API Reference</a></li>
+      </ul>
+    </nav>
 
-    <div class="entry">
-      <h2>Getting Started</h2>
-      <p>Coming soon.</p>
-    </div>
+    <section id="overview">
+      <div class="entry">
+        <h2>Overview</h2>
+        <p>AI Radar monitors how your brand appears across AI-powered search engines and assistants. It tracks your visibility in ChatGPT, Gemini, Claude, and Perplexity, and provides actionable recommendations for improvement.</p>
+      </div>
+    </section>
 
-    <div class="entry">
-      <h2>API Reference</h2>
-      <p>Coming soon.</p>
-    </div>
+    <section id="getting-started">
+      <div class="entry">
+        <h2>Getting Started</h2>
+        <p>Coming soon.</p>
+      </div>
+    </section>
+
+    <section id="key-concepts">
+      <div class="entry">
+        <h2>Key Concepts</h2>
+        <p>Coming soon.</p>
+      </div>
+    </section>
+
+    <section id="dashboard">
+      <div class="entry">
+        <h2>Dashboard</h2>
+        <p>Coming soon.</p>
+      </div>
+    </section>
+
+    <section id="api-reference">
+      <div class="entry">
+        <h2>API Reference</h2>
+        <p>Coming soon.</p>
+      </div>
+    </section>
   </main>
 
   <script src="/nav.js"></script>

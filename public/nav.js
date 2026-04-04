@@ -8,7 +8,13 @@ document.addEventListener("DOMContentLoaded", () => {
         <li class="dropdown">
           <span>Products</span>
           <div class="dropdown-menu">
-            <a href="/airadar">AI Radar</a>
+            <span class="dropdown-label">AI Radar</span>
+            <a href="/airadar">Home</a>
+            <a href="/airadar/blog">Blog</a>
+            <a href="/airadar/docs">Docs</a>
+            <a href="/airadar/tutorial">Tutorial</a>
+            <a href="/airadar/faq">FAQ</a>
+            <a href="/airadar/changelog">Changelog</a>
           </div>
         </li>
         <li><a href="/privacy.html">Privacy Policy</a></li>
@@ -20,7 +26,13 @@ document.addEventListener("DOMContentLoaded", () => {
     </nav>
     <div class="mobile-menu" id="mobileMenu">
       <a href="/">Home</a>
-      <a href="/airadar">AI Radar</a>
+      <span class="mobile-label">AI Radar</span>
+      <a href="/airadar" class="mobile-sub">Home</a>
+      <a href="/airadar/blog" class="mobile-sub">Blog</a>
+      <a href="/airadar/docs" class="mobile-sub">Docs</a>
+      <a href="/airadar/tutorial" class="mobile-sub">Tutorial</a>
+      <a href="/airadar/faq" class="mobile-sub">FAQ</a>
+      <a href="/airadar/changelog" class="mobile-sub">Changelog</a>
       <a href="/privacy.html">Privacy Policy</a>
       <a href="mailto:support@polymorphtech.xyz">Contact</a>
     </div>
