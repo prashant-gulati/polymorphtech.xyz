@@ -79,8 +79,7 @@ async function sendConfirmationEmail(email, token) {
     subject: "Confirm your subscription to AI Radar",
     html: `
       <div style="font-family: sans-serif; max-width: 480px; margin: 0 auto; padding: 2rem;">
-        <h2 style="margin-bottom: 1rem;">Confirm your subscription</h2>
-        <p style="color: #555; line-height: 1.6;">Thanks for subscribing to the AI Radar blog. Click the button below to confirm your email address.</p>
+        <h2 style="margin-bottom: 1rem;">Confirm your subscription to AI Radar</h2>
         <a href="${confirmUrl}" style="display: inline-block; margin-top: 1rem; padding: 0.75rem 1.5rem; background: #111; color: #fff; text-decoration: none; border-radius: 6px; font-weight: 600;">Confirm subscription</a>
         <p style="margin-top: 2rem; font-size: 0.85rem; color: #999;">If you didn't subscribe, you can ignore this email.</p>
       </div>
