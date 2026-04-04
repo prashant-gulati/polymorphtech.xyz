@@ -731,14 +731,7 @@
       const domain = url.replace(/^https?:\/\//, '').replace(/\/$/, '');
 
       let html = `<a href="/airadar/report" class="start-over"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 4v6h6"/><path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"/></svg> Start Over</a>`;
-      html += `<h1 style="font-size:1.5rem; margin-bottom:0.75rem;">AI Readiness Report</h1>`;
-
-      // Dismissable banner
-      html += `<div class="report-banner" id="reportBanner">
-        <button class="banner-dismiss" onclick="document.getElementById('reportBanner').remove()">&times;</button>
-        <h3>Take Control of Your AI Visibility</h3>
-        <p>Stop guessing how LLM platforms see you. Measure your impact and optimize your store with the first AEO platform built for e-commerce.</p>
-      </div>`;
+      html += `<h1 style="font-size:clamp(1.75rem, 5vw, 2.5rem); margin-bottom:0.75rem; text-align:center;">AI Readiness Report</h1>`;
 
       html += `<p class="report-intro">We analyzed <strong style="color:#ddd;">${domain}</strong>'s onsite content against AEO best practices to surface key opportunities for improvement. To measure offsite visibility, we interrogated AI models with real-world questions to track how they recommend <strong style="color:#ddd;">${domain}</strong>.</p>`;
       html += `<p class="report-date">Created at: ${today}</p>`;
@@ -952,6 +945,13 @@
       if (treeHtml) {
         html += `<div class="report-section"><h2 class="section-title">Sitemap (${total} URLs)</h2>${treeHtml}</div>`;
       }
+
+      // Dismissable banner
+      html += `<div class="report-banner" id="reportBanner">
+        <button class="banner-dismiss" onclick="document.getElementById('reportBanner').remove()">&times;</button>
+        <h3>Take Control of Your AI Visibility</h3>
+        <p>Stop guessing how LLM platforms see you. Measure your impact and optimize your store with the first AEO platform built for e-commerce.</p>
+      </div>`;
 
       html += `<div class="report-footer">AI Readiness Report can make mistakes. This tool provides estimated insights based on typical AI behavior patterns. The analysis and score review presented are based on customer results from Gemini 2.5 Pro.</div>`;
 
