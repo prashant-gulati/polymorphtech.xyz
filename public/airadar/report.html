@@ -86,6 +86,36 @@
       margin-bottom: 0.5rem;
     }
 
+    .email-form {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+      width: 100%;
+    }
+
+    .email-form input {
+      padding: 0.65rem 0.75rem;
+      border: 1px solid #333;
+      border-radius: 4px;
+      background: #0f0f0f;
+      color: #f0f0f0;
+      font-size: 0.95rem;
+    }
+
+    .email-form button {
+      padding: 0.65rem 1.25rem;
+      border: 1px solid #333;
+      border-radius: 4px;
+      background: #f0f0f0;
+      color: #0f0f0f;
+      font-size: 0.95rem;
+      font-weight: 600;
+      cursor: pointer;
+    }
+
+    .email-form button:hover { background: #ddd; }
+    .email-form button:disabled { opacity: 0.5; cursor: default; }
+
     #emailGate .gate-subtitle {
       color: #888;
       font-size: 0.9rem;
@@ -179,7 +209,7 @@
     <div id="emailGate">
       <h2>Your free report is ready</h2>
       <p class="gate-subtitle">Enter your email to access detailed insights, scores, and actionable recommendations.</p>
-      <form id="emailForm" class="report-form" novalidate>
+      <form id="emailForm" class="email-form" novalidate>
         <input type="email" name="email" placeholder="you@example.com" required>
         <button type="submit">Send report link</button>
       </form>
@@ -206,6 +236,35 @@
     const results = document.getElementById('results');
 
     let currentStoreUrl = '';
+
+    function showStep1() {
+      step1.style.display = '';
+      emailGate.style.display = 'none';
+      results.innerHTML = '';
+      formMsg.textContent = '';
+      emailMsg.textContent = '';
+    }
+
+    function showEmailGate() {
+      step1.style.display = 'none';
+      emailGate.style.display = 'block';
+      results.innerHTML = '';
+    }
+
+    window.addEventListener('popstate', () => {
+      const params = new URLSearchParams(location.search);
+      const url = params.get('url');
+      const store = params.get('store');
+
+      if (url) {
+        loadResults(url);
+      } else if (store) {
+        currentStoreUrl = store;
+        showEmailGate();
+      } else {
+        showStep1();
+      }
+    });
 
     // Step 1: Validate store URL
     reportForm.addEventListener('submit', async (e) => {
@@ -240,8 +299,8 @@
 
         // Valid Shopify store — show email gate
         currentStoreUrl = value;
-        step1.style.display = 'none';
-        emailGate.style.display = 'block';
+        history.pushState({ step: 'email', storeUrl: value }, '', `/airadar/report?store=${encodeURIComponent(value)}`);
+        showEmailGate();
       } catch {
         formMsg.textContent = 'Something went wrong. Please try again.';
         formMsg.style.color = '#a44';
@@ -342,9 +401,16 @@
       return html;
     }
 
-    // Check if arriving via email link
-    const urlParam = new URLSearchParams(location.search).get('url');
-    if (urlParam) loadResults(urlParam);
+    // Handle initial page load
+    const params = new URLSearchParams(location.search);
+    const urlParam = params.get('url');
+    const storeParam = params.get('store');
+    if (urlParam) {
+      loadResults(urlParam);
+    } else if (storeParam) {
+      currentStoreUrl = storeParam;
+      showEmailGate();
+    }
   </script>
 
 </body>
