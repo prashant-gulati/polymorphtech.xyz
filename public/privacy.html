@@ -213,31 +213,6 @@
 </head>
 <body>
 
-  <nav>
-    <a class="nav-brand" href="index.html">Polymorph Technologies</a>
-    <ul class="nav-links">
-      <li><a href="index.html">Home</a></li>
-      <li class="dropdown">
-        <span>Products</span>
-        <div class="dropdown-menu">
-          <a href="/airadar">AI Radar</a>
-        </div>
-      </li>
-      <li><a href="privacy.html">Privacy Policy</a></li>
-      <li><a href="mailto:support@polymorphtech.xyz">Contact</a></li>
-    </ul>
-    <button class="hamburger" aria-label="Toggle menu" onclick="toggleMenu()">
-      <span></span><span></span><span></span>
-    </button>
-  </nav>
-
-  <div class="mobile-menu" id="mobileMenu">
-    <a href="index.html">Home</a>
-    <a href="/airadar">AI Radar</a>
-    <a href="privacy.html">Privacy Policy</a>
-    <a href="mailto:support@polymorphtech.xyz">Contact</a>
-  </div>
-
   <main>
     <h1>Privacy Policy</h1>
     <p class="last-updated">Last updated: March 16, 2026</p>
@@ -281,15 +256,7 @@
     <p>For more information about our privacy practices, if you have questions, or if you would like to make a complaint, please contact us by email at <a href="mailto:support@polymorphtech.xyz">support@polymorphtech.xyz</a>.</p>
   </main>
 
-  <footer>
-    &copy; 2026 Polymorph Technologies &mdash; <a href="privacy.html" style="color:#555;text-decoration:none;">Privacy Policy</a>
-  </footer>
-
-  <script>
-    function toggleMenu() {
-      document.getElementById('mobileMenu').classList.toggle('open');
-    }
-  </script>
+  <script src="nav.js"></script>
 
 </body>
 </html>
