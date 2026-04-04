@@ -54,8 +54,9 @@ nav {
 }
 
 .dropdown > span {
-  color: #aaa;
+  color: #ddd;
   font-size: 0.9rem;
+  font-weight: 600;
   cursor: pointer;
   transition: color 0.2s;
 }
