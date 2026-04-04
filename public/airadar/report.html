@@ -169,7 +169,7 @@
       <h1>AI Readiness Report</h1>
       <p class="subtitle">Analyze your Shopify store's visibility in ChatGPT, Gemini, Claude and more. Get actionable insights to boost discoverability.</p>
       <form id="reportForm" class="report-form" novalidate>
-        <input type="url" name="store_url" placeholder="https://your-store.myshopify.com" required>
+        <input type="url" name="store_url" placeholder="https://www.shopifystore.com/" required>
         <button type="submit">Analyze</button>
       </form>
       <p id="formMsg" class="form-msg"></p>
@@ -216,7 +216,7 @@
       try {
         new URL(value);
       } catch {
-        formMsg.textContent = 'Please enter a valid URL (e.g. https://your-store.myshopify.com)';
+        formMsg.textContent = 'Please enter a valid URL (e.g. https://www.shopifystore.com/)';
         formMsg.style.color = '#a44';
         return;
       }
