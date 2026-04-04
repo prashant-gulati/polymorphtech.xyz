@@ -228,6 +228,57 @@
       padding: 0.5rem 0;
       word-break: break-word;
     }
+
+    /* Product accordion */
+    .product-detail {
+      border: 1px solid #222;
+      border-radius: 6px;
+      margin-bottom: 0.75rem;
+      background: #161616;
+    }
+
+    .product-detail summary {
+      padding: 0.75rem 1rem;
+      cursor: pointer;
+      color: #ddd;
+      font-weight: 600;
+      font-size: 0.9rem;
+      list-style: none;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .product-detail summary::-webkit-details-marker { display: none; }
+
+    .product-detail summary::after {
+      content: "+";
+      font-size: 1.1rem;
+      color: #666;
+    }
+
+    .product-detail[open] summary::after {
+      content: "−";
+    }
+
+    .product-inner {
+      padding: 0 1rem 1rem;
+    }
+
+    .sub-section {
+      margin-top: 1rem;
+    }
+
+    .sub-section-title {
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: #888;
+      text-transform: uppercase;
+      letter-spacing: 0.03em;
+      padding-bottom: 0.35rem;
+      border-bottom: 1px solid #1a1a1a;
+      margin-bottom: 0.25rem;
+    }
   </style>
 </head>
 <body>
@@ -414,7 +465,7 @@
     }
 
     function renderResults(data) {
-      const { tree, total, url, siteIdentity, metadata, structuredData, contentAuthority, policies, crawlability, commerce } = data;
+      const { tree, total, url, siteIdentity, metadata, structuredData, contentAuthority, policies, crawlability, commerce, productSamples } = data;
 
       let html = `<p style="margin-bottom:1rem;"><a href="/airadar/report" style="color:#888; text-decoration:none; font-size:0.85rem;">← Back to Search</a></p>`;
       html += `<h1 style="font-size:1.5rem; margin-bottom:0.5rem;">AI Readiness Report</h1>`;
@@ -497,6 +548,93 @@
         }
       }
 
+      // Product Samples
+      if (productSamples?.length) {
+        html += `<div class="report-section"><h2 class="section-title">Product Analysis (${productSamples.length} sampled)</h2>`;
+        for (const p of productSamples) {
+          html += `<details class="product-detail"><summary>${p.basicData.title}</summary><div class="product-inner">`;
+
+          if (p.seo) {
+            html += subSection('SEO & Page Optimization', [
+              row('Title', p.seo.title || missing()),
+              row('Meta Description', p.seo.metaDescription || missing()),
+              row('H1 Tag', p.seo.h1 || missing()),
+              row('Canonical URL', p.seo.canonicalUrl ? link(p.seo.canonicalUrl) : missing()),
+              row('OG Title', p.seo.ogTitle || missing()),
+              row('OG Description', p.seo.ogDescription || missing()),
+              row('OG Image', p.seo.ogImage ? link(p.seo.ogImage) : missing()),
+              row('OG Type', p.seo.ogType || missing()),
+              row('Twitter Card', p.seo.twitterCard || missing()),
+              row('Twitter Title', p.seo.twitterTitle || missing()),
+              row('Twitter Image', p.seo.twitterImage ? link(p.seo.twitterImage) : missing()),
+            ]);
+          }
+
+          if (p.openai) {
+            html += subSection('OpenAI Flags', [
+              row('Enable Search', p.openai.enableSearch || missing()),
+              row('Enable Checkout', p.openai.enableCheckout || missing()),
+            ]);
+          }
+
+          html += subSection('Basic Product Data', [
+            row('ID', p.basicData.id),
+            row('GTIN', p.basicData.gtin || missing()),
+            row('MPN', p.basicData.mpn || missing()),
+            row('Title', p.basicData.title),
+            row('Description', p.basicData.description || missing()),
+            row('Link', link(p.basicData.link)),
+          ]);
+
+          html += subSection('Item Information', [
+            row('Condition', p.itemInfo.condition || missing()),
+            row('Product Category', p.itemInfo.productCategory || missing()),
+            row('Brand', p.itemInfo.brand || missing()),
+            row('Material', p.itemInfo.material || missing()),
+            row('Weight', p.itemInfo.weight || missing()),
+          ]);
+
+          html += subSection('Media', [
+            row('Image Link', p.media.imageLink ? link(p.media.imageLink) : missing()),
+            row('Additional Images', p.media.additionalImages || '0'),
+            row('Video Link', p.media.videoLink || missing()),
+            row('3D Model Link', p.media.model3dLink || missing()),
+          ]);
+
+          html += subSection('Price & Promotions', [
+            row('Price', p.priceAndPromotions.price || missing()),
+            row('Sale Price', p.priceAndPromotions.salePrice || missing()),
+            row('Compare At Price', p.priceAndPromotions.compareAtPrice || missing()),
+            row('Currency', p.priceAndPromotions.currency || missing()),
+          ]);
+
+          html += subSection('Availability & Inventory', [
+            row('Available', p.availability.available !== "" ? check(p.availability.available) : missing()),
+            row('Inventory Policy', p.availability.inventoryPolicy || missing()),
+            row('Inventory Quantity', p.availability.inventoryQuantity !== "" ? p.availability.inventoryQuantity : missing()),
+          ]);
+
+          html += subSection('Variants', [
+            row('Item Group ID', p.variants.itemGroupId),
+            row('Item Group Title', p.variants.itemGroupTitle),
+            row('Total Variants', p.variants.totalVariants),
+            ...p.variants.options.map(o => row(o.name, o.values.join(', '))),
+          ]);
+
+          html += subSection('Merchant Info', [
+            row('Seller Name', p.merchantInfo.sellerName || missing()),
+          ]);
+
+          html += subSection('Reviews', [
+            row('Review Count', p.reviews.reviewCount || missing()),
+            row('Review Rating', p.reviews.reviewRating || missing()),
+          ]);
+
+          html += `</div></details>`;
+        }
+        html += `</div>`;
+      }
+
       // Site Map Tree
       const categories = ['products', 'collections', 'pages', 'blogs', 'other'];
       let treeHtml = '';
@@ -524,6 +662,9 @@
     // Render helpers
     function section(title, rows) {
       return `<div class="report-section"><h2 class="section-title">${title}</h2><table class="report-table">${rows.join('')}</table></div>`;
+    }
+    function subSection(title, rows) {
+      return `<div class="sub-section"><h3 class="sub-section-title">${title}</h3><table class="report-table">${rows.join('')}</table></div>`;
     }
     function row(label, value) {
       return `<tr><td class="row-label">${label}</td><td class="row-value">${value}</td></tr>`;

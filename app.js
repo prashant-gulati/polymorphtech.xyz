@@ -192,6 +192,129 @@ async function analyzeCommerce(baseUrl) {
   }
 }
 
+async function analyzeProducts(baseUrl) {
+  const data = await fetchJson(`${baseUrl}/products.json?limit=250`)
+  if (!data?.products?.length) return []
+
+  // Pick 5 random products
+  const shuffled = data.products.sort(() => 0.5 - Math.random())
+  const sample = shuffled.slice(0, 5)
+
+  const results = await Promise.all(sample.map(async (product) => {
+    const handle = product.handle
+    const pageHtml = await fetchText(`${baseUrl}/products/${handle}`)
+    const $ = pageHtml ? cheerio.load(pageHtml) : null
+
+    const variant = product.variants?.[0] || {}
+    const image = product.images?.[0] || {}
+
+    // SEO & Page Optimization (from HTML)
+    const seo = $ ? {
+      title: $("title").text().trim(),
+      metaDescription: $('meta[name="description"]').attr("content") || "",
+      h1: $("h1").first().text().trim(),
+      canonicalUrl: $('link[rel="canonical"]').attr("href") || "",
+      ogTitle: $('meta[property="og:title"]').attr("content") || "",
+      ogDescription: $('meta[property="og:description"]').attr("content") || "",
+      ogImage: $('meta[property="og:image"]').attr("content") || "",
+      ogType: $('meta[property="og:type"]').attr("content") || "",
+      twitterCard: $('meta[name="twitter:card"]').attr("content") || "",
+      twitterTitle: $('meta[name="twitter:title"]').attr("content") || "",
+      twitterImage: $('meta[name="twitter:image"]').attr("content") || "",
+    } : null
+
+    // OpenAI flags (from HTML meta)
+    const openai = $ ? {
+      enableSearch: $('meta[name="openai:search"]').attr("content") || "",
+      enableCheckout: $('meta[name="openai:checkout"]').attr("content") || "",
+    } : null
+
+    // Structured data from product page
+    let schemaData = {}
+    if ($) {
+      $('script[type="application/ld+json"]').each((_, el) => {
+        try {
+          const json = JSON.parse($(el).html())
+          const items = json["@graph"] || (Array.isArray(json) ? json : [json])
+          for (const item of items) {
+            if (item["@type"] === "Product" || item["@type"]?.includes?.("Product")) {
+              schemaData = item
+            }
+          }
+        } catch {}
+      })
+    }
+
+    const offers = schemaData.offers || schemaData.offers?.[0] || {}
+    const singleOffer = Array.isArray(offers) ? offers[0] : offers
+    const brand = schemaData.brand?.name || product.vendor || ""
+    const reviews = schemaData.aggregateRating || {}
+
+    return {
+      handle,
+      url: `${baseUrl}/products/${handle}`,
+
+      seo,
+      openai,
+
+      basicData: {
+        id: product.id,
+        gtin: variant.barcode || schemaData.gtin || schemaData.gtin13 || schemaData.gtin12 || "",
+        mpn: schemaData.mpn || variant.sku || "",
+        title: product.title,
+        description: product.body_html ? product.body_html.replace(/<[^>]+>/g, "").slice(0, 200) : "",
+        link: `${baseUrl}/products/${handle}`,
+      },
+
+      itemInfo: {
+        condition: singleOffer?.itemCondition?.replace("https://schema.org/", "") || "",
+        productCategory: product.product_type || "",
+        brand,
+        material: product.tags?.find(t => t.toLowerCase().startsWith("material:"))?.split(":")?.[1]?.trim() || "",
+        weight: variant.weight ? `${variant.weight} ${variant.weight_unit || ""}`.trim() : "",
+      },
+
+      media: {
+        imageLink: image.src || "",
+        additionalImages: product.images?.length > 1 ? product.images.length - 1 : 0,
+        videoLink: "", // Shopify doesn't expose via JSON
+        model3dLink: "", // Shopify doesn't expose via JSON
+      },
+
+      priceAndPromotions: {
+        price: variant.price ? `${variant.price}` : "",
+        salePrice: variant.compare_at_price && variant.compare_at_price !== variant.price ? variant.price : "",
+        compareAtPrice: variant.compare_at_price || "",
+        currency: variant.currency || singleOffer?.priceCurrency || "",
+      },
+
+      availability: {
+        available: variant.available ?? "",
+        inventoryPolicy: variant.inventory_policy || "",
+        inventoryQuantity: variant.inventory_quantity ?? "",
+      },
+
+      variants: {
+        itemGroupId: product.id,
+        itemGroupTitle: product.title,
+        totalVariants: product.variants?.length || 0,
+        options: product.options?.map(o => ({ name: o.name, values: o.values })) || [],
+      },
+
+      merchantInfo: {
+        sellerName: brand,
+      },
+
+      reviews: {
+        reviewCount: reviews.reviewCount || reviews.ratingCount || "",
+        reviewRating: reviews.ratingValue || "",
+      },
+    }
+  }))
+
+  return results
+}
+
 // Sitemap helpers
 const xmlParser = new XMLParser()
 
@@ -261,12 +384,13 @@ app.post("/api/report", async (req, res) => {
     }
 
     // Run all analyses in parallel
-    const [homepageHtml, sitemapIndex, policies, crawlability, commerce] = await Promise.all([
+    const [homepageHtml, sitemapIndex, policies, crawlability, commerce, productSamples] = await Promise.all([
       fetchText(baseUrl),
       fetchSitemap(baseUrl).catch(() => null),
       analyzePolicies(baseUrl),
       analyzeCrawlability(baseUrl),
-      analyzeCommerce(baseUrl)
+      analyzeCommerce(baseUrl),
+      analyzeProducts(baseUrl)
     ])
 
     // Sitemap tree
@@ -304,7 +428,8 @@ app.post("/api/report", async (req, res) => {
       contentAuthority: homepage?.contentAuthority || null,
       policies,
       crawlability,
-      commerce
+      commerce,
+      productSamples
     })
   } catch (err) {
     console.error("[report error]", err.message)
