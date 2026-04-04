@@ -737,6 +737,11 @@
       html += `<p class="report-date">Created at: ${today}</p>`;
       html += `<span class="score-link" onclick="document.getElementById('scoreModal').classList.add('open')">How your score is calculated</span>`;
 
+      html += `<h2 class="section-title" style="margin-top:2rem;">Score Overview</h2>`;
+      html += `<h2 class="section-title" style="margin-top:2rem;">Top Opportunities</h2>`;
+      html += `<h2 class="section-title" style="margin-top:2rem;">Off-Site Discoverability</h2>`;
+      html += `<h2 class="section-title" style="margin-top:2rem;">On-Site Readiness</h2>`;
+
       // Site Identity
       if (siteIdentity) {
         html += section('Site Identity', [
