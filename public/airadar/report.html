@@ -90,14 +90,16 @@
     document.getElementById('reportForm').addEventListener('submit', (e) => {
       e.preventDefault();
       const msg = document.getElementById('formMsg');
+      const btn = e.target.querySelector('button');
       const input = e.target.store_url;
       const value = input.value.trim();
+      msg.textContent = '';
 
       try {
         const url = new URL(value);
         if (!['http:', 'https:'].includes(url.protocol)) throw new Error();
-        msg.textContent = 'Analyzing...';
-        msg.style.color = '#4a4';
+        btn.textContent = 'Analyzing...';
+        btn.disabled = true;
         // TODO: hook up to backend
       } catch {
         msg.textContent = 'Please enter a valid URL (e.g. https://your-store.myshopify.com)';
