@@ -620,9 +620,6 @@
             row('Available', p.availability.available !== "" ? check(p.availability.available) : missing()),
             row('Availability Date', p.availability.availabilityDate || missing()),
             row('Inventory Quantity', p.availability.inventoryQuantity !== "" ? p.availability.inventoryQuantity : missing()),
-            row('Expiration Date', p.availability.expirationDate || missing()),
-            row('Pickup Method', p.availability.pickupMethod || missing()),
-            row('Pickup SLA', p.availability.pickupSLA || missing()),
           ]);
 
           html += subSection('Variants', [
@@ -645,8 +642,6 @@
           html += subSection('Merchant Info', [
             row('Seller Name', p.merchantInfo.sellerName || missing()),
             row('Seller URL', p.merchantInfo.sellerUrl ? link(p.merchantInfo.sellerUrl) : missing()),
-            row('Seller Privacy Policy', p.merchantInfo.sellerPrivacyPolicy || missing()),
-            row('Seller TOS', p.merchantInfo.sellerTOS || missing()),
           ]);
 
           html += subSection('Returns', [
@@ -654,13 +649,9 @@
             row('Return Window', p.returns.returnWindow || missing()),
           ]);
 
-          html += subSection('Performance & Reviews', [
-            row('Popularity Score', p.reviews.popularityScore || missing()),
-            row('Return Rate', p.reviews.returnRate || missing()),
+          html += subSection('Reviews', [
             row('Product Review Count', p.reviews.productReviewCount || missing()),
             row('Product Review Rating', p.reviews.productReviewRating || missing()),
-            row('Store Review Count', p.reviews.storeReviewCount || missing()),
-            row('Store Review Rating', p.reviews.storeReviewRating || missing()),
           ]);
 
           html += `</div></details>`;

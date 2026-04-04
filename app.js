@@ -300,9 +300,6 @@ async function analyzeProducts(baseUrl) {
         available: variant.available ?? "",
         availabilityDate: singleOffer?.availabilityStarts || "",
         inventoryQuantity: variant.inventory_quantity ?? "",
-        expirationDate: "",
-        pickupMethod: "",
-        pickupSLA: "",
       },
 
       variants: {
@@ -325,8 +322,6 @@ async function analyzeProducts(baseUrl) {
       merchantInfo: {
         sellerName: brand,
         sellerUrl: baseUrl,
-        sellerPrivacyPolicy: "",
-        sellerTOS: "",
       },
 
       returns: {
@@ -335,12 +330,8 @@ async function analyzeProducts(baseUrl) {
       },
 
       reviews: {
-        popularityScore: "",
-        returnRate: "",
         productReviewCount: reviews.reviewCount || reviews.ratingCount || "",
         productReviewRating: reviews.ratingValue || "",
-        storeReviewCount: "",
-        storeReviewRating: "",
       },
     }
   }))
