@@ -12,7 +12,6 @@
       display: flex;
       flex-direction: column;
       align-items: center;
-      justify-content: center;
       text-align: center;
     }
 
@@ -48,10 +47,6 @@
       font-size: 0.95rem;
     }
 
-    .report-form input:invalid:not(:placeholder-shown) {
-      border-color: #a44;
-    }
-
     .report-form button {
       padding: 0.65rem 1.25rem;
       border: 1px solid #333;
@@ -65,12 +60,75 @@
     }
 
     .report-form button:hover { background: #ddd; }
+    .report-form button:disabled { opacity: 0.5; cursor: default; }
 
     .form-msg {
       font-size: 0.85rem;
       margin-top: 0.75rem;
       min-height: 1.2em;
     }
+
+    /* Results */
+    #results {
+      width: 100%;
+      max-width: 640px;
+      text-align: left;
+      margin-top: 2.5rem;
+    }
+
+    .result-summary {
+      color: #888;
+      font-size: 0.9rem;
+      margin-bottom: 1.5rem;
+      text-align: center;
+    }
+
+    .category {
+      margin-bottom: 1.5rem;
+    }
+
+    .category-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-bottom: 0.5rem;
+      border-bottom: 1px solid #222;
+      margin-bottom: 0.5rem;
+    }
+
+    .category-name {
+      font-weight: 600;
+      color: #ddd;
+      font-size: 1rem;
+      text-transform: capitalize;
+    }
+
+    .category-count {
+      color: #666;
+      font-size: 0.85rem;
+    }
+
+    .category-list {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+
+    .category-list li {
+      padding: 0.35rem 0;
+      border-bottom: 1px solid #1a1a1a;
+    }
+
+    .category-list a {
+      color: #aaa;
+      text-decoration: none;
+      font-size: 0.9rem;
+      text-transform: capitalize;
+    }
+
+    .category-list a:hover { color: #f0f0f0; }
+
+    .empty-category { color: #444; font-size: 0.85rem; font-style: italic; }
   </style>
 </head>
 <body>
@@ -83,29 +141,81 @@
       <button type="submit">Analyze</button>
     </form>
     <p id="formMsg" class="form-msg"></p>
+    <div id="results"></div>
   </main>
 
   <script src="/nav.js"></script>
   <script>
-    document.getElementById('reportForm').addEventListener('submit', (e) => {
+    const form = document.getElementById('reportForm');
+    const msg = document.getElementById('formMsg');
+    const results = document.getElementById('results');
+    const btn = form.querySelector('button');
+
+    form.addEventListener('submit', async (e) => {
       e.preventDefault();
-      const msg = document.getElementById('formMsg');
-      const btn = e.target.querySelector('button');
-      const input = e.target.store_url;
-      const value = input.value.trim();
+      const value = form.store_url.value.trim();
       msg.textContent = '';
+      results.innerHTML = '';
 
       try {
-        const url = new URL(value);
-        if (!['http:', 'https:'].includes(url.protocol)) throw new Error();
-        btn.textContent = 'Analyzing...';
-        btn.disabled = true;
-        // TODO: hook up to backend
+        new URL(value);
       } catch {
         msg.textContent = 'Please enter a valid URL (e.g. https://your-store.myshopify.com)';
         msg.style.color = '#a44';
+        return;
+      }
+
+      btn.textContent = 'Analyzing...';
+      btn.disabled = true;
+
+      try {
+        const res = await fetch('/api/report', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ url: value })
+        });
+        const data = await res.json();
+
+        if (!data.ok) {
+          msg.textContent = data.error || 'Could not analyze this site';
+          msg.style.color = '#a44';
+          return;
+        }
+
+        results.innerHTML = renderResults(data);
+      } catch {
+        msg.textContent = 'Something went wrong. Please try again.';
+        msg.style.color = '#a44';
+      } finally {
+        btn.textContent = 'Analyze';
+        btn.disabled = false;
       }
     });
+
+    function renderResults(data) {
+      const { tree, total, url } = data;
+      const categories = ['products', 'collections', 'pages', 'blogs', 'other'];
+
+      let html = `<p class="result-summary">Found <strong style="color:#f0f0f0">${total}</strong> URLs on <strong style="color:#f0f0f0">${url}</strong></p>`;
+
+      for (const cat of categories) {
+        const items = tree[cat] || [];
+        if (items.length === 0) continue;
+
+        html += `
+          <div class="category">
+            <div class="category-header">
+              <span class="category-name">${cat}</span>
+              <span class="category-count">${items.length}</span>
+            </div>
+            <ul class="category-list">
+              ${items.map(i => `<li><a href="${i.url}" target="_blank">${i.name}</a></li>`).join('')}
+            </ul>
+          </div>`;
+      }
+
+      return html;
+    }
   </script>
 
 </body>

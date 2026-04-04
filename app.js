@@ -8,6 +8,7 @@ import matter from "gray-matter"
 import { createClient } from "@libsql/client"
 import { Resend } from "resend"
 import crypto from "crypto"
+import { XMLParser } from "fast-xml-parser"
 
 const __dirname = dirname(fileURLToPath(import.meta.url))
 const app = express()
@@ -68,6 +69,97 @@ app.post("/api/subscribe", async (req, res) => {
   } catch (err) {
     console.error("[subscribe error]", err.message)
     res.status(500).json({ error: "Something went wrong" })
+  }
+})
+
+// Report endpoint
+const xmlParser = new XMLParser()
+
+async function fetchSitemap(baseUrl) {
+  const res = await fetch(`${baseUrl}/sitemap.xml`)
+  if (!res.ok) throw new Error(`Could not fetch sitemap: ${res.status}`)
+  return xmlParser.parse(await res.text())
+}
+
+async function fetchSubSitemap(url) {
+  try {
+    const res = await fetch(url)
+    if (!res.ok) return []
+    const parsed = xmlParser.parse(await res.text())
+    const urlset = parsed.urlset?.url
+    if (!urlset) return []
+    const urls = Array.isArray(urlset) ? urlset : [urlset]
+    return urls.map(u => u.loc).filter(Boolean)
+  } catch {
+    return []
+  }
+}
+
+function categorizeUrls(urls, baseUrl) {
+  const tree = { products: [], collections: [], pages: [], blogs: [], other: [] }
+  for (const url of urls) {
+    const path = url.replace(baseUrl, "")
+    if (path.startsWith("/products/")) {
+      tree.products.push({ url, name: decodeURIComponent(path.replace("/products/", "").replace(/-/g, " ")) })
+    } else if (path.startsWith("/collections/")) {
+      tree.collections.push({ url, name: decodeURIComponent(path.replace("/collections/", "").replace(/-/g, " ")) })
+    } else if (path.startsWith("/pages/")) {
+      tree.pages.push({ url, name: decodeURIComponent(path.replace("/pages/", "").replace(/-/g, " ")) })
+    } else if (path.startsWith("/blogs/")) {
+      tree.blogs.push({ url, name: decodeURIComponent(path.replace("/blogs/", "").replace(/-/g, " ")) })
+    } else if (path && path !== "/") {
+      tree.other.push({ url, name: decodeURIComponent(path.replace(/^\//, "").replace(/-/g, " ")) })
+    }
+  }
+  return tree
+}
+
+app.post("/api/report", async (req, res) => {
+  let baseUrl = req.body.url?.trim()
+  if (!baseUrl) return res.status(400).json({ error: "URL is required" })
+
+  try {
+    new URL(baseUrl)
+  } catch {
+    return res.status(400).json({ error: "Invalid URL" })
+  }
+
+  baseUrl = baseUrl.replace(/\/+$/, "")
+
+  try {
+    const sitemapIndex = await fetchSitemap(baseUrl)
+
+    let allUrls = []
+
+    // Sitemap index (points to sub-sitemaps)
+    const sitemaps = sitemapIndex.sitemapindex?.sitemap
+    if (sitemaps) {
+      const entries = Array.isArray(sitemaps) ? sitemaps : [sitemaps]
+      const subUrls = await Promise.all(entries.map(s => fetchSubSitemap(s.loc)))
+      allUrls = subUrls.flat()
+    }
+
+    // Single sitemap (urlset directly)
+    const urlset = sitemapIndex.urlset?.url
+    if (urlset) {
+      const entries = Array.isArray(urlset) ? urlset : [urlset]
+      allUrls = entries.map(u => u.loc).filter(Boolean)
+    }
+
+    if (allUrls.length === 0) {
+      return res.status(404).json({ error: "No URLs found in sitemap" })
+    }
+
+    const tree = categorizeUrls(allUrls, baseUrl)
+    res.json({
+      ok: true,
+      url: baseUrl,
+      total: allUrls.length,
+      tree
+    })
+  } catch (err) {
+    console.error("[report error]", err.message)
+    res.status(500).json({ error: err.message || "Could not analyze this site" })
   }
 })
 
