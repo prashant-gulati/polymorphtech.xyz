@@ -96,7 +96,7 @@ app.get("/api/confirm", async (req, res) => {
   try {
     const result = await db.execute({ sql: "UPDATE subscribers SET confirmed = 1 WHERE token = ? AND confirmed = 0", args: [token] })
     if (result.rowsAffected > 0) {
-      res.send(simplePage("Subscription Confirmed", "<h1>You're subscribed!</h1><p>You'll receive new blog posts from AI Radar. Thank you!</p>"))
+      res.send(simplePage("Subscription Confirmed", "<h1>You're subscribed!</h1><p>You'll receive new blog posts from AI Radar.</p>"))
     } else {
       res.send(simplePage("Already Confirmed", "<h1>Already confirmed</h1><p>Your subscription was already confirmed.</p>"))
     }
