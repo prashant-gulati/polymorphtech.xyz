@@ -9,6 +9,7 @@ import { createClient } from "@libsql/client"
 import { Resend } from "resend"
 import crypto from "crypto"
 import { XMLParser } from "fast-xml-parser"
+import * as cheerio from "cheerio"
 
 const __dirname = dirname(fileURLToPath(import.meta.url))
 const app = express()
@@ -73,7 +74,128 @@ app.post("/api/subscribe", async (req, res) => {
   }
 })
 
-// Report endpoint
+// Report analysis helpers
+async function fetchText(url) {
+  const res = await fetch(url)
+  if (!res.ok) return null
+  return res.text()
+}
+
+async function fetchJson(url) {
+  try {
+    const res = await fetch(url)
+    if (!res.ok) return null
+    return res.json()
+  } catch { return null }
+}
+
+async function checkExists(url) {
+  try {
+    const res = await fetch(url, { method: "HEAD" })
+    return res.ok
+  } catch { return false }
+}
+
+function analyzeHomepage(html, baseUrl) {
+  const $ = cheerio.load(html)
+
+  // Site Identity
+  const siteName = $('meta[property="og:site_name"]').attr("content") || $("title").text().split("|")[0]?.trim() || ""
+  const canonical = $('link[rel="canonical"]').attr("href") || baseUrl
+  const logoUrl = $('meta[property="og:image"]').attr("content") || $('link[rel="apple-touch-icon"]').attr("href") || ""
+  const faviconUrl = $('link[rel="icon"]').attr("href") || $('link[rel="shortcut icon"]').attr("href") || ""
+
+  // Page Metadata
+  const title = $("title").text().trim()
+  const description = $('meta[name="description"]').attr("content") || ""
+  const ogType = $('meta[property="og:type"]').attr("content") || ""
+  const ogPrice = $('meta[property="og:price:amount"]').attr("content") || ""
+  const ogItemId = $('meta[property="product:retailer_item_id"]').attr("content") || ""
+  const twitterCard = $('meta[name="twitter:card"]').attr("content") || ""
+  const twitterTitle = $('meta[name="twitter:title"]').attr("content") || ""
+  const twitterImage = $('meta[name="twitter:image"]').attr("content") || ""
+
+  // Structured Data
+  const structuredData = { Organization: false, WebSite: false, Product: false, FAQPage: false, Article: false }
+  $('script[type="application/ld+json"]').each((_, el) => {
+    try {
+      const json = JSON.parse($(el).html())
+      const types = Array.isArray(json) ? json : [json]
+      for (const item of types) {
+        const t = item["@type"]
+        if (t && t in structuredData) structuredData[t] = true
+        // Handle @graph
+        if (item["@graph"]) {
+          for (const g of item["@graph"]) {
+            if (g["@type"] && g["@type"] in structuredData) structuredData[g["@type"]] = true
+          }
+        }
+      }
+    } catch {}
+  })
+
+  // Content Authority — extract visible text, compute keywords
+  const bodyText = $("body").text().replace(/\s+/g, " ").trim()
+  const stopWords = new Set(["the","a","an","and","or","but","in","on","at","to","for","of","is","it","that","this","was","are","be","has","had","have","with","as","by","from","not","no","your","you","we","our","they","their","can","will","do","if","so","all","more","about","up","out","just","than","them","its","also","into","over","after","some","what","how","which","when","where","who","get","been","would","could","should","make","like","new","one","two","know","see","use","may","us","very","most","any","other","each","these","those","then","only","well","even","now","find","here","way","many","much","own","free","still","back","every","best","shop","store"])
+  const words = bodyText.toLowerCase().replace(/[^a-z\s]/g, "").split(/\s+/).filter(w => w.length > 3 && !stopWords.has(w))
+  const freq = {}
+  for (const w of words) freq[w] = (freq[w] || 0) + 1
+  const topKeywords = Object.entries(freq).sort((a, b) => b[1] - a[1]).slice(0, 10).map(([w]) => w)
+
+  const h1 = $("h1").first().text().trim()
+  const brandPositioning = [h1, description].filter(Boolean).join(" — ")
+
+  return {
+    siteIdentity: { siteName, canonicalDomain: canonical, logoUrl, faviconUrl },
+    metadata: { title, description, ogType, ogPrice, ogItemId, twitterCard, twitterTitle, twitterImage },
+    structuredData,
+    contentAuthority: { topKeywords, brandPositioning }
+  }
+}
+
+async function analyzePolicies(baseUrl) {
+  const paths = {
+    aboutPage: "/pages/about",
+    contactPage: "/pages/contact",
+    privacyPolicy: "/policies/privacy-policy",
+    termsOfService: "/policies/terms-of-service",
+    refundPolicy: "/policies/refund-policy"
+  }
+  const results = {}
+  await Promise.all(Object.entries(paths).map(async ([key, path]) => {
+    results[key] = await checkExists(`${baseUrl}${path}`)
+  }))
+  return results
+}
+
+async function analyzeCrawlability(baseUrl) {
+  const [robotsTxt, sitemapXml, llmsTxt1, llmsTxt2] = await Promise.all([
+    checkExists(`${baseUrl}/robots.txt`),
+    checkExists(`${baseUrl}/sitemap.xml`),
+    checkExists(`${baseUrl}/llms.txt`),
+    checkExists(`${baseUrl}/.well-known/llms.txt`)
+  ])
+  return { robotsTxt, sitemapXml, llmsTxt: llmsTxt1 || llmsTxt2 }
+}
+
+async function analyzeCommerce(baseUrl) {
+  const data = await fetchJson(`${baseUrl}/products.json?limit=250`)
+  if (!data?.products) return { available: false }
+
+  const products = data.products
+  const prices = products.flatMap(p => p.variants?.map(v => parseFloat(v.price)).filter(n => !isNaN(n)) || [])
+  const currency = products[0]?.variants?.[0]?.price ? (products[0]?.variants?.[0]?.currency || "USD") : ""
+
+  return {
+    available: true,
+    totalProducts: products.length,
+    currency,
+    averagePrice: prices.length ? (prices.reduce((a, b) => a + b, 0) / prices.length).toFixed(2) : null,
+    priceRange: prices.length ? { min: Math.min(...prices).toFixed(2), max: Math.max(...prices).toFixed(2) } : null
+  }
+}
+
+// Sitemap helpers
 const xmlParser = new XMLParser()
 
 async function fetchSitemap(baseUrl) {
@@ -141,35 +263,51 @@ app.post("/api/report", async (req, res) => {
       return res.status(400).json({ error: "This doesn't appear to be a Shopify store" })
     }
 
-    const sitemapIndex = await fetchSitemap(baseUrl)
+    // Run all analyses in parallel
+    const [homepageHtml, sitemapIndex, policies, crawlability, commerce] = await Promise.all([
+      fetchText(baseUrl),
+      fetchSitemap(baseUrl).catch(() => null),
+      analyzePolicies(baseUrl),
+      analyzeCrawlability(baseUrl),
+      analyzeCommerce(baseUrl)
+    ])
 
+    // Sitemap tree
     let allUrls = []
-
-    // Sitemap index (points to sub-sitemaps)
-    const sitemaps = sitemapIndex.sitemapindex?.sitemap
-    if (sitemaps) {
-      const entries = Array.isArray(sitemaps) ? sitemaps : [sitemaps]
-      const subUrls = await Promise.all(entries.map(s => fetchSubSitemap(s.loc)))
-      allUrls = subUrls.flat()
-    }
-
-    // Single sitemap (urlset directly)
-    const urlset = sitemapIndex.urlset?.url
-    if (urlset) {
-      const entries = Array.isArray(urlset) ? urlset : [urlset]
-      allUrls = entries.map(u => u.loc).filter(Boolean)
-    }
-
-    if (allUrls.length === 0) {
-      return res.status(404).json({ error: "No URLs found in sitemap" })
+    if (sitemapIndex) {
+      const sitemaps = sitemapIndex.sitemapindex?.sitemap
+      if (sitemaps) {
+        const entries = Array.isArray(sitemaps) ? sitemaps : [sitemaps]
+        const subUrls = await Promise.all(entries.map(s => fetchSubSitemap(s.loc)))
+        allUrls = subUrls.flat()
+      }
+      const urlset = sitemapIndex.urlset?.url
+      if (urlset) {
+        const entries = Array.isArray(urlset) ? urlset : [urlset]
+        allUrls = entries.map(u => u.loc).filter(Boolean)
+      }
     }
 
     const tree = categorizeUrls(allUrls, baseUrl)
+
+    // Homepage analysis
+    let homepage = null
+    if (homepageHtml) {
+      homepage = analyzeHomepage(homepageHtml, baseUrl)
+    }
+
     res.json({
       ok: true,
       url: baseUrl,
       total: allUrls.length,
-      tree
+      tree,
+      siteIdentity: homepage?.siteIdentity || null,
+      metadata: homepage?.metadata || null,
+      structuredData: homepage?.structuredData || null,
+      contentAuthority: homepage?.contentAuthority || null,
+      policies,
+      crawlability,
+      commerce
     })
   } catch (err) {
     console.error("[report error]", err.message)

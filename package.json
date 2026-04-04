@@ -9,6 +9,7 @@
   "dependencies": {
     "@knownagents/sdk": "latest",
     "@libsql/client": "^0.17.2",
+    "cheerio": "^1.2.0",
     "express": "^4.19.2",
     "fast-xml-parser": "^5.5.10",
     "gray-matter": "^4.0.3",

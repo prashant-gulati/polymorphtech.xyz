@@ -189,6 +189,45 @@
     }
 
     .category-list a:hover { color: #f0f0f0; }
+
+    /* Report sections */
+    .report-section {
+      margin-bottom: 2rem;
+    }
+
+    .section-title {
+      font-size: 1rem;
+      font-weight: 600;
+      color: #ddd;
+      padding-bottom: 0.5rem;
+      border-bottom: 1px solid #222;
+      margin-bottom: 0.5rem;
+    }
+
+    .report-table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    .report-table tr {
+      border-bottom: 1px solid #1a1a1a;
+    }
+
+    .row-label {
+      color: #888;
+      font-size: 0.85rem;
+      padding: 0.5rem 0.5rem 0.5rem 0;
+      white-space: nowrap;
+      vertical-align: top;
+      width: 40%;
+    }
+
+    .row-value {
+      color: #ddd;
+      font-size: 0.85rem;
+      padding: 0.5rem 0;
+      word-break: break-word;
+    }
   </style>
 </head>
 <body>
@@ -375,18 +414,99 @@
     }
 
     function renderResults(data) {
-      const { tree, total, url } = data;
-      const categories = ['products', 'collections', 'pages', 'blogs', 'other'];
+      const { tree, total, url, siteIdentity, metadata, structuredData, contentAuthority, policies, crawlability, commerce } = data;
 
       let html = `<p style="margin-bottom:1rem;"><a href="/airadar/report" style="color:#888; text-decoration:none; font-size:0.85rem;">← Back to Search</a></p>`;
       html += `<h1 style="font-size:1.5rem; margin-bottom:0.5rem;">AI Readiness Report</h1>`;
-      html += `<p class="result-summary">Found <strong style="color:#f0f0f0">${total}</strong> URLs on <strong style="color:#f0f0f0">${url}</strong></p>`;
+      html += `<p class="result-summary"><strong style="color:#f0f0f0">${url}</strong></p>`;
 
+      // Site Identity
+      if (siteIdentity) {
+        html += section('Site Identity', [
+          row('Site Name', siteIdentity.siteName),
+          row('Canonical Domain', siteIdentity.canonicalDomain),
+          row('Logo URL', siteIdentity.logoUrl ? link(siteIdentity.logoUrl) : missing()),
+          row('Favicon URL', siteIdentity.faviconUrl ? link(siteIdentity.faviconUrl) : missing()),
+        ]);
+      }
+
+      // Page Metadata & SEO
+      if (metadata) {
+        html += section('Page Metadata & SEO', [
+          row('Title', metadata.title || missing()),
+          row('Description', metadata.description || missing()),
+          row('OG Type', metadata.ogType || missing()),
+          row('OG Price', metadata.ogPrice || missing()),
+          row('OG Item ID', metadata.ogItemId || missing()),
+          row('Twitter Card', metadata.twitterCard || missing()),
+          row('Twitter Title', metadata.twitterTitle || missing()),
+          row('Twitter Image', metadata.twitterImage ? link(metadata.twitterImage) : missing()),
+        ]);
+      }
+
+      // Policy Pages
+      if (policies) {
+        html += section('Policy Pages', [
+          row('About Page', check(policies.aboutPage)),
+          row('Contact Page', check(policies.contactPage)),
+          row('Privacy Policy', check(policies.privacyPolicy)),
+          row('Terms of Service', check(policies.termsOfService)),
+          row('Refund Policy', check(policies.refundPolicy)),
+        ]);
+      }
+
+      // Content Authority
+      if (contentAuthority) {
+        html += section('Content Authority', [
+          row('Top Keywords', contentAuthority.topKeywords?.length ? contentAuthority.topKeywords.join(', ') : missing()),
+          row('Brand Positioning', contentAuthority.brandPositioning || missing()),
+        ]);
+      }
+
+      // Crawlability
+      if (crawlability) {
+        html += section('Crawlability', [
+          row('robots.txt', check(crawlability.robotsTxt)),
+          row('sitemap.xml', check(crawlability.sitemapXml)),
+          row('llms.txt', check(crawlability.llmsTxt)),
+        ]);
+      }
+
+      // Structured Data
+      if (structuredData) {
+        html += section('Structured Data (Schema.org)', [
+          row('Organization', check(structuredData.Organization)),
+          row('WebSite', check(structuredData.WebSite)),
+          row('Product', check(structuredData.Product)),
+          row('FAQPage', check(structuredData.FAQPage)),
+          row('Article', check(structuredData.Article)),
+        ]);
+      }
+
+      // Commerce Readiness
+      if (commerce) {
+        if (commerce.available) {
+          html += section('Commerce Readiness', [
+            row('Products Endpoint', check(true)),
+            row('Total Products', commerce.totalProducts),
+            row('Currency', commerce.currency || 'N/A'),
+            row('Average Price', commerce.averagePrice ? `$${commerce.averagePrice}` : 'N/A'),
+            row('Price Range', commerce.priceRange ? `$${commerce.priceRange.min} — $${commerce.priceRange.max}` : 'N/A'),
+          ]);
+        } else {
+          html += section('Commerce Readiness', [
+            row('Products Endpoint', check(false)),
+          ]);
+        }
+      }
+
+      // Site Map Tree
+      const categories = ['products', 'collections', 'pages', 'blogs', 'other'];
+      let treeHtml = '';
       for (const cat of categories) {
         const items = tree[cat] || [];
         if (items.length === 0) continue;
-
-        html += `
+        treeHtml += `
           <div class="category">
             <div class="category-header">
               <span class="category-name">${cat}</span>
@@ -397,8 +517,29 @@
             </ul>
           </div>`;
       }
+      if (treeHtml) {
+        html += `<div class="report-section"><h2 class="section-title">Sitemap (${total} URLs)</h2>${treeHtml}</div>`;
+      }
 
       return html;
+    }
+
+    // Render helpers
+    function section(title, rows) {
+      return `<div class="report-section"><h2 class="section-title">${title}</h2><table class="report-table">${rows.join('')}</table></div>`;
+    }
+    function row(label, value) {
+      return `<tr><td class="row-label">${label}</td><td class="row-value">${value}</td></tr>`;
+    }
+    function check(val) {
+      return val ? '<span style="color:#4a4;">Found</span>' : '<span style="color:#a44;">Not found</span>';
+    }
+    function missing() {
+      return '<span style="color:#666;">—</span>';
+    }
+    function link(url) {
+      const short = url.length > 50 ? url.slice(0, 50) + '...' : url;
+      return `<a href="${url}" target="_blank" style="color:#aaa; word-break:break-all;">${short}</a>`;
     }
 
     // Handle initial page load
