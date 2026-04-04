@@ -735,14 +735,26 @@
 
       html += `<p class="report-intro">We analyzed <strong style="color:#ddd;">${domain}</strong>'s onsite content against AEO best practices to surface key opportunities for improvement. To measure offsite visibility, we interrogated AI models with real-world questions to track how they recommend <strong style="color:#ddd;">${domain}</strong>.</p>`;
       html += `<p class="report-date">Created at: ${today}</p>`;
+      // ── Score Overview ──
+      html += `<h2 class="section-title" style="margin-top:2rem;">Score Overview</h2>`;
       html += `<span class="score-link" onclick="document.getElementById('scoreModal').classList.add('open')">How your score is calculated</span>`;
 
-      html += `<h2 class="section-title" style="margin-top:2rem;">Score Overview</h2>`;
+      // ── Top Opportunities ──
       html += `<h2 class="section-title" style="margin-top:2rem;">Top Opportunities</h2>`;
+
+      // ── Off-Site Discoverability ──
       html += `<h2 class="section-title" style="margin-top:2rem;">Off-Site Discoverability</h2>`;
+
+      if (contentAuthority) {
+        html += section('Content Authority', [
+          row('Top Keywords', contentAuthority.topKeywords?.length ? contentAuthority.topKeywords.join(', ') : missing()),
+          row('Brand Positioning', contentAuthority.brandPositioning || missing()),
+        ]);
+      }
+
+      // ── On-Site Readiness ──
       html += `<h2 class="section-title" style="margin-top:2rem;">On-Site Readiness</h2>`;
 
-      // Site Identity
       if (siteIdentity) {
         html += section('Site Identity', [
           row('Site Name', siteIdentity.siteName),
@@ -751,7 +763,6 @@
         ]);
       }
 
-      // Page Metadata & SEO
       if (metadata) {
         html += section('Page Metadata & SEO', [
           row('Title', metadata.title || missing()),
@@ -763,26 +774,6 @@
         ]);
       }
 
-      // Policy Pages
-      if (policies) {
-        html += section('Policy Pages', [
-          row('About Page', check(policies.aboutPage)),
-          row('Contact Page', check(policies.contactPage)),
-          row('Privacy Policy', check(policies.privacyPolicy)),
-          row('Terms of Service', check(policies.termsOfService)),
-          row('Refund Policy', check(policies.refundPolicy)),
-        ]);
-      }
-
-      // Content Authority
-      if (contentAuthority) {
-        html += section('Content Authority', [
-          row('Top Keywords', contentAuthority.topKeywords?.length ? contentAuthority.topKeywords.join(', ') : missing()),
-          row('Brand Positioning', contentAuthority.brandPositioning || missing()),
-        ]);
-      }
-
-      // Crawlability
       if (crawlability) {
         html += section('Crawlability', [
           row('robots.txt', check(crawlability.robotsTxt)),
@@ -791,7 +782,6 @@
         ]);
       }
 
-      // Structured Data
       if (structuredData) {
         html += section('Structured Data (Schema.org)', [
           row('Organization', check(structuredData.Organization)),
@@ -802,7 +792,16 @@
         ]);
       }
 
-      // Commerce Readiness
+      if (policies) {
+        html += section('Policy Pages', [
+          row('About Page', check(policies.aboutPage)),
+          row('Contact Page', check(policies.contactPage)),
+          row('Privacy Policy', check(policies.privacyPolicy)),
+          row('Terms of Service', check(policies.termsOfService)),
+          row('Refund Policy', check(policies.refundPolicy)),
+        ]);
+      }
+
       if (commerce) {
         if (commerce.available) {
           html += section('Commerce Readiness', [
