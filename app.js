@@ -6,10 +6,14 @@ import { readFileSync, readdirSync } from "fs"
 import { marked } from "marked"
 import matter from "gray-matter"
 import { createClient } from "@libsql/client"
+import { Resend } from "resend"
+import crypto from "crypto"
 
 const __dirname = dirname(fileURLToPath(import.meta.url))
 const app = express()
 const knownAgents = new KnownAgents("522be957-6072-4069-b43c-fd6236e6ed10")
+const resend = new Resend(process.env.RESEND_API_KEY)
+const BASE_URL = process.env.BASE_URL || "https://polymorphtech.xyz"
 
 // Database
 const db = createClient({
@@ -19,6 +23,8 @@ const db = createClient({
 await db.execute(`CREATE TABLE IF NOT EXISTS subscribers (
   id INTEGER PRIMARY KEY AUTOINCREMENT,
   email TEXT UNIQUE NOT NULL,
+  token TEXT UNIQUE NOT NULL,
+  confirmed INTEGER DEFAULT 0,
   subscribed_at TEXT
 )`)
 
@@ -41,12 +47,94 @@ app.post("/api/subscribe", async (req, res) => {
     return res.status(400).json({ error: "Invalid email address" })
   }
   try {
-    await db.execute({ sql: "INSERT OR IGNORE INTO subscribers (email, subscribed_at) VALUES (?, datetime('now'))", args: [email] })
-    res.json({ ok: true })
+    // Check if already subscribed
+    const existing = await db.execute({ sql: "SELECT * FROM subscribers WHERE email = ?", args: [email] })
+    if (existing.rows.length > 0) {
+      if (existing.rows[0].confirmed) {
+        return res.json({ ok: true, message: "already_subscribed" })
+      }
+      // Resend confirmation email
+      await sendConfirmationEmail(email, existing.rows[0].token)
+      return res.json({ ok: true, message: "confirmation_resent" })
+    }
+
+    const token = crypto.randomUUID()
+    await db.execute({
+      sql: "INSERT INTO subscribers (email, token, confirmed, subscribed_at) VALUES (?, ?, 0, datetime('now'))",
+      args: [email, token]
+    })
+    await sendConfirmationEmail(email, token)
+    res.json({ ok: true, message: "confirmation_sent" })
   } catch (err) {
+    console.error("[subscribe error]", err.message)
     res.status(500).json({ error: "Something went wrong" })
   }
 })
+
+async function sendConfirmationEmail(email, token) {
+  const confirmUrl = `${BASE_URL}/api/confirm?token=${token}`
+  await resend.emails.send({
+    from: "AI Radar <support@polymorphtech.xyz>",
+    to: email,
+    subject: "Confirm your subscription to AI Radar",
+    html: `
+      <div style="font-family: sans-serif; max-width: 480px; margin: 0 auto; padding: 2rem;">
+        <h2 style="margin-bottom: 1rem;">Confirm your subscription</h2>
+        <p style="color: #555; line-height: 1.6;">Thanks for subscribing to the AI Radar blog. Click the button below to confirm your email address.</p>
+        <a href="${confirmUrl}" style="display: inline-block; margin-top: 1rem; padding: 0.75rem 1.5rem; background: #111; color: #fff; text-decoration: none; border-radius: 6px; font-weight: 600;">Confirm subscription</a>
+        <p style="margin-top: 2rem; font-size: 0.85rem; color: #999;">If you didn't subscribe, you can ignore this email.</p>
+      </div>
+    `
+  })
+}
+
+// Confirm subscription
+app.get("/api/confirm", async (req, res) => {
+  const { token } = req.query
+  if (!token) return res.status(400).send("Invalid link")
+
+  try {
+    const result = await db.execute({ sql: "UPDATE subscribers SET confirmed = 1 WHERE token = ? AND confirmed = 0", args: [token] })
+    if (result.rowsAffected > 0) {
+      res.send(simplePage("Subscription Confirmed", "<h1>You're subscribed!</h1><p>You'll receive new blog posts from AI Radar. Thank you!</p>"))
+    } else {
+      res.send(simplePage("Already Confirmed", "<h1>Already confirmed</h1><p>Your subscription was already confirmed.</p>"))
+    }
+  } catch {
+    res.status(500).send(simplePage("Error", "<h1>Something went wrong</h1><p>Please try again later.</p>"))
+  }
+})
+
+// Unsubscribe
+app.get("/api/unsubscribe", async (req, res) => {
+  const { token } = req.query
+  if (!token) return res.status(400).send("Invalid link")
+
+  try {
+    await db.execute({ sql: "DELETE FROM subscribers WHERE token = ?", args: [token] })
+    res.send(simplePage("Unsubscribed", "<h1>You've been unsubscribed</h1><p>You won't receive any more emails from us. Sorry to see you go!</p>"))
+  } catch {
+    res.status(500).send(simplePage("Error", "<h1>Something went wrong</h1><p>Please try again later.</p>"))
+  }
+})
+
+function simplePage(title, content) {
+  return `<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>${title} — AI Radar</title>
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+  <link rel="stylesheet" href="/shared.css">
+  <link rel="stylesheet" href="/airadar/airadar.css">
+</head>
+<body>
+  <main>${content}</main>
+  <script src="/nav.js"></script>
+</body>
+</html>`
+}
 
 // Blog helpers
 const postsDir = join(__dirname, "blog", "posts")
@@ -84,8 +172,13 @@ const subscribeForm = `
         });
         const data = await res.json();
         if (data.ok) {
-          msg.textContent = 'Subscribed!';
-          msg.style.color = '#4a4';
+          if (data.message === 'already_subscribed') {
+            msg.textContent = 'You are already subscribed!';
+            msg.style.color = '#4a4';
+          } else {
+            msg.textContent = 'Check your email to confirm your subscription.';
+            msg.style.color = '#4a4';
+          }
           e.target.reset();
         } else {
           msg.textContent = data.error || 'Something went wrong';
