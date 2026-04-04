@@ -271,43 +271,76 @@ async function analyzeProducts(baseUrl) {
         productCategory: product.product_type || "",
         brand,
         material: product.tags?.find(t => t.toLowerCase().startsWith("material:"))?.split(":")?.[1]?.trim() || "",
+        dimensions: schemaData.depth || schemaData.width || schemaData.height ? "See L/W/H" : "",
+        length: schemaData.depth?.value || "",
+        width: schemaData.width?.value || "",
+        height: schemaData.height?.value || "",
         weight: variant.weight ? `${variant.weight} ${variant.weight_unit || ""}`.trim() : "",
+        ageGroup: schemaData.audience?.suggestedMinAge ? `${schemaData.audience.suggestedMinAge}+` : (product.tags?.find(t => t.toLowerCase().startsWith("age_group:"))?.split(":")?.[1]?.trim() || ""),
       },
 
       media: {
         imageLink: image.src || "",
         additionalImages: product.images?.length > 1 ? product.images.length - 1 : 0,
-        videoLink: "", // Shopify doesn't expose via JSON
-        model3dLink: "", // Shopify doesn't expose via JSON
+        videoLink: "",
+        model3dLink: "",
       },
 
       priceAndPromotions: {
         price: variant.price ? `${variant.price}` : "",
         salePrice: variant.compare_at_price && variant.compare_at_price !== variant.price ? variant.price : "",
         compareAtPrice: variant.compare_at_price || "",
+        salePriceEffectiveDate: singleOffer?.priceValidUntil || "",
         currency: variant.currency || singleOffer?.priceCurrency || "",
+        unitPricingMeasure: schemaData.hasMeasurement?.value || "",
+        unitPricingBaseMeasure: schemaData.hasMeasurement?.unitCode || "",
       },
 
       availability: {
         available: variant.available ?? "",
-        inventoryPolicy: variant.inventory_policy || "",
+        availabilityDate: singleOffer?.availabilityStarts || "",
         inventoryQuantity: variant.inventory_quantity ?? "",
+        expirationDate: "",
+        pickupMethod: "",
+        pickupSLA: "",
       },
 
       variants: {
         itemGroupId: product.id,
         itemGroupTitle: product.title,
         totalVariants: product.variants?.length || 0,
+        color: product.options?.find(o => o.name.toLowerCase() === "color")?.values?.join(", ") || "",
+        size: product.options?.find(o => o.name.toLowerCase() === "size")?.values?.join(", ") || "",
+        sizeSystem: "",
+        gender: product.tags?.find(t => t.toLowerCase().startsWith("gender:"))?.split(":")?.[1]?.trim() || "",
+        offerId: variant.id || "",
         options: product.options?.map(o => ({ name: o.name, values: o.values })) || [],
+      },
+
+      fulfillment: {
+        shipping: singleOffer?.shippingDetails?.shippingRate?.value || "",
+        deliveryEstimate: singleOffer?.deliveryLeadTime?.value || "",
       },
 
       merchantInfo: {
         sellerName: brand,
+        sellerUrl: baseUrl,
+        sellerPrivacyPolicy: "",
+        sellerTOS: "",
+      },
+
+      returns: {
+        returnPolicy: singleOffer?.hasMerchantReturnPolicy?.merchantReturnDays || "",
+        returnWindow: singleOffer?.hasMerchantReturnPolicy?.returnPolicyCategory?.replace("https://schema.org/", "") || "",
       },
 
       reviews: {
-        reviewCount: reviews.reviewCount || reviews.ratingCount || "",
-        reviewRating: reviews.ratingValue || "",
+        popularityScore: "",
+        returnRate: "",
+        productReviewCount: reviews.reviewCount || reviews.ratingCount || "",
+        productReviewRating: reviews.ratingValue || "",
+        storeReviewCount: "",
+        storeReviewRating: "",
       },
     }
   }))
