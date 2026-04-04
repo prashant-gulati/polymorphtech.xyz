@@ -420,8 +420,7 @@
       }
 
       reportBtn.disabled = true;
-      reportBtn.style.display = 'none';
-      reportForm.store_url.disabled = true;
+      reportBtn.textContent = 'Validating...';
 
       const progressSteps = document.getElementById('progressSteps');
       const prog1 = document.getElementById('prog1');
@@ -432,7 +431,7 @@
       prog1.style.width = '0%';
       prog2.style.width = '0%';
       prog3.style.width = '0%';
-      progressSteps.style.display = 'block';
+      progressSteps.style.display = 'none';
 
       function animateBar(el, durationMs) {
         return new Promise(resolve => {
@@ -448,20 +447,39 @@
         });
       }
 
-      // Start API call in parallel with animations
-      const apiPromise = fetch('/api/report', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ url: value })
-      }).then(r => r.json());
-
       try {
-        await animateBar(prog1, 3000);
-        await animateBar(prog2, 3000);
+        // Step 1: Validate store before showing progress
+        const valRes = await fetch('/api/validate-store', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ url: value })
+        });
+        const valData = await valRes.json();
+
+        if (!valData.ok) {
+          formMsg.textContent = valData.error || 'Could not validate this site';
+          formMsg.style.color = '#a44';
+          return;
+        }
+
+        // Validation passed — show progress bars
+        reportBtn.style.display = 'none';
+        reportForm.store_url.disabled = true;
+        progressSteps.style.display = 'block';
+
+        // Start full report in parallel with animations
+        const apiPromise = fetch('/api/report', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ url: value })
+        }).then(r => r.json());
+
+        await animateBar(prog1, 5000);
+        await animateBar(prog2, 5000);
 
         const data = await apiPromise;
 
-        await animateBar(prog3, 3000);
+        await animateBar(prog3, 5000);
 
         if (!data.ok) {
           formMsg.textContent = data.error || 'Could not analyze this site';
@@ -470,7 +488,7 @@
           return;
         }
 
-        // Valid Shopify store — show email gate
+        // Valid — show email gate
         currentStoreUrl = value;
         history.pushState({ step: 'email', storeUrl: value }, '', `/airadar/report?store=${encodeURIComponent(value)}`);
         showEmailGate();
@@ -480,6 +498,7 @@
         progressSteps.style.display = 'none';
       } finally {
         reportBtn.style.display = '';
+        reportBtn.textContent = 'Analyze';
         reportBtn.disabled = false;
         reportForm.store_url.disabled = false;
       }

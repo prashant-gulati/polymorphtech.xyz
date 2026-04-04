@@ -381,6 +381,35 @@ function categorizeUrls(urls, baseUrl) {
   return tree
 }
 
+// Quick validation endpoint
+app.post("/api/validate-store", async (req, res) => {
+  let baseUrl = req.body.url?.trim()
+  if (!baseUrl) return res.status(400).json({ error: "URL is required" })
+
+  try {
+    new URL(baseUrl)
+  } catch {
+    return res.status(400).json({ error: "Invalid URL" })
+  }
+
+  baseUrl = baseUrl.replace(/\/+$/, "")
+
+  let isShopify = false
+  try {
+    const metaRes = await fetch(`${baseUrl}/meta.json`)
+    if (metaRes.ok) {
+      const meta = await metaRes.json()
+      isShopify = !!(meta.id || meta.name || meta.shopify)
+    }
+  } catch {}
+
+  if (!isShopify) {
+    return res.status(400).json({ error: "This doesn't appear to be a Shopify store" })
+  }
+
+  res.json({ ok: true })
+})
+
 app.post("/api/report", async (req, res) => {
   let baseUrl = req.body.url?.trim()
   if (!baseUrl) return res.status(400).json({ error: "URL is required" })
