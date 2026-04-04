@@ -450,16 +450,36 @@
       background: #1a1a1a;
       border: 1px solid #333;
       border-radius: 8px;
-      padding: 2rem;
       max-width: 520px;
       width: 90%;
       max-height: 80vh;
       overflow-y: auto;
       position: relative;
     }
-    .modal h2 { color: #ddd; font-size: 1.1rem; margin-bottom: 0.75rem; }
-    .modal h3 { color: #ccc; font-size: 0.95rem; margin-top: 1.25rem; margin-bottom: 0.35rem; }
-    .modal p { color: #888; font-size: 0.85rem; line-height: 1.6; margin-bottom: 0.75rem; }
+    .modal-header {
+      padding: 1.25rem 1.5rem;
+      border-bottom: 1px solid #222;
+      background: #1e1e1e;
+      border-radius: 8px 8px 0 0;
+    }
+    .modal-header h2 {
+      color: #f0f0f0;
+      font-size: 1.15rem;
+      margin: 0;
+    }
+    .modal-body {
+      padding: 1.5rem;
+    }
+    .modal-card {
+      border: 1px solid #222;
+      border-radius: 6px;
+      padding: 1rem;
+      margin-bottom: 1rem;
+      background: #161616;
+    }
+    .modal-card:last-child { margin-bottom: 0; }
+    .modal-card h3 { color: #ddd; font-size: 0.95rem; margin-bottom: 0.4rem; }
+    .modal-card p { color: #888; font-size: 0.85rem; line-height: 1.6; margin: 0; }
     .modal-close {
       position: absolute;
       top: 0.75rem;
@@ -591,13 +611,23 @@
   <div class="modal-overlay" id="scoreModal" onclick="if(event.target===this)this.classList.remove('open')">
     <div class="modal">
       <button class="modal-close" onclick="document.getElementById('scoreModal').classList.remove('open')">&times;</button>
-      <h2>How Your Score is Calculated</h2>
-      <h3>Off-Site Brand Visibility Score</h3>
-      <p>Calculated by analyzing your brand's frequency, rank, and sentiment in AI responses. The score aggregates results across the buyer funnel, prioritizing Awareness followed by Consideration and Decision stages.</p>
-      <h3>On-Site AI Readiness Score</h3>
-      <p>Measures the percentage of AEO technical standards your website currently meets. This score reflects how easily AI models can parse, understand, and index your product data.</p>
-      <h3>Overall Score</h3>
-      <p>A holistic average of your internal optimization (On-Site) and external performance (Off-Site), giving you a complete picture of your standing in the AI era.</p>
+      <div class="modal-header">
+        <h2>How Your Score is Calculated</h2>
+      </div>
+      <div class="modal-body">
+        <div class="modal-card">
+          <h3>Off-Site Brand Visibility Score</h3>
+          <p>Calculated by analyzing your brand's frequency, rank, and sentiment in AI responses. The score aggregates results across the buyer funnel, prioritizing Awareness followed by Consideration and Decision stages.</p>
+        </div>
+        <div class="modal-card">
+          <h3>On-Site AI Readiness Score</h3>
+          <p>Measures the percentage of AEO technical standards your website currently meets. This score reflects how easily AI models can parse, understand, and index your product data.</p>
+        </div>
+        <div class="modal-card">
+          <h3>Overall Score</h3>
+          <p>A holistic average of your internal optimization (On-Site) and external performance (Off-Site), giving you a complete picture of your standing in the AI era.</p>
+        </div>
+      </div>
     </div>
   </div>
 
