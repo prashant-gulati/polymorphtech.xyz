@@ -319,7 +319,8 @@
       const { tree, total, url } = data;
       const categories = ['products', 'collections', 'pages', 'blogs', 'other'];
 
-      let html = `<h1 style="font-size:1.5rem; margin-bottom:0.5rem;">AI Readiness Report</h1>`;
+      let html = `<p style="margin-bottom:1rem;"><a href="/airadar/report" style="color:#888; text-decoration:none; font-size:0.85rem;">← Back to Search</a></p>`;
+      html += `<h1 style="font-size:1.5rem; margin-bottom:0.5rem;">AI Readiness Report</h1>`;
       html += `<p class="result-summary">Found <strong style="color:#f0f0f0">${total}</strong> URLs on <strong style="color:#f0f0f0">${url}</strong></p>`;
 
       for (const cat of categories) {
