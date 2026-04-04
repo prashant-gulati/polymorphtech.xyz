@@ -8,6 +8,8 @@
   },
   "dependencies": {
     "@knownagents/sdk": "latest",
-    "express": "^4.19.2"
+    "express": "^4.19.2",
+    "gray-matter": "^4.0.3",
+    "marked": "^17.0.5"
   }
 }
