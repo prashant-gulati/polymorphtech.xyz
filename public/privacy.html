@@ -53,6 +53,48 @@
 
     .nav-links a:hover { color: #f0f0f0; }
 
+    /* Dropdown */
+    .dropdown {
+      position: relative;
+    }
+
+    .dropdown > span {
+      color: #aaa;
+      font-size: 0.9rem;
+      cursor: pointer;
+      transition: color 0.2s;
+    }
+
+    .dropdown:hover > span { color: #f0f0f0; }
+
+    .dropdown-menu {
+      display: none;
+      position: absolute;
+      top: 100%;
+      left: 0;
+      background: #1a1a1a;
+      border: 1px solid #333;
+      border-radius: 6px;
+      padding: 0.5rem 0;
+      min-width: 140px;
+      margin-top: 0.5rem;
+    }
+
+    .dropdown:hover .dropdown-menu { display: block; }
+
+    .dropdown-menu a {
+      display: block;
+      padding: 0.4rem 1rem;
+      color: #aaa;
+      text-decoration: none;
+      font-size: 0.85rem;
+    }
+
+    .dropdown-menu a:hover {
+      color: #f0f0f0;
+      background: #222;
+    }
+
     /* Hamburger */
     .hamburger {
       display: none;
@@ -175,6 +217,12 @@
     <a class="nav-brand" href="index.html">Polymorph Technologies</a>
     <ul class="nav-links">
       <li><a href="index.html">Home</a></li>
+      <li class="dropdown">
+        <span>Products</span>
+        <div class="dropdown-menu">
+          <a href="/airadar">AI Radar</a>
+        </div>
+      </li>
       <li><a href="privacy.html">Privacy Policy</a></li>
       <li><a href="mailto:support@polymorphtech.xyz">Contact</a></li>
     </ul>
@@ -185,6 +233,7 @@
 
   <div class="mobile-menu" id="mobileMenu">
     <a href="index.html">Home</a>
+    <a href="/airadar">AI Radar</a>
     <a href="privacy.html">Privacy Policy</a>
     <a href="mailto:support@polymorphtech.xyz">Contact</a>
   </div>
