@@ -28,7 +28,8 @@ await db.execute(`CREATE TABLE IF NOT EXISTS subscribers (
   token TEXT UNIQUE NOT NULL,
   confirmed INTEGER DEFAULT 0,
   subscribed_at TEXT,
-  store_url TEXT DEFAULT ""
+  store_url TEXT DEFAULT "",
+  helpfulness INTEGER DEFAULT 0
 )`)
 
 app.use(express.json())
@@ -540,6 +541,21 @@ async function sendReportEmail(email, token) {
     `
   })
 }
+
+// Report feedback
+app.post("/api/report-feedback", async (req, res) => {
+  const { store_url, helpfulness } = req.body
+  if (!store_url || ![1, -1].includes(helpfulness)) {
+    return res.status(400).json({ error: "Invalid feedback" })
+  }
+  try {
+    await db.execute({ sql: "UPDATE subscribers SET helpfulness = ? WHERE store_url = ?", args: [helpfulness, store_url] })
+    res.json({ ok: true })
+  } catch (err) {
+    console.error("[feedback error]", err.message)
+    res.status(500).json({ error: "Something went wrong" })
+  }
+})
 
 // View report (confirms subscription + redirects to report)
 app.get("/api/view-report", async (req, res) => {

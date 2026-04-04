@@ -445,6 +445,64 @@
     }
     .modal-close:hover { color: #f0f0f0; }
 
+    /* Feedback */
+    .feedback-section {
+      margin-top: 2.5rem;
+      text-align: center;
+    }
+
+    .feedback-section h3 {
+      color: #ddd;
+      font-size: 0.95rem;
+      margin-bottom: 0.75rem;
+    }
+
+    .feedback-buttons {
+      display: flex;
+      gap: 0.75rem;
+      justify-content: center;
+    }
+
+    .feedback-btn {
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+      padding: 0.5rem 1rem;
+      border: 1px solid #333;
+      border-radius: 6px;
+      background: none;
+      color: #888;
+      font-size: 0.85rem;
+      cursor: pointer;
+      transition: border-color 0.2s, color 0.2s, background 0.2s;
+    }
+
+    .feedback-btn:hover { border-color: #666; color: #f0f0f0; }
+    .feedback-btn svg { width: 16px; height: 16px; }
+
+    .feedback-btn.selected {
+      border-color: #4a4;
+      color: #4a4;
+      background: rgba(74, 170, 74, 0.1);
+    }
+
+    .feedback-btn.selected-negative {
+      border-color: #a44;
+      color: #a44;
+      background: rgba(170, 68, 68, 0.1);
+    }
+
+    .feedback-btn:disabled {
+      cursor: default;
+      opacity: 0.5;
+    }
+
+    .feedback-thanks {
+      color: #4a4;
+      font-size: 0.85rem;
+      margin-top: 0.75rem;
+    }
+
     /* Report footer */
     .report-footer {
       margin-top: 2.5rem;
@@ -950,6 +1008,22 @@
         html += `<div class="report-section"><h2 class="section-title">Sitemap (${total} URLs)</h2>${treeHtml}</div>`;
       }
 
+      // Feedback
+      html += `<div class="feedback-section">
+        <h3>How helpful were these results?</h3>
+        <div class="feedback-buttons">
+          <button class="feedback-btn" id="feedbackUp" onclick="submitFeedback(1, '${url}')">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 9V5a3 3 0 0 0-3-3l-4 9v11h11.28a2 2 0 0 0 2-1.7l1.38-9a2 2 0 0 0-2-2.3H14z"/><path d="M7 22H4a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h3"/></svg>
+            Helpful
+          </button>
+          <button class="feedback-btn" id="feedbackDown" onclick="submitFeedback(-1, '${url}')">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 15v4a3 3 0 0 0 3 3l4-9V2H5.72a2 2 0 0 0-2 1.7l-1.38 9a2 2 0 0 0 2 2.3H10z"/><path d="M17 2h3a2 2 0 0 1 2 2v7a2 2 0 0 1-2 2h-3"/></svg>
+            Not helpful
+          </button>
+        </div>
+        <p id="feedbackThanks" class="feedback-thanks" style="display:none;">Thank you for your feedback!</p>
+      </div>`;
+
       // Dismissable banner
       html += `<div class="report-banner" id="reportBanner">
         <button class="banner-dismiss" onclick="document.getElementById('reportBanner').remove()">&times;</button>
@@ -992,6 +1066,33 @@
     } else if (storeParam) {
       currentStoreUrl = storeParam;
       showEmailGate();
+    }
+
+    async function submitFeedback(value, storeUrl) {
+      const up = document.getElementById('feedbackUp');
+      const down = document.getElementById('feedbackDown');
+      const thanks = document.getElementById('feedbackThanks');
+
+      up.disabled = true;
+      down.disabled = true;
+
+      if (value === 1) {
+        up.classList.add('selected');
+        down.classList.remove('selected-negative');
+      } else {
+        down.classList.add('selected-negative');
+        up.classList.remove('selected');
+      }
+
+      thanks.style.display = 'block';
+
+      try {
+        await fetch('/api/report-feedback', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ store_url: storeUrl, helpfulness: value })
+        });
+      } catch {}
     }
   </script>
 
