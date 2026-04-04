@@ -151,11 +151,10 @@
     const results = document.getElementById('results');
     const btn = form.querySelector('button');
 
-    form.addEventListener('submit', async (e) => {
-      e.preventDefault();
-      const value = form.store_url.value.trim();
+    async function analyzeUrl(value) {
       msg.textContent = '';
       results.innerHTML = '';
+      form.store_url.value = value;
 
       try {
         new URL(value);
@@ -190,7 +189,20 @@
         btn.textContent = 'Analyze';
         btn.disabled = false;
       }
+    }
+
+    form.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const value = form.store_url.value.trim();
+      if (!value) return;
+      const params = new URLSearchParams({ url: value });
+      history.pushState(null, '', `/airadar/report?${params}`);
+      analyzeUrl(value);
     });
+
+    // Auto-analyze if URL param is present
+    const urlParam = new URLSearchParams(location.search).get('url');
+    if (urlParam) analyzeUrl(urlParam);
 
     function renderResults(data) {
       const { tree, total, url } = data;
