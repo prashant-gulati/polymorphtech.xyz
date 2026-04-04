@@ -214,16 +214,15 @@ app.post("/api/report-email", async (req, res) => {
 
 async function sendReportEmail(email, token) {
   const reportUrl = `${BASE_URL}/api/view-report?token=${token}`
-  const unsubscribeUrl = `${BASE_URL}/api/unsubscribe?token=${token}`
   await resend.emails.send({
     from: "AI Radar <support@polymorphtech.xyz>",
     to: email,
     subject: "Access Your AI Readiness Report",
     html: `
       <div style="font-family: sans-serif; max-width: 480px; margin: 0 auto; padding: 2rem;">
-        <h2 style="margin-bottom: 1rem;">View your report</h2>
+        <h2 style="margin-bottom: 1rem;">AI Radar</h2>
         <a href="${reportUrl}" style="display: inline-block; margin-top: 1rem; padding: 0.75rem 1.5rem; background: #111; color: #fff; text-decoration: none; border-radius: 6px; font-weight: 600;">View AI Readiness Report</a>
-        <p style="margin-top: 2rem; font-size: 0.85rem; color: #999;">Accessing your AI Readiness Report also subscribes you to AI Radar's mailing list. You can <a href="${unsubscribeUrl}" style="color: #999;">unsubscribe</a> at any point.</p>
+        <p style="margin-top: 2rem; font-size: 0.85rem; color: #999;">Accessing your AI Readiness Report also subscribes you to AI Radar's mailing list. You can unsubscribe at any point.</p>
       </div>
     `
   })
