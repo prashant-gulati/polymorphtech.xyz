@@ -128,8 +128,15 @@ app.post("/api/report", async (req, res) => {
 
   try {
     // Verify it's a Shopify store
-    const metaRes = await fetch(`${baseUrl}/meta.json`)
-    if (!metaRes.ok) {
+    let isShopify = false
+    try {
+      const metaRes = await fetch(`${baseUrl}/meta.json`)
+      if (metaRes.ok) {
+        const meta = await metaRes.json()
+        isShopify = !!(meta.id || meta.name || meta.shopify)
+      }
+    } catch {}
+    if (!isShopify) {
       return res.status(400).json({ error: "This doesn't appear to be a Shopify store" })
     }
 
