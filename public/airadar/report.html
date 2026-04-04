@@ -241,6 +241,19 @@
     .category-list a:hover { color: #f0f0f0; }
 
     /* Report sections */
+    .group-header {
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: #f0f0f0;
+      margin-top: 2.5rem;
+      margin-bottom: 1.25rem;
+      padding: 0.75rem 1rem;
+      border: 1px solid #222;
+      border-radius: 8px;
+      background: #161616;
+      text-align: center;
+    }
+
     .report-section {
       margin-bottom: 2rem;
     }
@@ -794,14 +807,14 @@
       html += `<p class="report-intro">We analyzed <strong style="color:#ddd;">${domain}</strong>'s onsite content against AEO best practices to surface key opportunities for improvement. To measure offsite visibility, we interrogated AI models with real-world questions to track how they recommend <strong style="color:#ddd;">${domain}</strong>.</p>`;
       html += `<p class="report-date">Created at: ${today}</p>`;
       // ── Score Overview ──
-      html += `<h2 class="section-title" style="margin-top:2rem;">Score Overview</h2>`;
+      html += `<h2 class="group-header">Score Overview</h2>`;
       html += `<span class="score-link" onclick="document.getElementById('scoreModal').classList.add('open')">How your score is calculated</span>`;
 
       // ── Top Opportunities ──
-      html += `<h2 class="section-title" style="margin-top:2rem;">Top Opportunities</h2>`;
+      html += `<h2 class="group-header">Top Opportunities</h2>`;
 
       // ── Off-Site Discoverability ──
-      html += `<h2 class="section-title" style="margin-top:2rem;">Off-Site Discoverability</h2>`;
+      html += `<h2 class="group-header">Off-Site Discoverability</h2>`;
 
       if (contentAuthority) {
         html += section('Content Authority', [
@@ -811,7 +824,7 @@
       }
 
       // ── On-Site Readiness ──
-      html += `<h2 class="section-title" style="margin-top:2rem;">On-Site Readiness</h2>`;
+      html += `<h2 class="group-header">On-Site Readiness</h2>`;
 
       if (siteIdentity) {
         html += section('Site Identity', [
@@ -1008,6 +1021,13 @@
         html += `<div class="report-section"><h2 class="section-title">Sitemap (${total} URLs)</h2>${treeHtml}</div>`;
       }
 
+      // Dismissable banner
+      html += `<div class="report-banner" id="reportBanner">
+        <button class="banner-dismiss" onclick="document.getElementById('reportBanner').remove()">&times;</button>
+        <h3>Take Control of Your AI Visibility</h3>
+        <p>Stop guessing how LLM platforms see you. Measure your impact and optimize your store with the first AEO platform built for e-commerce.</p>
+      </div>`;
+
       // Feedback
       html += `<div class="feedback-section">
         <h3>How helpful were these results?</h3>
@@ -1022,13 +1042,6 @@
           </button>
         </div>
         <p id="feedbackThanks" class="feedback-thanks" style="display:none;">Thank you for your feedback!</p>
-      </div>`;
-
-      // Dismissable banner
-      html += `<div class="report-banner" id="reportBanner">
-        <button class="banner-dismiss" onclick="document.getElementById('reportBanner').remove()">&times;</button>
-        <h3>Take Control of Your AI Visibility</h3>
-        <p>Stop guessing how LLM platforms see you. Measure your impact and optimize your store with the first AEO platform built for e-commerce.</p>
       </div>`;
 
       html += `<div class="report-footer">AI Readiness Report can make mistakes. This tool provides estimated insights based on typical AI behavior patterns. The analysis and score review presented are based on customer results from Gemini 2.5 Pro.</div>`;
