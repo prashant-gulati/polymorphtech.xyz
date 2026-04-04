@@ -816,10 +816,10 @@
       const domain = url.replace(/^https?:\/\//, '').replace(/\/$/, '');
 
       let html = `<a href="/airadar/report" class="start-over"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 4v6h6"/><path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"/></svg> Start Over</a>`;
-      html += `<h1 style="font-size:clamp(1.75rem, 5vw, 2.5rem); margin-bottom:0.75rem; text-align:center;">AI Readiness Report</h1>`;
+      html += `<h1 style="font-size:clamp(1.75rem, 5vw, 2.5rem); margin-bottom:1.5rem; text-align:center;">AI Readiness Report</h1>`;
 
       html += `<p class="report-intro">We analyzed <strong style="color:#ddd;">${domain}</strong>'s onsite content against AEO best practices to surface key opportunities for improvement. To measure offsite visibility, we interrogated AI models with real-world questions to track how they recommend <strong style="color:#ddd;">${domain}</strong>.</p>`;
-      html += `<p class="report-date">Created at: ${today}</p>`;
+      html += `<p class="report-date" style="margin-bottom:0.5rem;">Created at: ${today}</p>`;
       // ── Score Overview ──
       html += `<div class="group-box"><h2 class="group-header">Score Overview</h2><div class="group-content">`;
       html += `<span class="score-link" onclick="document.getElementById('scoreModal').classList.add('open')">How your score is calculated</span>`;
