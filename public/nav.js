@@ -8,6 +8,7 @@ document.addEventListener("DOMContentLoaded", () => {
           <span>Products</span>
           <div class="dropdown-menu">
             <a class="dropdown-heading" href="/airadar">AI Radar</a>
+            <a href="/airadar/report">AI Readiness Report</a>
             <a href="/airadar/blog">Blog</a>
             <a href="/airadar/docs">Docs</a>
             <a href="/airadar/tutorial">Tutorial</a>
@@ -29,6 +30,7 @@ document.addEventListener("DOMContentLoaded", () => {
     </nav>
     <div class="mobile-menu" id="mobileMenu">
       <a href="/airadar" class="mobile-label">AI Radar</a>
+      <a href="/airadar/report" class="mobile-sub">AI Readiness Report</a>
       <a href="/airadar/blog" class="mobile-sub">Blog</a>
       <a href="/airadar/docs" class="mobile-sub">Docs</a>
       <a href="/airadar/tutorial" class="mobile-sub">Tutorial</a>

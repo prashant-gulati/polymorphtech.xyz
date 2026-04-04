@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AI Readiness Report — AI Radar</title>
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+  <link rel="stylesheet" href="/shared.css">
+  <link rel="stylesheet" href="/airadar/airadar.css">
+  <style>
+    main {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+    }
+
+    h1 {
+      font-size: clamp(2rem, 6vw, 3.5rem);
+      background: linear-gradient(135deg, #fff 0%, #888 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      margin-bottom: 1rem;
+    }
+
+    .subtitle {
+      max-width: 520px;
+      text-align: center;
+      margin-bottom: 2.5rem;
+    }
+
+    .report-form {
+      display: flex;
+      gap: 0.5rem;
+      width: 100%;
+      max-width: 500px;
+    }
+
+    .report-form input {
+      flex: 1;
+      padding: 0.65rem 0.75rem;
+      border: 1px solid #333;
+      border-radius: 4px;
+      background: #0f0f0f;
+      color: #f0f0f0;
+      font-size: 0.95rem;
+    }
+
+    .report-form input:invalid:not(:placeholder-shown) {
+      border-color: #a44;
+    }
+
+    .report-form button {
+      padding: 0.65rem 1.25rem;
+      border: 1px solid #333;
+      border-radius: 4px;
+      background: #f0f0f0;
+      color: #0f0f0f;
+      font-size: 0.95rem;
+      font-weight: 600;
+      cursor: pointer;
+      white-space: nowrap;
+    }
+
+    .report-form button:hover { background: #ddd; }
+
+    .form-msg {
+      font-size: 0.85rem;
+      margin-top: 0.75rem;
+      min-height: 1.2em;
+    }
+  </style>
+</head>
+<body>
+
+  <main>
+    <h1>AI Readiness Report</h1>
+    <p class="subtitle">Analyze your store's visibility in ChatGPT, Gemini, Claude and more. Get actionable insights to boost discoverability.</p>
+    <form id="reportForm" class="report-form" novalidate>
+      <input type="url" name="store_url" placeholder="https://your-store.myshopify.com" required>
+      <button type="submit">Analyze</button>
+    </form>
+    <p id="formMsg" class="form-msg"></p>
+  </main>
+
+  <script src="/nav.js"></script>
+  <script>
+    document.getElementById('reportForm').addEventListener('submit', (e) => {
+      e.preventDefault();
+      const msg = document.getElementById('formMsg');
+      const input = e.target.store_url;
+      const value = input.value.trim();
+
+      try {
+        const url = new URL(value);
+        if (!['http:', 'https:'].includes(url.protocol)) throw new Error();
+        msg.textContent = 'Analyzing...';
+        msg.style.color = '#4a4';
+        // TODO: hook up to backend
+      } catch {
+        msg.textContent = 'Please enter a valid URL (e.g. https://your-store.myshopify.com)';
+        msg.style.color = '#a44';
+      }
+    });
+  </script>
+
+</body>
+</html>

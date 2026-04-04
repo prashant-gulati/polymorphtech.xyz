@@ -293,6 +293,7 @@ app.get("/airadar/blog/:slug", (req, res) => {
 })
 
 // AI Radar sub-pages
+app.get("/airadar/report", (_req, res) => res.sendFile(join(__dirname, "public", "airadar", "report.html")))
 app.get("/airadar/docs", (_req, res) => res.sendFile(join(__dirname, "public", "airadar", "docs.html")))
 app.get("/airadar/tutorial", (_req, res) => res.sendFile(join(__dirname, "public", "airadar", "tutorial.html")))
 app.get("/airadar/faq", (_req, res) => res.sendFile(join(__dirname, "public", "airadar", "faq.html")))
