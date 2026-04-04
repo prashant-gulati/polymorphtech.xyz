@@ -5,18 +5,21 @@ import { dirname, join } from "path"
 import { readFileSync, readdirSync } from "fs"
 import { marked } from "marked"
 import matter from "gray-matter"
-import Database from "better-sqlite3"
+import { createClient } from "@libsql/client"
 
 const __dirname = dirname(fileURLToPath(import.meta.url))
 const app = express()
 const knownAgents = new KnownAgents("522be957-6072-4069-b43c-fd6236e6ed10")
 
 // Database
-const db = new Database(join(__dirname, "data", "subscribers.db"))
-db.exec(`CREATE TABLE IF NOT EXISTS subscribers (
+const db = createClient({
+  url: process.env.TURSO_URL,
+  authToken: process.env.TURSO_AUTH_TOKEN
+})
+await db.execute(`CREATE TABLE IF NOT EXISTS subscribers (
   id INTEGER PRIMARY KEY AUTOINCREMENT,
   email TEXT UNIQUE NOT NULL,
-  subscribed_at TEXT DEFAULT (datetime('now'))
+  subscribed_at TEXT
 )`)
 
 app.use(express.json())
@@ -32,13 +35,13 @@ app.use((req, res, next) => {
 })
 
 // Subscribe endpoint
-app.post("/api/subscribe", (req, res) => {
+app.post("/api/subscribe", async (req, res) => {
   const email = req.body.email?.trim().toLowerCase()
   if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
     return res.status(400).json({ error: "Invalid email address" })
   }
   try {
-    db.prepare("INSERT OR IGNORE INTO subscribers (email) VALUES (?)").run(email)
+    await db.execute({ sql: "INSERT OR IGNORE INTO subscribers (email, subscribed_at) VALUES (?, datetime('now'))", args: [email] })
     res.json({ ok: true })
   } catch (err) {
     res.status(500).json({ error: "Something went wrong" })
