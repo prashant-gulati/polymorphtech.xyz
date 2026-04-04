@@ -36,5 +36,3 @@ Instead of guessing whether AI assistants know about your store, you get clear d
 ## Getting Started
 
 The best time to start optimizing for AI search was yesterday. The second best time is now. As AI assistants become the default way people discover products, the merchants who adapt early will have a significant advantage.
-
-[Learn more about AI Radar →](/airadar)
