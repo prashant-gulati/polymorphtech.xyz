@@ -26,7 +26,8 @@ await db.execute(`CREATE TABLE IF NOT EXISTS subscribers (
   email TEXT UNIQUE NOT NULL,
   token TEXT UNIQUE NOT NULL,
   confirmed INTEGER DEFAULT 0,
-  subscribed_at TEXT
+  subscribed_at TEXT,
+  store_url TEXT DEFAULT ""
 )`)
 
 app.use(express.json())
@@ -173,6 +174,83 @@ app.post("/api/report", async (req, res) => {
   } catch (err) {
     console.error("[report error]", err.message)
     res.status(500).json({ error: err.message || "Could not analyze this site" })
+  }
+})
+
+// Report email gate
+app.post("/api/report-email", async (req, res) => {
+  const email = req.body.email?.trim().toLowerCase()
+  const storeUrl = req.body.store_url?.trim()
+
+  if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+    return res.status(400).json({ error: "Invalid email address" })
+  }
+  if (!storeUrl) {
+    return res.status(400).json({ error: "Store URL is required" })
+  }
+
+  try {
+    const existing = await db.execute({ sql: "SELECT * FROM subscribers WHERE email = ?", args: [email] })
+
+    let token
+    if (existing.rows.length > 0) {
+      token = existing.rows[0].token
+      await db.execute({ sql: "UPDATE subscribers SET store_url = ? WHERE email = ?", args: [storeUrl, email] })
+    } else {
+      token = crypto.randomUUID()
+      await db.execute({
+        sql: "INSERT INTO subscribers (email, token, confirmed, subscribed_at, store_url) VALUES (?, ?, 0, datetime('now'), ?)",
+        args: [email, token, storeUrl]
+      })
+    }
+
+    await sendReportEmail(email, token)
+    res.json({ ok: true })
+  } catch (err) {
+    console.error("[report-email error]", err.message)
+    res.status(500).json({ error: "Something went wrong" })
+  }
+})
+
+async function sendReportEmail(email, token) {
+  const reportUrl = `${BASE_URL}/api/view-report?token=${token}`
+  const unsubscribeUrl = `${BASE_URL}/api/unsubscribe?token=${token}`
+  await resend.emails.send({
+    from: "AI Radar <support@polymorphtech.xyz>",
+    to: email,
+    subject: "Access Your AI Readiness Report",
+    html: `
+      <div style="font-family: sans-serif; max-width: 480px; margin: 0 auto; padding: 2rem;">
+        <h2 style="margin-bottom: 1rem;">View your report</h2>
+        <a href="${reportUrl}" style="display: inline-block; margin-top: 1rem; padding: 0.75rem 1.5rem; background: #111; color: #fff; text-decoration: none; border-radius: 6px; font-weight: 600;">View AI Readiness Report</a>
+        <p style="margin-top: 2rem; font-size: 0.85rem; color: #999;">Accessing your AI Readiness Report also subscribes you to AI Radar's mailing list. You can <a href="${unsubscribeUrl}" style="color: #999;">unsubscribe</a> at any point.</p>
+      </div>
+    `
+  })
+}
+
+// View report (confirms subscription + redirects to report)
+app.get("/api/view-report", async (req, res) => {
+  const { token } = req.query
+  if (!token) return res.status(400).send("Invalid link")
+
+  try {
+    const result = await db.execute({ sql: "SELECT * FROM subscribers WHERE token = ?", args: [token] })
+    if (result.rows.length === 0) {
+      return res.status(404).send(simplePage("Not Found", "<h1>Invalid link</h1>"))
+    }
+
+    const subscriber = result.rows[0]
+    await db.execute({ sql: "UPDATE subscribers SET confirmed = 1 WHERE token = ?", args: [token] })
+
+    const storeUrl = subscriber.store_url || ""
+    if (storeUrl) {
+      res.redirect(`/airadar/report?url=${encodeURIComponent(storeUrl)}`)
+    } else {
+      res.redirect("/airadar/report")
+    }
+  } catch {
+    res.status(500).send(simplePage("Error", "<h1>Something went wrong</h1>"))
   }
 })
 

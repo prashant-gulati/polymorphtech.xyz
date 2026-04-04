@@ -68,6 +68,38 @@
       min-height: 1.2em;
     }
 
+    /* Email gate */
+    #emailGate {
+      display: none;
+      width: 100%;
+      max-width: 440px;
+      margin-top: 2rem;
+      padding: 2rem;
+      border: 1px solid #222;
+      border-radius: 8px;
+      background: #161616;
+    }
+
+    #emailGate h2 {
+      color: #ddd;
+      font-size: 1.25rem;
+      margin-bottom: 0.5rem;
+    }
+
+    #emailGate .gate-subtitle {
+      color: #888;
+      font-size: 0.9rem;
+      margin-bottom: 1.5rem;
+      line-height: 1.5;
+    }
+
+    #emailGate .disclaimer {
+      color: #555;
+      font-size: 0.8rem;
+      margin-top: 0.75rem;
+      line-height: 1.4;
+    }
+
     /* Results */
     #results {
       width: 100%;
@@ -127,45 +159,70 @@
     }
 
     .category-list a:hover { color: #f0f0f0; }
-
-    .empty-category { color: #444; font-size: 0.85rem; font-style: italic; }
   </style>
 </head>
 <body>
 
   <main>
-    <h1>AI Readiness Report</h1>
-    <p class="subtitle">Analyze your Shopify store's visibility in ChatGPT, Gemini, Claude and more. Get actionable insights to boost discoverability.</p>
-    <form id="reportForm" class="report-form" novalidate>
-      <input type="url" name="store_url" placeholder="https://your-store.myshopify.com" required>
-      <button type="submit">Analyze</button>
-    </form>
-    <p id="formMsg" class="form-msg"></p>
+    <!-- Step 1: Store URL form -->
+    <div id="step1">
+      <h1>AI Readiness Report</h1>
+      <p class="subtitle">Analyze your Shopify store's visibility in ChatGPT, Gemini, Claude and more. Get actionable insights to boost discoverability.</p>
+      <form id="reportForm" class="report-form" novalidate>
+        <input type="url" name="store_url" placeholder="https://your-store.myshopify.com" required>
+        <button type="submit">Analyze</button>
+      </form>
+      <p id="formMsg" class="form-msg"></p>
+    </div>
+
+    <!-- Step 2: Email gate -->
+    <div id="emailGate">
+      <h2>Your free report is ready</h2>
+      <p class="gate-subtitle">Enter your email to access detailed insights, scores, and actionable recommendations.</p>
+      <form id="emailForm" class="report-form" novalidate>
+        <input type="email" name="email" placeholder="you@example.com" required>
+        <button type="submit">Send report link</button>
+      </form>
+      <p id="emailMsg" class="form-msg"></p>
+      <p class="disclaimer">One free report per email. No spam. No account required.</p>
+    </div>
+
+    <!-- Results (shown when arriving via email link) -->
     <div id="results"></div>
   </main>
 
   <script src="/nav.js"></script>
   <script>
-    const form = document.getElementById('reportForm');
-    const msg = document.getElementById('formMsg');
-    const results = document.getElementById('results');
-    const btn = form.querySelector('button');
+    const step1 = document.getElementById('step1');
+    const reportForm = document.getElementById('reportForm');
+    const formMsg = document.getElementById('formMsg');
+    const reportBtn = reportForm.querySelector('button');
 
-    async function analyzeUrl(value) {
-      msg.textContent = '';
-      results.innerHTML = '';
-      form.store_url.value = value;
+    const emailGate = document.getElementById('emailGate');
+    const emailForm = document.getElementById('emailForm');
+    const emailMsg = document.getElementById('emailMsg');
+    const emailBtn = emailForm.querySelector('button');
+
+    const results = document.getElementById('results');
+
+    let currentStoreUrl = '';
+
+    // Step 1: Validate store URL
+    reportForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const value = reportForm.store_url.value.trim();
+      formMsg.textContent = '';
 
       try {
         new URL(value);
       } catch {
-        msg.textContent = 'Please enter a valid URL (e.g. https://your-store.myshopify.com)';
-        msg.style.color = '#a44';
+        formMsg.textContent = 'Please enter a valid URL (e.g. https://your-store.myshopify.com)';
+        formMsg.style.color = '#a44';
         return;
       }
 
-      btn.textContent = 'Analyzing...';
-      btn.disabled = true;
+      reportBtn.textContent = 'Validating...';
+      reportBtn.disabled = true;
 
       try {
         const res = await fetch('/api/report', {
@@ -176,50 +233,94 @@
         const data = await res.json();
 
         if (!data.ok) {
-          msg.textContent = data.error || 'Could not analyze this site';
-          msg.style.color = '#a44';
+          formMsg.textContent = data.error || 'Could not analyze this site';
+          formMsg.style.color = '#a44';
+          return;
+        }
+
+        // Valid Shopify store — show email gate
+        currentStoreUrl = value;
+        step1.style.display = 'none';
+        emailGate.style.display = 'block';
+      } catch {
+        formMsg.textContent = 'Something went wrong. Please try again.';
+        formMsg.style.color = '#a44';
+      } finally {
+        reportBtn.textContent = 'Analyze';
+        reportBtn.disabled = false;
+      }
+    });
+
+    // Step 2: Email submission
+    emailForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const email = emailForm.email.value.trim();
+      emailMsg.textContent = '';
+
+      if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+        emailMsg.textContent = 'Please enter a valid email address';
+        emailMsg.style.color = '#a44';
+        return;
+      }
+
+      emailBtn.textContent = 'Sending...';
+      emailBtn.disabled = true;
+
+      try {
+        const res = await fetch('/api/report-email', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ email, store_url: currentStoreUrl })
+        });
+        const data = await res.json();
+
+        if (data.ok) {
+          emailMsg.textContent = 'Check your email for the report link!';
+          emailMsg.style.color = '#4a4';
+          emailForm.reset();
+        } else {
+          emailMsg.textContent = data.error || 'Something went wrong';
+          emailMsg.style.color = '#a44';
+        }
+      } catch {
+        emailMsg.textContent = 'Something went wrong. Please try again.';
+        emailMsg.style.color = '#a44';
+      } finally {
+        emailBtn.textContent = 'Send report link';
+        emailBtn.disabled = false;
+      }
+    });
+
+    // Direct access via URL param (from email link) — show results
+    async function loadResults(url) {
+      step1.style.display = 'none';
+      results.innerHTML = '<p style="color:#888; text-align:center;">Loading report...</p>';
+
+      try {
+        const res = await fetch('/api/report', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ url })
+        });
+        const data = await res.json();
+
+        if (!data.ok) {
+          results.innerHTML = `<p style="color:#a44; text-align:center;">${data.error}</p>`;
           return;
         }
 
         results.innerHTML = renderResults(data);
       } catch {
-        msg.textContent = 'Something went wrong. Please try again.';
-        msg.style.color = '#a44';
-      } finally {
-        btn.textContent = 'Analyze';
-        btn.disabled = false;
+        results.innerHTML = '<p style="color:#a44; text-align:center;">Something went wrong.</p>';
       }
     }
-
-    form.addEventListener('submit', (e) => {
-      e.preventDefault();
-      const value = form.store_url.value.trim();
-      if (!value) return;
-      const params = new URLSearchParams({ url: value });
-      history.pushState(null, '', `/airadar/report?${params}`);
-      analyzeUrl(value);
-    });
-
-    // Handle URL param on load and back/forward navigation
-    function handleUrlParam() {
-      const urlParam = new URLSearchParams(location.search).get('url');
-      if (urlParam) {
-        analyzeUrl(urlParam);
-      } else {
-        form.store_url.value = '';
-        msg.textContent = '';
-        results.innerHTML = '';
-      }
-    }
-
-    window.addEventListener('popstate', handleUrlParam);
-    handleUrlParam();
 
     function renderResults(data) {
       const { tree, total, url } = data;
       const categories = ['products', 'collections', 'pages', 'blogs', 'other'];
 
-      let html = `<p class="result-summary">Found <strong style="color:#f0f0f0">${total}</strong> URLs on <strong style="color:#f0f0f0">${url}</strong></p>`;
+      let html = `<h1 style="font-size:1.5rem; margin-bottom:0.5rem;">AI Readiness Report</h1>`;
+      html += `<p class="result-summary">Found <strong style="color:#f0f0f0">${total}</strong> URLs on <strong style="color:#f0f0f0">${url}</strong></p>`;
 
       for (const cat of categories) {
         const items = tree[cat] || [];
@@ -239,6 +340,10 @@
 
       return html;
     }
+
+    // Check if arriving via email link
+    const urlParam = new URLSearchParams(location.search).get('url');
+    if (urlParam) loadResults(urlParam);
   </script>
 
 </body>
