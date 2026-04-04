@@ -329,6 +329,132 @@
       border-bottom: 1px solid #1a1a1a;
       margin-bottom: 0.25rem;
     }
+
+    /* Start Over button */
+    .start-over {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      color: #888;
+      text-decoration: none;
+      font-size: 0.85rem;
+      padding: 0.4rem 0.75rem;
+      border: 1px solid #333;
+      border-radius: 4px;
+      transition: border-color 0.2s, color 0.2s;
+      margin-bottom: 1rem;
+    }
+    .start-over:hover { border-color: #666; color: #f0f0f0; }
+    .start-over svg { width: 14px; height: 14px; }
+
+    /* Report header */
+    .report-intro {
+      color: #888;
+      font-size: 0.9rem;
+      line-height: 1.6;
+      margin-bottom: 0.5rem;
+      text-align: left;
+    }
+    .report-date {
+      color: #666;
+      font-size: 0.8rem;
+      margin-bottom: 1rem;
+      text-align: left;
+    }
+    .score-link {
+      color: #aaa;
+      font-size: 0.85rem;
+      cursor: pointer;
+      text-decoration: underline;
+      text-underline-offset: 3px;
+      margin-bottom: 1.5rem;
+      display: inline-block;
+      text-align: left;
+    }
+    .score-link:hover { color: #f0f0f0; }
+
+    /* Banner */
+    .report-banner {
+      width: 100%;
+      background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+      border: 1px solid #333;
+      border-radius: 8px;
+      padding: 1.25rem 1.5rem;
+      margin-bottom: 1.5rem;
+      text-align: left;
+      position: relative;
+    }
+    .report-banner h3 {
+      color: #f0f0f0;
+      font-size: 1rem;
+      margin-bottom: 0.25rem;
+    }
+    .report-banner p {
+      color: #888;
+      font-size: 0.85rem;
+      line-height: 1.5;
+      margin: 0;
+    }
+    .banner-dismiss {
+      position: absolute;
+      top: 0.75rem;
+      right: 0.75rem;
+      background: none;
+      border: none;
+      color: #666;
+      font-size: 1.1rem;
+      cursor: pointer;
+      padding: 0.2rem;
+    }
+    .banner-dismiss:hover { color: #f0f0f0; }
+
+    /* Modal */
+    .modal-overlay {
+      display: none;
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(0,0,0,0.7);
+      z-index: 200;
+      align-items: center;
+      justify-content: center;
+    }
+    .modal-overlay.open { display: flex; }
+    .modal {
+      background: #1a1a1a;
+      border: 1px solid #333;
+      border-radius: 8px;
+      padding: 2rem;
+      max-width: 520px;
+      width: 90%;
+      max-height: 80vh;
+      overflow-y: auto;
+      position: relative;
+    }
+    .modal h2 { color: #ddd; font-size: 1.1rem; margin-bottom: 0.75rem; }
+    .modal h3 { color: #ccc; font-size: 0.95rem; margin-top: 1.25rem; margin-bottom: 0.35rem; }
+    .modal p { color: #888; font-size: 0.85rem; line-height: 1.6; margin-bottom: 0.75rem; }
+    .modal-close {
+      position: absolute;
+      top: 0.75rem;
+      right: 0.75rem;
+      background: none;
+      border: none;
+      color: #666;
+      font-size: 1.25rem;
+      cursor: pointer;
+    }
+    .modal-close:hover { color: #f0f0f0; }
+
+    /* Report footer */
+    .report-footer {
+      margin-top: 2.5rem;
+      padding-top: 1rem;
+      border-top: 1px solid #1a1a1a;
+      color: #555;
+      font-size: 0.75rem;
+      line-height: 1.5;
+      text-align: left;
+    }
   </style>
 </head>
 <body>
@@ -350,7 +476,7 @@
           <div class="progress-bar"><div class="progress-fill" id="prog1"></div></div>
         </div>
         <div class="progress-step">
-          <span class="step-label">Analyze your website</span>
+          <span class="step-label">Analyze your website's AI Visibility</span>
           <div class="progress-bar"><div class="progress-fill" id="prog2"></div></div>
         </div>
         <div class="progress-step">
@@ -375,6 +501,20 @@
     <!-- Results (shown when arriving via email link) -->
     <div id="results"></div>
   </main>
+
+  <!-- Score calculation modal -->
+  <div class="modal-overlay" id="scoreModal" onclick="if(event.target===this)this.classList.remove('open')">
+    <div class="modal">
+      <button class="modal-close" onclick="document.getElementById('scoreModal').classList.remove('open')">&times;</button>
+      <h2>How Your Score is Calculated</h2>
+      <h3>Off-Site Brand Visibility Score</h3>
+      <p>Calculated by analyzing your brand's frequency, rank, and sentiment in AI responses. The score aggregates results across the buyer funnel, prioritizing Awareness followed by Consideration and Decision stages.</p>
+      <h3>On-Site AI Readiness Score</h3>
+      <p>Measures the percentage of AEO technical standards your website currently meets. This score reflects how easily AI models can parse, understand, and index your product data.</p>
+      <h3>Overall Score</h3>
+      <p>A holistic average of your internal optimization (On-Site) and external performance (Off-Site), giving you a complete picture of your standing in the AI era.</p>
+    </div>
+  </div>
 
   <script src="/nav.js"></script>
   <script>
@@ -490,12 +630,12 @@
           body: JSON.stringify({ url: value })
         }).then(r => r.json());
 
-        await animateBar(prog1, 5000);
-        await animateBar(prog2, 5000);
+        await animateBar(prog1, 7000);
+        await animateBar(prog2, 7000);
 
         const data = await apiPromise;
 
-        await animateBar(prog3, 5000);
+        await animateBar(prog3, 7000);
 
         if (!data.ok) {
           formMsg.textContent = data.error || 'Could not analyze this site';
@@ -587,9 +727,22 @@
     function renderResults(data) {
       const { tree, total, url, siteIdentity, metadata, structuredData, contentAuthority, policies, crawlability, commerce, productSamples } = data;
 
-      let html = `<p style="margin-bottom:1rem;"><a href="/airadar/report" style="color:#888; text-decoration:none; font-size:0.85rem;">← Back to Search</a></p>`;
-      html += `<h1 style="font-size:1.5rem; margin-bottom:0.5rem;">AI Readiness Report</h1>`;
-      html += `<p class="result-summary"><strong style="color:#f0f0f0">${url}</strong></p>`;
+      const today = new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
+      const domain = url.replace(/^https?:\/\//, '').replace(/\/$/, '');
+
+      let html = `<a href="/airadar/report" class="start-over"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 4v6h6"/><path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"/></svg> Start Over</a>`;
+      html += `<h1 style="font-size:1.5rem; margin-bottom:0.75rem;">AI Readiness Report</h1>`;
+
+      // Dismissable banner
+      html += `<div class="report-banner" id="reportBanner">
+        <button class="banner-dismiss" onclick="document.getElementById('reportBanner').remove()">&times;</button>
+        <h3>Take Control of Your AI Visibility</h3>
+        <p>Stop guessing how LLM platforms see you. Measure your impact and optimize your store with the first AEO platform built for e-commerce.</p>
+      </div>`;
+
+      html += `<p class="report-intro">We analyzed <strong style="color:#ddd;">${domain}</strong>'s onsite content against AEO best practices to surface key opportunities for improvement. To measure offsite visibility, we interrogated AI models with real-world questions to track how they recommend <strong style="color:#ddd;">${domain}</strong>.</p>`;
+      html += `<p class="report-date">Created at: ${today}</p>`;
+      html += `<span class="score-link" onclick="document.getElementById('scoreModal').classList.add('open')">How your score is calculated</span>`;
 
       // Site Identity
       if (siteIdentity) {
@@ -799,6 +952,8 @@
       if (treeHtml) {
         html += `<div class="report-section"><h2 class="section-title">Sitemap (${total} URLs)</h2>${treeHtml}</div>`;
       }
+
+      html += `<div class="report-footer">AI Readiness Report can make mistakes. This tool provides estimated insights based on typical AI behavior patterns. The analysis and score review presented are based on customer results from Gemini 2.5 Pro.</div>`;
 
       return html;
     }
