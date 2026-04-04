@@ -87,23 +87,21 @@ nav {
   background: #222;
 }
 
-.dropdown-label {
-  display: block;
-  padding: 0.4rem 1rem 0.2rem;
-  color: #666;
-  font-size: 0.7rem;
+.dropdown-heading {
   font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
+  color: #f0f0f0 !important;
+  font-size: 0.9rem !important;
+  border-bottom: 1px solid #333;
+  padding-bottom: 0.5rem !important;
+  margin-bottom: 0.25rem;
 }
 
 /* Mobile sub-links */
 .mobile-label {
-  color: #666;
-  font-size: 0.75rem;
+  color: #f0f0f0 !important;
+  font-size: 1rem;
   font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
+  text-decoration: none;
   padding: 0.5rem 0 0;
 }
 
