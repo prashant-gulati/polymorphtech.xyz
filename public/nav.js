@@ -17,7 +17,7 @@ document.addEventListener("DOMContentLoaded", () => {
           </div>
         </li>
         <li class="dropdown">
-          <span>More</span>
+          <span style="display:flex;flex-direction:column;gap:3px;padding:4px 0;"><span style="display:block;width:18px;height:2px;background:#ddd;border-radius:1px;"></span><span style="display:block;width:18px;height:2px;background:#ddd;border-radius:1px;"></span><span style="display:block;width:18px;height:2px;background:#ddd;border-radius:1px;"></span></span>
           <div class="dropdown-menu">
             <a href="/privacy.html">Privacy Policy</a>
             <a href="mailto:support@polymorphtech.xyz">Contact</a>
