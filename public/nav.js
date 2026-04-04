@@ -2,7 +2,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const nav = document.createElement("div");
   nav.innerHTML = `
     <nav>
-      <a class="nav-brand" href="/">Polymorph Technologies</a>
+      <a class="nav-brand" href="/"><img src="/favicon.svg" alt="Polymorph Technologies" class="nav-logo"></a>
       <ul class="nav-links">
         <li><a href="/">Home</a></li>
         <li class="dropdown">
