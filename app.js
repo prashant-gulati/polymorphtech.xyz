@@ -102,15 +102,12 @@ function analyzeHomepage(html, baseUrl) {
   // Site Identity
   const siteName = $('meta[property="og:site_name"]').attr("content") || $("title").text().split("|")[0]?.trim() || ""
   const canonical = $('link[rel="canonical"]').attr("href") || baseUrl
-  const logoUrl = $('meta[property="og:image"]').attr("content") || $('link[rel="apple-touch-icon"]').attr("href") || ""
   const faviconUrl = $('link[rel="icon"]').attr("href") || $('link[rel="shortcut icon"]').attr("href") || ""
 
   // Page Metadata
   const title = $("title").text().trim()
   const description = $('meta[name="description"]').attr("content") || ""
   const ogType = $('meta[property="og:type"]').attr("content") || ""
-  const ogPrice = $('meta[property="og:price:amount"]').attr("content") || ""
-  const ogItemId = $('meta[property="product:retailer_item_id"]').attr("content") || ""
   const twitterCard = $('meta[name="twitter:card"]').attr("content") || ""
   const twitterTitle = $('meta[name="twitter:title"]').attr("content") || ""
   const twitterImage = $('meta[name="twitter:image"]').attr("content") || ""
@@ -146,8 +143,8 @@ function analyzeHomepage(html, baseUrl) {
   const brandPositioning = [h1, description].filter(Boolean).join(" — ")
 
   return {
-    siteIdentity: { siteName, canonicalDomain: canonical, logoUrl, faviconUrl },
-    metadata: { title, description, ogType, ogPrice, ogItemId, twitterCard, twitterTitle, twitterImage },
+    siteIdentity: { siteName, canonicalDomain: canonical, faviconUrl },
+    metadata: { title, description, ogType, twitterCard, twitterTitle, twitterImage },
     structuredData,
     contentAuthority: { topKeywords, brandPositioning }
   }

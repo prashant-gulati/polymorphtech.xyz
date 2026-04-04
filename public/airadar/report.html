@@ -425,7 +425,6 @@
         html += section('Site Identity', [
           row('Site Name', siteIdentity.siteName),
           row('Canonical Domain', siteIdentity.canonicalDomain),
-          row('Logo URL', siteIdentity.logoUrl ? link(siteIdentity.logoUrl) : missing()),
           row('Favicon URL', siteIdentity.faviconUrl ? link(siteIdentity.faviconUrl) : missing()),
         ]);
       }
@@ -436,8 +435,6 @@
           row('Title', metadata.title || missing()),
           row('Description', metadata.description || missing()),
           row('OG Type', metadata.ogType || missing()),
-          row('OG Price', metadata.ogPrice || missing()),
-          row('OG Item ID', metadata.ogItemId || missing()),
           row('Twitter Card', metadata.twitterCard || missing()),
           row('Twitter Title', metadata.twitterTitle || missing()),
           row('Twitter Image', metadata.twitterImage ? link(metadata.twitterImage) : missing()),
