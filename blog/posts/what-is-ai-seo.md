@@ -2,6 +2,7 @@
 title: "What is AI SEO and Why It Matters for E-Commerce"
 date: "2026-04-04"
 summary: "Traditional SEO focused on Google rankings. AI SEO is about showing up when ChatGPT, Gemini, or Perplexity recommend products to shoppers."
+author: "Prashant Gulati"
 ---
 
 ## The Shift from Search Engines to AI Assistants
