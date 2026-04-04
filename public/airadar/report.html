@@ -241,21 +241,35 @@
     .category-list a:hover { color: #f0f0f0; }
 
     /* Report sections */
+    .group-box {
+      margin-top: 2.5rem;
+      border: 1px solid #222;
+      border-radius: 8px;
+      background: #161616;
+      overflow: hidden;
+    }
+
     .group-header {
       font-size: 1.1rem;
       font-weight: 700;
       color: #f0f0f0;
-      margin-top: 2.5rem;
-      margin-bottom: 1.25rem;
       padding: 0.75rem 1rem;
-      border: 1px solid #222;
-      border-radius: 8px;
-      background: #161616;
+      border-bottom: 1px solid #222;
+      background: #1a1a1a;
       text-align: center;
+      margin: 0;
+    }
+
+    .group-content {
+      padding: 1.25rem;
     }
 
     .report-section {
       margin-bottom: 2rem;
+    }
+
+    .group-content .report-section:last-child {
+      margin-bottom: 0;
     }
 
     .section-title {
@@ -807,24 +821,26 @@
       html += `<p class="report-intro">We analyzed <strong style="color:#ddd;">${domain}</strong>'s onsite content against AEO best practices to surface key opportunities for improvement. To measure offsite visibility, we interrogated AI models with real-world questions to track how they recommend <strong style="color:#ddd;">${domain}</strong>.</p>`;
       html += `<p class="report-date">Created at: ${today}</p>`;
       // ── Score Overview ──
-      html += `<h2 class="group-header">Score Overview</h2>`;
+      html += `<div class="group-box"><h2 class="group-header">Score Overview</h2><div class="group-content">`;
       html += `<span class="score-link" onclick="document.getElementById('scoreModal').classList.add('open')">How your score is calculated</span>`;
+      html += `</div></div>`;
 
       // ── Top Opportunities ──
-      html += `<h2 class="group-header">Top Opportunities</h2>`;
+      html += `<div class="group-box"><h2 class="group-header">Top Opportunities</h2><div class="group-content">`;
+      html += `</div></div>`;
 
       // ── Off-Site Discoverability ──
-      html += `<h2 class="group-header">Off-Site Discoverability</h2>`;
-
+      html += `<div class="group-box"><h2 class="group-header">Off-Site Discoverability</h2><div class="group-content">`;
       if (contentAuthority) {
         html += section('Content Authority', [
           row('Top Keywords', contentAuthority.topKeywords?.length ? contentAuthority.topKeywords.join(', ') : missing()),
           row('Brand Positioning', contentAuthority.brandPositioning || missing()),
         ]);
       }
+      html += `</div></div>`;
 
       // ── On-Site Readiness ──
-      html += `<h2 class="group-header">On-Site Readiness</h2>`;
+      html += `<div class="group-box"><h2 class="group-header">On-Site Readiness</h2><div class="group-content">`;
 
       if (siteIdentity) {
         html += section('Site Identity', [
@@ -1020,6 +1036,8 @@
       if (treeHtml) {
         html += `<div class="report-section"><h2 class="section-title">Sitemap (${total} URLs)</h2>${treeHtml}</div>`;
       }
+
+      html += `</div></div>`; // close On-Site Readiness group-box
 
       // Dismissable banner
       html += `<div class="report-banner" id="reportBanner">
