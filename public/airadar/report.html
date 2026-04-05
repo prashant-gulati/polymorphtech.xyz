@@ -120,6 +120,34 @@
       border-radius: 2px;
     }
 
+    /* Scanning interstitial */
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    @keyframes textFade {
+      0% { opacity: 0; transform: translateY(8px); }
+      15% { opacity: 1; transform: translateY(0); }
+      85% { opacity: 1; transform: translateY(0); }
+      100% { opacity: 0; transform: translateY(-8px); }
+    }
+
+    .spinner {
+      width: 36px;
+      height: 36px;
+      border: 3px solid #222;
+      border-top-color: var(--color-accent-green);
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+      margin: 0 auto 1.5rem;
+    }
+
+    .scanning-text {
+      color: var(--color-text-muted);
+      font-size: 0.95rem;
+      animation: textFade 3s ease forwards;
+    }
+
     /* Email gate */
     #emailGate {
       display: none;
@@ -593,6 +621,12 @@
       <p id="formMsg" class="form-msg"></p>
     </div>
 
+    <!-- Scanning interstitial -->
+    <div id="scanningStep" style="display:none; text-align:center; padding: 4rem 2rem;">
+      <div class="spinner"></div>
+      <p id="scanningText" class="scanning-text"></p>
+    </div>
+
     <!-- Step 2: Email gate -->
     <div id="emailGate">
       <h2>Your free report is ready</h2>
@@ -667,6 +701,7 @@
     function showStep1() {
       step1.style.display = '';
       emailGate.style.display = 'none';
+      document.getElementById('scanningStep').style.display = 'none';
       results.innerHTML = '';
       formMsg.textContent = '';
       emailMsg.textContent = '';
@@ -674,6 +709,7 @@
 
     function showEmailGate() {
       step1.style.display = 'none';
+      document.getElementById('scanningStep').style.display = 'none';
       emailGate.style.display = 'block';
       results.innerHTML = '';
     }
@@ -726,6 +762,33 @@
 
         currentStoreUrl = value;
         history.pushState({ step: 'email', storeUrl: value }, '', `/airadar/report?store=${encodeURIComponent(value)}`);
+
+        // Show scanning interstitial
+        step1.style.display = 'none';
+        const scanningStep = document.getElementById('scanningStep');
+        const scanningText = document.getElementById('scanningText');
+        scanningStep.style.display = 'block';
+
+        const statements = [
+          'Scanning your website',
+          'Understanding page structure',
+          'Analyzing content and products',
+          'Asking AI questions',
+          'Testing brand visibility',
+          'Measuring response quality',
+          'Calculating scores',
+          'Compiling your report'
+        ];
+
+        for (const text of statements) {
+          scanningText.style.animation = 'none';
+          scanningText.offsetHeight; // force reflow
+          scanningText.textContent = text;
+          scanningText.style.animation = 'textFade 3s ease forwards';
+          await new Promise(r => setTimeout(r, 3000));
+        }
+
+        scanningStep.style.display = 'none';
         showEmailGate();
       } catch {
         formMsg.textContent = 'Something went wrong. Please try again.';
