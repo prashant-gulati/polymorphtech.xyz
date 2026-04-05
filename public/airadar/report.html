@@ -448,31 +448,38 @@
     .report-banner {
       width: 100%;
       background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
-      border: 1px solid #333;
-      border-radius: 8px;
-      padding: 1.25rem 1.5rem;
-      margin-bottom: 1.5rem;
-      text-align: left;
-      position: relative;
-    }
-    .report-banner h3 {
-      color: var(--color-text-primary);
-      font-size: 1rem;
-      margin-bottom: 0.25rem;
-    }
-    .report-banner p {
-      color: var(--color-text-secondary);
+      border-bottom: 1px solid var(--color-border-strong);
+      padding: 0.6rem 2rem;
+      text-align: center;
       font-size: 0.85rem;
-      line-height: 1.5;
-      margin: 0;
+      color: var(--color-text-secondary);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.75rem;
+      position: relative;
+      margin-bottom: 1.5rem;
+      border-radius: 8px;
     }
+    .report-banner a {
+      color: #fff;
+      text-decoration: none;
+      font-weight: 600;
+      background: var(--color-text-primary);
+      color: var(--color-bg);
+      padding: 0.25rem 0.75rem;
+      border-radius: 4px;
+      font-size: 0.8rem;
+      transition: background 0.2s;
+      white-space: nowrap;
+    }
+    .report-banner a:hover { background: var(--color-text-body); }
     .banner-dismiss {
       position: absolute;
-      top: 0.75rem;
-      right: 0.75rem;
+      right: 1rem;
       background: none;
       border: none;
-      color: var(--color-text-secondary);
+      color: var(--color-text-muted);
       font-size: 1.1rem;
       cursor: pointer;
       padding: 0.2rem;
@@ -1100,9 +1107,9 @@
 
       // Dismissable banner
       html += `<div class="report-banner" id="reportBanner">
-        <button class="banner-dismiss" onclick="document.getElementById('reportBanner').remove()">&times;</button>
-        <h3>Take Control of Your AI Visibility</h3>
-        <p>Stop guessing how LLM platforms see you. Measure your impact and optimize your store with the first AEO platform built for e-commerce.</p>
+        <span><strong>Take Control of Your AI Visibility</strong> — Stop guessing how LLM platforms see you. Measure your impact and optimize your store with the first AEO platform built for e-commerce.</span>
+        <a href="/airadar">Learn more</a>
+        <button class="banner-dismiss" onclick="document.getElementById('reportBanner').remove()" aria-label="Dismiss">&times;</button>
       </div>`;
 
       // Feedback
