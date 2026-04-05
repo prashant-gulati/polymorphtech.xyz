@@ -97,7 +97,7 @@
     }
 
     .step-label {
-      color: #888;
+      color: var(--color-text-secondary);
       font-size: 0.85rem;
       display: block;
       margin-bottom: 0.3rem;
@@ -113,7 +113,7 @@
     .progress-fill {
       height: 100%;
       width: 0%;
-      background: #4a4;
+      background: var(--color-accent-green);
       border-radius: 2px;
       transition: width 0.1s linear;
     }
@@ -131,7 +131,7 @@
     }
 
     #emailGate h2 {
-      color: #ddd;
+      color: var(--color-text-heading);
       font-size: 1.25rem;
       margin-bottom: 0.5rem;
     }
@@ -167,14 +167,14 @@
     .email-form button:disabled { opacity: 0.5; cursor: default; }
 
     #emailGate .gate-subtitle {
-      color: #888;
+      color: var(--color-text-secondary);
       font-size: 0.9rem;
       margin-bottom: 1.5rem;
       line-height: 1.5;
     }
 
     #emailGate .disclaimer {
-      color: #555;
+      color: var(--color-text-muted);
       font-size: 0.8rem;
       margin-top: 0.75rem;
       line-height: 1.4;
@@ -189,7 +189,7 @@
     }
 
     .result-summary {
-      color: #888;
+      color: var(--color-text-secondary);
       font-size: 0.9rem;
       margin-bottom: 1.5rem;
       text-align: center;
@@ -210,13 +210,13 @@
 
     .category-name {
       font-weight: 600;
-      color: #ddd;
+      color: var(--color-text-heading);
       font-size: 1rem;
       text-transform: capitalize;
     }
 
     .category-count {
-      color: #666;
+      color: var(--color-text-muted);
       font-size: 0.85rem;
     }
 
@@ -232,13 +232,13 @@
     }
 
     .category-list a {
-      color: #aaa;
+      color: var(--color-text-body);
       text-decoration: none;
       font-size: 0.9rem;
       text-transform: capitalize;
     }
 
-    .category-list a:hover { color: #f0f0f0; }
+    .category-list a:hover { color: var(--color-text-primary); }
 
     /* Report sections */
     .group-box {
@@ -252,7 +252,7 @@
     .group-header {
       font-size: 1.1rem;
       font-weight: 700;
-      color: #f0f0f0;
+      color: var(--color-text-primary);
       padding: 0.75rem 1rem;
       border-bottom: 1px solid #222;
       background: #1a1a1a;
@@ -266,13 +266,13 @@
     .group-header .header-link {
       font-size: 0.8rem;
       font-weight: 400;
-      color: #888;
+      color: var(--color-text-secondary);
       cursor: pointer;
       text-decoration: underline;
       text-underline-offset: 3px;
     }
 
-    .group-header .header-link:hover { color: #f0f0f0; }
+    .group-header .header-link:hover { color: var(--color-text-primary); }
 
     .group-content {
       padding: 1.25rem;
@@ -289,7 +289,7 @@
     .section-title {
       font-size: 1rem;
       font-weight: 600;
-      color: #ddd;
+      color: var(--color-text-heading);
       padding-bottom: 0.5rem;
       border-bottom: 1px solid #222;
       margin-bottom: 0.5rem;
@@ -305,7 +305,7 @@
     }
 
     .row-label {
-      color: #888;
+      color: var(--color-text-secondary);
       font-size: 0.85rem;
       padding: 0.5rem 0.5rem 0.5rem 0;
       white-space: nowrap;
@@ -314,7 +314,7 @@
     }
 
     .row-value {
-      color: #ddd;
+      color: var(--color-text-heading);
       font-size: 0.85rem;
       padding: 0.5rem 0;
       word-break: break-word;
@@ -331,7 +331,7 @@
     .product-detail summary {
       padding: 0.75rem 1rem;
       cursor: pointer;
-      color: #ddd;
+      color: var(--color-text-heading);
       font-weight: 600;
       font-size: 0.9rem;
       list-style: none;
@@ -345,7 +345,7 @@
     .product-detail summary::after {
       content: "+";
       font-size: 1.1rem;
-      color: #666;
+      color: var(--color-text-muted);
     }
 
     .product-detail[open] summary::after {
@@ -363,7 +363,7 @@
     .sub-section-title {
       font-size: 0.85rem;
       font-weight: 600;
-      color: #888;
+      color: var(--color-text-secondary);
       text-transform: uppercase;
       letter-spacing: 0.03em;
       padding-bottom: 0.35rem;
@@ -376,7 +376,7 @@
       display: inline-flex;
       align-items: center;
       gap: 0.4rem;
-      color: #888;
+      color: var(--color-text-secondary);
       text-decoration: none;
       font-size: 0.85rem;
       padding: 0.4rem 0.75rem;
@@ -390,20 +390,20 @@
 
     /* Report header */
     .report-intro {
-      color: #888;
+      color: var(--color-text-secondary);
       font-size: 0.9rem;
       line-height: 1.6;
       margin-bottom: 0.5rem;
       text-align: left;
     }
     .report-date {
-      color: #666;
+      color: var(--color-text-muted);
       font-size: 0.8rem;
       margin-bottom: 1rem;
       text-align: left;
     }
     .score-link {
-      color: #aaa;
+      color: var(--color-text-body);
       font-size: 0.85rem;
       cursor: pointer;
       text-decoration: underline;
@@ -412,7 +412,7 @@
       display: inline-block;
       text-align: left;
     }
-    .score-link:hover { color: #f0f0f0; }
+    .score-link:hover { color: var(--color-text-primary); }
 
     /* Banner */
     .report-banner {
@@ -426,12 +426,12 @@
       position: relative;
     }
     .report-banner h3 {
-      color: #f0f0f0;
+      color: var(--color-text-primary);
       font-size: 1rem;
       margin-bottom: 0.25rem;
     }
     .report-banner p {
-      color: #888;
+      color: var(--color-text-secondary);
       font-size: 0.85rem;
       line-height: 1.5;
       margin: 0;
@@ -442,12 +442,12 @@
       right: 0.75rem;
       background: none;
       border: none;
-      color: #666;
+      color: var(--color-text-secondary);
       font-size: 1.1rem;
       cursor: pointer;
       padding: 0.2rem;
     }
-    .banner-dismiss:hover { color: #f0f0f0; }
+    .banner-dismiss:hover { color: #fff; }
 
     /* Modal */
     .modal-overlay {
@@ -477,7 +477,7 @@
       border-radius: 8px 8px 0 0;
     }
     .modal-header h2 {
-      color: #f0f0f0;
+      color: var(--color-text-primary);
       font-size: 1.15rem;
       margin: 0;
     }
@@ -492,19 +492,19 @@
       background: #161616;
     }
     .modal-card:last-child { margin-bottom: 0; }
-    .modal-card h3 { color: #ddd; font-size: 0.95rem; margin-bottom: 0.4rem; }
-    .modal-card p { color: #888; font-size: 0.85rem; line-height: 1.6; margin: 0; }
+    .modal-card h3 { color: var(--color-text-heading); font-size: 0.95rem; margin-bottom: 0.4rem; }
+    .modal-card p { color: var(--color-text-secondary); font-size: 0.85rem; line-height: 1.6; margin: 0; }
     .modal-close {
       position: absolute;
       top: 0.75rem;
       right: 0.75rem;
       background: none;
       border: none;
-      color: #666;
+      color: var(--color-text-muted);
       font-size: 1.25rem;
       cursor: pointer;
     }
-    .modal-close:hover { color: #f0f0f0; }
+    .modal-close:hover { color: #fff; }
 
     /* Feedback */
     .feedback-section {
@@ -513,7 +513,7 @@
     }
 
     .feedback-section h3 {
-      color: #ddd;
+      color: var(--color-text-heading);
       font-size: 0.95rem;
       margin-bottom: 0.75rem;
     }
@@ -532,24 +532,24 @@
       border: 1px solid #333;
       border-radius: 6px;
       background: none;
-      color: #888;
+      color: var(--color-text-secondary);
       font-size: 0.85rem;
       cursor: pointer;
       transition: border-color 0.2s, color 0.2s, background 0.2s;
     }
 
-    .feedback-btn:hover { border-color: #666; color: #f0f0f0; }
+    .feedback-btn:hover { border-color: #666; color: var(--color-text-primary); }
     .feedback-btn svg { width: 16px; height: 16px; }
 
     .feedback-btn.selected {
-      border-color: #4a4;
-      color: #4a4;
+      border-color: var(--color-accent-green);
+      color: var(--color-accent-green);
       background: rgba(74, 170, 74, 0.1);
     }
 
     .feedback-btn.selected-negative {
-      border-color: #a44;
-      color: #a44;
+      border-color: var(--color-accent-red);
+      color: var(--color-accent-red);
       background: rgba(170, 68, 68, 0.1);
     }
 
@@ -559,7 +559,7 @@
     }
 
     .feedback-thanks {
-      color: #4a4;
+      color: var(--color-accent-green);
       font-size: 0.85rem;
       margin-top: 0.75rem;
     }
@@ -569,7 +569,7 @@
       margin-top: 2.5rem;
       padding-top: 1rem;
       border-top: 1px solid #1a1a1a;
-      color: #555;
+      color: var(--color-text-muted);
       font-size: 0.75rem;
       line-height: 1.5;
       text-align: left;
@@ -832,7 +832,7 @@
     // Direct access via URL param (from email link) — show results
     async function loadResults(url, token) {
       step1.style.display = 'none';
-      results.innerHTML = '<p style="color:#888; text-align:center;">Loading report...</p>';
+      results.innerHTML = '<p style="color:#ccc; text-align:center;">Loading report...</p>';
 
       try {
         const res = await fetch('/api/report', {
@@ -862,7 +862,7 @@
       let html = `<a href="/airadar/report" class="start-over"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 4v6h6"/><path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"/></svg> Start Over</a>`;
       html += `<h1 style="font-size:clamp(1.75rem, 5vw, 2.5rem); margin-bottom:1.5rem; text-align:center;">AI Readiness Report</h1>`;
 
-      html += `<p class="report-intro">We analyzed <strong style="color:#ddd;">${domain}</strong>'s onsite content against AEO best practices to surface key opportunities for improvement. To measure offsite visibility, we interrogated AI models with real-world questions to track how they recommend <strong style="color:#ddd;">${domain}</strong>.</p>`;
+      html += `<p class="report-intro">We analyzed <strong style="color:#eee;">${domain}</strong>'s onsite content against AEO best practices to surface key opportunities for improvement. To measure offsite visibility, we interrogated AI models with real-world questions to track how they recommend <strong style="color:#eee;">${domain}</strong>.</p>`;
       html += `<p class="report-date" style="margin-bottom:0.5rem;">Created at: ${today}</p>`;
       // ── Score Overview ──
       html += `<div class="group-box"><h2 class="group-header">Score Overview <span class="header-link" onclick="document.getElementById('scoreModal').classList.add('open')">How your score is calculated</span></h2><div class="group-content">`;
@@ -1124,11 +1124,11 @@
       return val ? '<span style="color:#4a4;">Found</span>' : '<span style="color:#a44;">Not found</span>';
     }
     function missing() {
-      return '<span style="color:#666;">—</span>';
+      return '<span style="color:#bbb;">—</span>';
     }
     function link(url) {
       const short = url.length > 50 ? url.slice(0, 50) + '...' : url;
-      return `<a href="${url}" target="_blank" style="color:#aaa; word-break:break-all;">${short}</a>`;
+      return `<a href="${url}" target="_blank" style="color:#e0e0e0; word-break:break-all;">${short}</a>`;
     }
 
     // Handle initial page load

@@ -1,8 +1,10 @@
 document.addEventListener("DOMContentLoaded", () => {
+  const COMPANY_NAME = "Polymorph AI";
+
   const nav = document.createElement("div");
   nav.innerHTML = `
     <nav>
-      <a class="nav-brand" href="/"><img src="/favicon.svg" alt="Polymorph Technologies" class="nav-logo"></a>
+      <a class="nav-brand" href="/"><img src="/favicon.svg" alt="${COMPANY_NAME}" class="nav-logo"></a>
       <ul class="nav-links">
         <li class="dropdown">
           <span>Products</span>
@@ -42,7 +44,32 @@ document.addEventListener("DOMContentLoaded", () => {
   `;
 
   const footer = document.createElement("footer");
-  footer.innerHTML = `&copy; ${new Date().getFullYear()} Polymorph Technologies`;
+  footer.innerHTML = `
+    <div class="footer-grid">
+      <div class="footer-col">
+        <h4>Products</h4>
+        <a href="/airadar">AI Radar</a>
+      </div>
+      <div class="footer-col">
+        <h4>Resources</h4>
+        <a href="/airadar/blog">Blog</a>
+        <a href="/airadar/docs">Docs</a>
+        <a href="/airadar/tutorial">Tutorial</a>
+        <a href="/airadar/faq">FAQ</a>
+        <a href="/airadar/changelog">Changelog</a>
+      </div>
+      <div class="footer-col">
+        <h4>Tools</h4>
+        <a href="/airadar/report">AI Readiness Report</a>
+      </div>
+      <div class="footer-col">
+        <h4>Company</h4>
+        <a href="mailto:support@polymorphtech.xyz">Contact Us</a>
+        <a href="/privacy.html">Privacy Policy</a>
+      </div>
+    </div>
+    <div class="footer-bottom">&copy; ${new Date().getFullYear()} ${COMPANY_NAME}</div>
+  `;
 
   document.body.prepend(nav);
   document.body.append(footer);

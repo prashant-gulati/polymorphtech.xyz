@@ -1,6 +1,6 @@
 # polymorphtech.xyz
 
-Static website for Polymorph Technologies — a company building tools for Shopify merchants.
+Static website for Polymorph AI — a company building tools for Shopify merchants.
 
 ## Pages
 
