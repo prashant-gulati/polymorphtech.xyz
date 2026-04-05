@@ -150,6 +150,12 @@
       height: 28px;
     }
 
+    .usp-more {
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: var(--color-text-muted);
+    }
+
     /* Logo ticker */
     .logos-section {
       padding: 3rem 0;
@@ -183,14 +189,13 @@
 
     .logo-item {
       flex-shrink: 0;
-      color: var(--color-text-faint);
+      color: var(--color-text-body);
       font-size: 1.1rem;
       font-weight: 600;
       letter-spacing: 0.02em;
       white-space: nowrap;
-      opacity: 0.6;
       padding: 0.5rem 1.5rem;
-      border: 1px solid var(--color-border);
+      border: 1px solid var(--color-border-strong);
       border-radius: 6px;
     }
 
@@ -244,43 +249,23 @@
       border: 1px solid var(--color-border);
     }
 
-    /* Placeholder for testimonial image */
-    .testimonial-img-placeholder {
-      flex-shrink: 0;
-      width: 220px;
-      height: 280px;
-      border-radius: 12px;
-      background: linear-gradient(135deg, #1a1a2e 0%, #222 100%);
-      border: 1px solid var(--color-border);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      overflow: hidden;
-    }
-
-    .testimonial-img-placeholder svg {
-      width: 120px;
-      height: 180px;
-      color: var(--color-text-faint);
-      opacity: 0.3;
-    }
-
     @media (max-width: 700px) {
       .usp-grid { grid-template-columns: 1fr; gap: 2rem; }
       .testimonial { flex-direction: column-reverse; text-align: center; }
       .testimonial-quote { border-left: none; padding-left: 0; }
-      .testimonial-img-placeholder { width: 160px; height: 200px; }
+      .testimonial-img { width: 160px; height: 200px; }
     }
   </style>
 </head>
 <body>
 
   <!-- Dismissable top banner -->
-  <div class="top-banner" id="topBanner">
+  <div class="top-banner" id="topBanner" style="display:none;">
     Get your AI visibility score with AI Radar
     <a href="/airadar/report">Get score</a>
-    <button class="top-banner-close" onclick="document.getElementById('topBanner').style.display='none'" aria-label="Dismiss">&times;</button>
+    <button class="top-banner-close" onclick="document.getElementById('topBanner').style.display='none';localStorage.setItem('airadar_banner_dismissed','1')" aria-label="Dismiss">&times;</button>
   </div>
+  <script>if(!localStorage.getItem('airadar_banner_dismissed'))document.getElementById('topBanner').style.display='';</script>
 
   <main>
     <!-- Hero -->
@@ -309,6 +294,7 @@
             <svg class="usp-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
               <path d="M12 0C12 6.627 6.627 12 0 12c6.627 0 12 5.373 12 12 0-6.627 5.373-12 12-12-6.627 0-12-5.373-12-12z" fill="currentColor"/>
             </svg>
+            <span class="usp-more">+ more</span>
           </div>
           <span class="usp-label">Measured across leading AI models</span>
         </div>
@@ -330,6 +316,7 @@
             <svg class="usp-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
               <path d="M3 18h18v1H3zM3 18c0-3 1-5 3-6l2-4h2l-1 4c4 0 7 1 10 3l2 3"/>
             </svg>
+            <span class="usp-more">+ more</span>
           </div>
           <span class="usp-label">Built for all e-commerce categories</span>
         </div>
@@ -362,12 +349,7 @@
           <p class="testimonial-author">Sarah Chen</p>
           <p class="testimonial-role">Head of Digital, Luminos Beauty</p>
         </div>
-        <div class="testimonial-img-placeholder">
-          <svg viewBox="0 0 120 180" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <circle cx="60" cy="45" r="28" fill="currentColor"/>
-            <path d="M20 180c0-22 18-40 40-40s40 18 40 40" fill="currentColor"/>
-          </svg>
-        </div>
+        <img src="/airadar/images/female_asian_professional.png" alt="Customer testimonial" class="testimonial-img">
       </div>
     </section>
   </main>
