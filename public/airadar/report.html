@@ -599,6 +599,83 @@
       margin-top: 0.75rem;
     }
 
+    /* Tabs */
+    .tabs-nav {
+      display: flex;
+      border-bottom: 1px solid #222;
+      margin-bottom: 1.25rem;
+      gap: 0;
+    }
+    .tab-btn {
+      flex: 1;
+      background: none;
+      border: none;
+      border-bottom: 2px solid transparent;
+      color: var(--color-text-muted);
+      font-size: 0.85rem;
+      font-weight: 600;
+      padding: 0.6rem 0.75rem;
+      cursor: pointer;
+      transition: color 0.2s, border-color 0.2s;
+      text-align: center;
+    }
+    .tab-btn:hover { color: var(--color-text-secondary); }
+    .tab-btn.active {
+      color: var(--color-text-primary);
+      border-bottom-color: var(--color-text-primary);
+    }
+    .tab-panel { display: none; }
+    .tab-panel.active { display: block; }
+
+    .tab-description {
+      color: var(--color-text-secondary);
+      font-size: 0.85rem;
+      line-height: 1.6;
+      margin-bottom: 0.75rem;
+    }
+    .tab-signals {
+      color: var(--color-text-muted);
+      font-size: 0.8rem;
+      margin-bottom: 1.25rem;
+    }
+    .tab-signals strong {
+      color: var(--color-text-secondary);
+    }
+
+    /* Q&A Accordion */
+    .qa-accordion {
+      border: 1px solid #222;
+      border-radius: 6px;
+      margin-bottom: 0.5rem;
+      background: #131313;
+    }
+    .qa-accordion summary {
+      padding: 0.65rem 1rem;
+      cursor: pointer;
+      color: var(--color-text-heading);
+      font-weight: 500;
+      font-size: 0.85rem;
+      list-style: none;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .qa-accordion summary::-webkit-details-marker { display: none; }
+    .qa-accordion summary::after {
+      content: "+";
+      font-size: 1rem;
+      color: var(--color-text-muted);
+      flex-shrink: 0;
+      margin-left: 0.75rem;
+    }
+    .qa-accordion[open] summary::after { content: "\2212"; }
+    .qa-answer {
+      padding: 0 1rem 0.75rem;
+      color: var(--color-text-secondary);
+      font-size: 0.85rem;
+      line-height: 1.6;
+    }
+
     /* Report footer */
     .report-footer {
       margin-top: 2.5rem;
@@ -875,7 +952,7 @@
     }
 
     function renderResults(data, token) {
-      const { tree, total, url, siteIdentity, metadata, structuredData, contentAuthority, policies, crawlability, commerce, productSamples } = data;
+      const { tree, total, url, siteIdentity, metadata, structuredData, contentAuthority, policies, crawlability, commerce, productSamples, offsiteDiscoverability } = data;
 
       const today = new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
       const domain = url.replace(/^https?:\/\//, '').replace(/\/$/, '');
@@ -901,6 +978,55 @@
           row('Brand Positioning', contentAuthority.brandPositioning || missing()),
         ]);
       }
+
+      // Buyer funnel tabs
+      const tabId = 'offsite-tabs-' + Date.now();
+      const funnelTabs = [
+        {
+          key: 'awareness',
+          label: 'Awareness',
+          description: 'Tracks how often your brand is recommended in broad category searches. A high score here means AI models are suggesting you as a top contender to new potential customers.',
+          signals: 'Frequency & Rank',
+        },
+        {
+          key: 'consideration',
+          label: 'Consideration',
+          description: 'Evaluates how well AI describes your products when users are comparing options. This measures the helpfulness and specificity of the answers to ensure your unique value is clear.',
+          signals: 'Specificity & Sentiment',
+        },
+        {
+          key: 'decision',
+          label: 'Decision',
+          description: 'Measures the directness of AI responses to high-intent questions. This ensures that when a ready-to-buy shopper asks for validation, the AI provides a confident, actionable confirmation.',
+          signals: 'Directness & Accuracy',
+        },
+      ];
+
+      html += `<div class="report-section"><h2 class="section-title">Buyer Funnel Analysis</h2>`;
+      html += `<div class="tabs-nav" id="${tabId}-nav">`;
+      funnelTabs.forEach((t, i) => {
+        html += `<button class="tab-btn${i === 0 ? ' active' : ''}" data-tab="${tabId}-${t.key}" onclick="switchTab('${tabId}', '${t.key}')">${t.label}</button>`;
+      });
+      html += `</div>`;
+
+      funnelTabs.forEach((t, i) => {
+        const questions = offsiteDiscoverability?.[t.key]?.questions || [];
+        html += `<div class="tab-panel${i === 0 ? ' active' : ''}" id="${tabId}-${t.key}">`;
+        html += `<p class="tab-description">${t.description}</p>`;
+        html += `<p class="tab-signals"><strong>Key signals:</strong> ${t.signals}</p>`;
+
+        if (questions.length) {
+          html += `<h3 style="font-size:0.85rem; font-weight:600; color:var(--color-text-secondary); margin-bottom:0.5rem;">Questions tested</h3>`;
+          for (const q of questions) {
+            html += `<details class="qa-accordion"><summary>${q.question}</summary><div class="qa-answer">${q.answer}</div></details>`;
+          }
+        }
+
+        html += `</div>`;
+      });
+
+      html += `</div>`; // close report-section
+
       html += `</div></div>`;
 
       // ── On-Site Readiness ──
@@ -1131,6 +1257,16 @@
       html += `<div class="report-footer">AI Readiness Report can make mistakes. This tool provides estimated insights based on typical AI behavior patterns. The analysis and score review presented are based on customer results from Gemini 2.5 Pro.</div>`;
 
       return html;
+    }
+
+    // Tab switcher
+    function switchTab(tabId, key) {
+      const nav = document.getElementById(tabId + '-nav');
+      nav.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+      nav.querySelector(`[data-tab="${tabId}-${key}"]`).classList.add('active');
+      const parent = nav.parentElement;
+      parent.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+      document.getElementById(`${tabId}-${key}`).classList.add('active');
     }
 
     // Render helpers
