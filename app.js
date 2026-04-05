@@ -768,6 +768,7 @@ app.get("/airadar/blog", (_req, res) => {
   const posts = getAllPosts()
   const list = posts.map(p => `
     <div class="entry">
+      ${p.image ? `<a href="/airadar/blog/${p.slug}"><img src="${p.image}" alt="${p.title}" style="width:100%;border-radius:8px;margin-bottom:1rem;"></a>` : ""}
       <h2><a href="/airadar/blog/${p.slug}">${p.title}</a></h2>
       <span class="date">${p.date}${p.author ? ` · ${p.author}` : ""}</span>
       <p>${p.summary || ""}</p>
@@ -794,6 +795,7 @@ app.get("/airadar/blog/:slug", (req, res) => {
     res.send(blogLayout(data.title, `
       <h1>${data.title}</h1>
       <p class="post-meta">${meta}</p>
+      ${data.image ? `<img src="${data.image}" alt="${data.title}" style="width:100%;border-radius:8px;margin:1rem 0 2rem;">` : ""}
       ${html}
       <p style="margin-top: 2rem;"><a href="/airadar/blog">← Back to blog</a></p>
       ${subscribeForm}

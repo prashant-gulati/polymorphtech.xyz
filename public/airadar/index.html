@@ -290,27 +290,29 @@
     }
 
     .cta-banner {
-      max-width: 740px;
+      max-width: 800px;
       margin: 0 auto;
       display: flex;
       align-items: center;
       justify-content: space-between;
-      gap: 2rem;
+      gap: 2.5rem;
       background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
       border: 1px solid var(--color-border-strong);
       border-radius: 12px;
-      padding: 1.5rem 2rem;
+      padding: 2.5rem 3rem;
     }
 
     .cta-banner-text h3 {
       color: var(--color-text-primary);
-      font-size: 1.1rem;
-      margin-bottom: 0.25rem;
+      font-size: 1.5rem;
+      font-weight: 700;
+      margin-bottom: 0.75rem;
     }
 
     .cta-banner-text p {
       color: var(--color-text-secondary);
-      font-size: 0.85rem;
+      font-size: 0.95rem;
+      line-height: 1.6;
       margin: 0;
     }
 
@@ -320,8 +322,8 @@
       color: var(--color-bg);
       text-decoration: none;
       font-weight: 600;
-      font-size: 0.9rem;
-      padding: 0.6rem 1.25rem;
+      font-size: 1rem;
+      padding: 0.85rem 1.75rem;
       border-radius: 6px;
       transition: background 0.2s;
     }
@@ -382,6 +384,60 @@
       .ai-models-inner { flex-direction: column; text-align: center; }
       .ai-models-logos { gap: 1.25rem; }
       .ai-model-logo { width: 44px; height: 44px; }
+    }
+
+    /* Built for section */
+    .built-for-section {
+      border-top: 1px solid var(--color-border);
+      padding: 4rem 2rem;
+      text-align: center;
+    }
+
+    .built-for-section h2 {
+      font-size: clamp(1.5rem, 4vw, 2rem);
+      font-weight: 700;
+      color: var(--color-text-primary);
+      margin-bottom: 1rem;
+    }
+
+    .built-for-section p {
+      color: var(--color-text-secondary);
+      font-size: 0.95rem;
+      max-width: 600px;
+      margin: 0 auto;
+      line-height: 1.7;
+    }
+
+    .built-for-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 2rem;
+      max-width: 740px;
+      margin: 2.5rem auto 0;
+    }
+
+    .built-for-item {
+      text-align: center;
+    }
+
+    .built-for-item svg {
+      width: 36px;
+      height: 36px;
+      color: var(--color-text-body);
+      margin-bottom: 0.75rem;
+    }
+
+    .built-for-item h3 {
+      color: var(--color-text-heading);
+      font-size: 1rem;
+      font-weight: 600;
+      margin-bottom: 0.35rem;
+    }
+
+    .built-for-item p {
+      color: var(--color-text-muted);
+      font-size: 0.85rem;
+      line-height: 1.5;
     }
 
     /* FAQ section */
@@ -479,7 +535,7 @@
     .blog-card {
       border: 1px solid var(--color-border);
       border-radius: 8px;
-      padding: 1.25rem;
+      overflow: hidden;
       background: var(--color-bg-surface);
       transition: border-color 0.2s;
     }
@@ -488,6 +544,17 @@
 
     .blog-card a {
       text-decoration: none;
+    }
+
+    .blog-card-img {
+      width: 100%;
+      height: 140px;
+      object-fit: cover;
+      display: block;
+    }
+
+    .blog-card-body {
+      padding: 1rem 1.25rem 1.25rem;
     }
 
     .blog-card h3 {
@@ -529,8 +596,9 @@
       .testimonial { flex-direction: column-reverse; text-align: center; }
       .testimonial-quote { border-left: none; padding-left: 0; }
       .testimonial-img { width: 200px; height: 240px; }
-      .cta-banner { flex-direction: column; text-align: center; }
+      .cta-banner { flex-direction: column; text-align: center; padding: 2rem; }
       .blog-grid { grid-template-columns: 1fr; }
+      .built-for-grid { grid-template-columns: 1fr; }
     }
   </style>
 </head>
@@ -682,6 +750,29 @@
       </div>
     </section>
 
+    <!-- Built for -->
+    <section class="built-for-section">
+      <h2>Built for Store Owners and Agencies</h2>
+      <p>Whether you run a single Shopify store or manage dozens of clients, AI Radar gives you the tools to dominate AI-powered search.</p>
+      <div class="built-for-grid">
+        <div class="built-for-item">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+          <h3>DTC Brands</h3>
+          <p>Optimize your product pages and content for AI discovery.</p>
+        </div>
+        <div class="built-for-item">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>
+          <h3>Retailers</h3>
+          <p>Track visibility across your full catalog and category pages.</p>
+        </div>
+        <div class="built-for-item">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+          <h3>Agencies</h3>
+          <p>Manage multiple client stores and report on AI visibility at scale.</p>
+        </div>
+      </div>
+    </section>
+
     <!-- CTA Banner -->
     <section class="cta-banner-section">
       <div class="cta-banner">
@@ -760,9 +851,12 @@
         grid.innerHTML = data.posts.map(p => `
           <div class="blog-card">
             <a href="/airadar/blog/${p.slug}">
-              <h3>${p.title}</h3>
-              <p class="blog-meta">${p.date}${p.author ? ' · ' + p.author : ''}</p>
-              ${p.summary ? '<p class="blog-summary">' + p.summary + '</p>' : ''}
+              ${p.image ? '<img src="' + p.image + '" alt="' + p.title + '" class="blog-card-img">' : ''}
+              <div class="blog-card-body">
+                <h3>${p.title}</h3>
+                <p class="blog-meta">${p.date}${p.author ? ' · ' + p.author : ''}</p>
+                ${p.summary ? '<p class="blog-summary">' + p.summary + '</p>' : ''}
+              </div>
             </a>
           </div>
         `).join('');
