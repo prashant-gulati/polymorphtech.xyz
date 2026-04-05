@@ -99,6 +99,10 @@ nav {
   width: auto;
 }
 
+[data-theme="light"] .nav-logo {
+  filter: invert(1);
+}
+
 .nav-links {
   display: flex;
   gap: 2rem;
