@@ -698,6 +698,8 @@
 
     let currentStoreUrl = '';
 
+    const progressSteps = document.getElementById('progressSteps');
+
     function showStep1() {
       step1.style.display = '';
       emailGate.style.display = 'none';
@@ -705,6 +707,7 @@
       results.innerHTML = '';
       formMsg.textContent = '';
       emailMsg.textContent = '';
+      progressSteps.style.display = '';
     }
 
     function showEmailGate() {
@@ -712,6 +715,7 @@
       document.getElementById('scanningStep').style.display = 'none';
       emailGate.style.display = 'block';
       results.innerHTML = '';
+      progressSteps.style.display = 'none';
     }
 
     window.addEventListener('popstate', () => {
@@ -765,6 +769,7 @@
 
         // Show scanning interstitial
         step1.style.display = 'none';
+        progressSteps.style.display = 'none';
         const scanningStep = document.getElementById('scanningStep');
         const scanningText = document.getElementById('scanningText');
         scanningStep.style.display = 'block';
@@ -842,6 +847,7 @@
     // Direct access via URL param (from email link) — show results
     async function loadResults(url, token) {
       step1.style.display = 'none';
+      progressSteps.style.display = 'none';
       results.innerHTML = '<p style="color:#ccc; text-align:center;">Loading report...</p>';
 
       try {
