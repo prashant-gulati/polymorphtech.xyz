@@ -3,7 +3,7 @@ title: "Upend Your SEO Competition with AI SEO"
 date: "2026-04-05"
 summary: ""
 author: "Prashant Gulati"
-image: ""
+image: "/airadar/images/blog/upend-your-seo-competition-with-ai-seo.png"
 draft: false
 ---
 
