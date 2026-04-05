@@ -952,7 +952,7 @@
     }
 
     function renderResults(data, token) {
-      const { tree, total, url, siteIdentity, metadata, structuredData, contentAuthority, policies, crawlability, commerce, productSamples, offsiteDiscoverability } = data;
+      const { tree, total, url, siteIdentity, metadata, structuredData, contentAuthority, policies, crawlability, commerce, productSamples } = data;
 
       const today = new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
       const domain = url.replace(/^https?:\/\//, '').replace(/\/$/, '');
@@ -1010,8 +1010,7 @@
       html += `</div>`;
 
       funnelTabs.forEach((t, i) => {
-        const defaultQs = [{ question: 'Question', answer: 'Answer' }, { question: 'Question', answer: 'Answer' }, { question: 'Question', answer: 'Answer' }];
-        const questions = offsiteDiscoverability?.[t.key]?.questions || defaultQs;
+        const questions = [{ question: 'Question', answer: 'Answer' }, { question: 'Question', answer: 'Answer' }, { question: 'Question', answer: 'Answer' }];
         html += `<div class="tab-panel${i === 0 ? ' active' : ''}" id="${tabId}-${t.key}">`;
         html += `<p class="tab-description">${t.description}</p>`;
         html += `<p class="tab-signals"><strong>Key signals:</strong> ${t.signals}</p>`;
