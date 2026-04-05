@@ -14,7 +14,6 @@ document.addEventListener("DOMContentLoaded", () => {
             <a href="/airadar/blog">Blog</a>
             <a href="/airadar/docs">Docs</a>
             <a href="/airadar/tutorial">Tutorial</a>
-            <a href="/airadar#faq">FAQ</a>
             <a href="/airadar/changelog">Changelog</a>
           </div>
         </li>
@@ -36,7 +35,6 @@ document.addEventListener("DOMContentLoaded", () => {
       <a href="/airadar/blog" class="mobile-sub">Blog</a>
       <a href="/airadar/docs" class="mobile-sub">Docs</a>
       <a href="/airadar/tutorial" class="mobile-sub">Tutorial</a>
-      <a href="/airadar#faq" class="mobile-sub">FAQ</a>
       <a href="/airadar/changelog" class="mobile-sub">Changelog</a>
       <a href="/privacy.html">Privacy Policy</a>
       <a href="mailto:support@polymorphtech.xyz">Contact</a>
@@ -55,7 +53,6 @@ document.addEventListener("DOMContentLoaded", () => {
         <a href="/airadar/blog">Blog</a>
         <a href="/airadar/docs">Docs</a>
         <a href="/airadar/tutorial">Tutorial</a>
-        <a href="/airadar#faq">FAQ</a>
         <a href="/airadar/changelog">Changelog</a>
       </div>
       <div class="footer-col">
