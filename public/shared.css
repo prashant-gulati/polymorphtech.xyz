@@ -36,7 +36,7 @@ nav {
   align-items: center;
   padding: 1rem 2rem;
   background: rgba(15, 15, 15, 0.95);
-  border-bottom: 1px solid var(--color-border);
+  border-bottom: 1px solid var(--color-border-strong);
   position: sticky;
   top: 0;
   z-index: 100;
