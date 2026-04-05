@@ -172,40 +172,45 @@
       margin-bottom: 2rem;
     }
 
+    .logos-track-wrapper {
+      display: flex;
+      gap: 3rem;
+      width: max-content;
+      animation: ticker 40s linear infinite;
+    }
+
+    .logos-track-wrapper:hover { animation-play-state: paused; }
+
     @keyframes ticker {
       0% { transform: translateX(0); }
-      100% { transform: translateX(-50%); }
+      100% { transform: translateX(calc(-50% - 1.5rem)); }
     }
 
-    .logos-track {
+    .logos-set {
       display: flex;
       align-items: center;
-      gap: 4rem;
-      width: max-content;
-      animation: ticker 20s linear infinite;
+      gap: 3rem;
+      flex-shrink: 0;
     }
-
-    .logos-track:hover { animation-play-state: paused; }
 
     .logo-item {
       flex-shrink: 0;
       display: flex;
       align-items: center;
-      gap: 0.5rem;
+      gap: 0.6rem;
       color: var(--color-text-body);
-      font-size: 1.1rem;
+      font-size: 1rem;
       font-weight: 600;
       letter-spacing: 0.02em;
       white-space: nowrap;
-      padding: 0.5rem 1.5rem;
+      padding: 0.5rem 1.25rem;
       border: 1px solid var(--color-border-strong);
       border-radius: 6px;
     }
 
-    .logo-dot {
-      width: 24px;
-      height: 24px;
-      border-radius: 50%;
+    .logo-item svg {
+      width: 22px;
+      height: 22px;
       flex-shrink: 0;
     }
 
@@ -480,18 +485,51 @@
     <!-- Customer logos ticker -->
     <section class="logos-section">
       <h3>Trusted by leading brands</h3>
-      <div class="logos-track">
-        <span class="logo-item"><span class="logo-dot" style="background:#e8a87c;"></span>Luminos Beauty</span>
-        <span class="logo-item"><span class="logo-dot" style="background:#6c8cbf;"></span>ThreadCraft Co.</span>
-        <span class="logo-item"><span class="logo-dot" style="background:#85c88a;"></span>SoleMate</span>
-        <span class="logo-item"><span class="logo-dot" style="background:#c785c8;"></span>Verdant Living</span>
-        <span class="logo-item"><span class="logo-dot" style="background:#c8a85c;"></span>NovaFit Gear</span>
-        <!-- Duplicate for seamless loop -->
-        <span class="logo-item"><span class="logo-dot" style="background:#e8a87c;"></span>Luminos Beauty</span>
-        <span class="logo-item"><span class="logo-dot" style="background:#6c8cbf;"></span>ThreadCraft Co.</span>
-        <span class="logo-item"><span class="logo-dot" style="background:#85c88a;"></span>SoleMate</span>
-        <span class="logo-item"><span class="logo-dot" style="background:#c785c8;"></span>Verdant Living</span>
-        <span class="logo-item"><span class="logo-dot" style="background:#c8a85c;"></span>NovaFit Gear</span>
+      <div class="logos-track-wrapper">
+        <div class="logos-set">
+          <span class="logo-item">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="4"/><path d="M12 2v4m0 12v4M4.93 4.93l2.83 2.83m8.48 8.48l2.83 2.83M2 12h4m12 0h4M4.93 19.07l2.83-2.83m8.48-8.48l2.83-2.83"/></svg>
+            Luminos Beauty
+          </span>
+          <span class="logo-item">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 3L4 9v12h16V9l-8-6z"/><path d="M9 21V13h6v8"/></svg>
+            ThreadCraft Co.
+          </span>
+          <span class="logo-item">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 18h18v1H3z"/><path d="M5 18c0-3 1-5 3-6l1.5-3h5L16 12c2 1 3 3 3 6"/></svg>
+            SoleMate
+          </span>
+          <span class="logo-item">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 2C8 2 4 6 4 10c0 6 8 12 8 12s8-6 8-12c0-4-4-8-8-8z"/><circle cx="12" cy="10" r="3"/></svg>
+            Verdant Living
+          </span>
+          <span class="logo-item">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M18 8a6 6 0 0 0-12 0c0 4 6 10 6 10s6-6 6-10z"/><path d="M9 21h6M12 18v3"/></svg>
+            NovaFit Gear
+          </span>
+        </div>
+        <div class="logos-set">
+          <span class="logo-item">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="4"/><path d="M12 2v4m0 12v4M4.93 4.93l2.83 2.83m8.48 8.48l2.83 2.83M2 12h4m12 0h4M4.93 19.07l2.83-2.83m8.48-8.48l2.83-2.83"/></svg>
+            Luminos Beauty
+          </span>
+          <span class="logo-item">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 3L4 9v12h16V9l-8-6z"/><path d="M9 21V13h6v8"/></svg>
+            ThreadCraft Co.
+          </span>
+          <span class="logo-item">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 18h18v1H3z"/><path d="M5 18c0-3 1-5 3-6l1.5-3h5L16 12c2 1 3 3 3 6"/></svg>
+            SoleMate
+          </span>
+          <span class="logo-item">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 2C8 2 4 6 4 10c0 6 8 12 8 12s8-6 8-12c0-4-4-8-8-8z"/><circle cx="12" cy="10" r="3"/></svg>
+            Verdant Living
+          </span>
+          <span class="logo-item">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M18 8a6 6 0 0 0-12 0c0 4 6 10 6 10s6-6 6-10z"/><path d="M9 21h6M12 18v3"/></svg>
+            NovaFit Gear
+          </span>
+        </div>
       </div>
     </section>
 
