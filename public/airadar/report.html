@@ -444,47 +444,43 @@
     }
     .score-link:hover { color: var(--color-text-primary); }
 
-    /* Banner */
-    .report-banner {
-      width: 100%;
-      background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
-      border-bottom: 1px solid var(--color-border-strong);
-      padding: 0.6rem 2rem;
-      text-align: center;
-      font-size: 0.85rem;
-      color: var(--color-text-secondary);
+    /* CTA Banner */
+    .cta-banner {
+      max-width: 800px;
+      margin: 0 auto 1.5rem;
       display: flex;
       align-items: center;
-      justify-content: center;
-      gap: 0.75rem;
-      position: relative;
-      margin-bottom: 1.5rem;
-      border-radius: 8px;
+      justify-content: space-between;
+      gap: 2.5rem;
+      background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+      border: 1px solid var(--color-border-strong);
+      border-radius: 12px;
+      padding: 2.5rem 3rem;
     }
-    .report-banner a {
-      color: #fff;
-      text-decoration: none;
-      font-weight: 600;
+    .cta-banner-text h3 {
+      color: var(--color-text-primary);
+      font-size: 1.5rem;
+      font-weight: 700;
+      margin-bottom: 0.75rem;
+    }
+    .cta-banner-text p {
+      color: var(--color-text-secondary);
+      font-size: 0.95rem;
+      line-height: 1.6;
+      margin: 0;
+    }
+    .cta-banner-btn {
+      flex-shrink: 0;
       background: var(--color-text-primary);
       color: var(--color-bg);
-      padding: 0.25rem 0.75rem;
-      border-radius: 4px;
-      font-size: 0.8rem;
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 1rem;
+      padding: 0.85rem 1.75rem;
+      border-radius: 6px;
       transition: background 0.2s;
-      white-space: nowrap;
     }
-    .report-banner a:hover { background: var(--color-text-body); }
-    .banner-dismiss {
-      position: absolute;
-      right: 1rem;
-      background: none;
-      border: none;
-      color: var(--color-text-muted);
-      font-size: 1.1rem;
-      cursor: pointer;
-      padding: 0.2rem;
-    }
-    .banner-dismiss:hover { color: #fff; }
+    .cta-banner-btn:hover { background: var(--color-text-body); }
 
     /* Modal */
     .modal-overlay {
@@ -1105,11 +1101,13 @@
 
       html += `</div></div>`; // close On-Site Readiness group-box
 
-      // Dismissable banner
-      html += `<div class="report-banner" id="reportBanner">
-        <span><strong>Take Control of Your AI Visibility</strong> — Stop guessing how LLM platforms see you. Measure your impact and optimize your store with the first AEO platform built for e-commerce.</span>
-        <a href="/airadar">Learn more</a>
-        <button class="banner-dismiss" onclick="document.getElementById('reportBanner').remove()" aria-label="Dismiss">&times;</button>
+      // CTA Banner
+      html += `<div class="cta-banner">
+        <div class="cta-banner-text">
+          <h3>Take Control of Your AI Visibility</h3>
+          <p>Stop guessing how LLM platforms see you. Measure your impact and optimize your store with the first AEO platform built for e-commerce.</p>
+        </div>
+        <a href="/airadar/report" class="cta-banner-btn">Install Shopify App</a>
       </div>`;
 
       // Feedback
