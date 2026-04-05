@@ -817,7 +817,6 @@ app.get("/api/blog-posts", (_req, res) => {
 app.get("/airadar/report", (_req, res) => res.sendFile(join(__dirname, "public", "airadar", "report.html")))
 app.get("/airadar/docs", (_req, res) => res.sendFile(join(__dirname, "public", "airadar", "docs.html")))
 app.get("/airadar/tutorial", (_req, res) => res.sendFile(join(__dirname, "public", "airadar", "tutorial.html")))
-app.get("/airadar/faq", (_req, res) => res.sendFile(join(__dirname, "public", "airadar", "faq.html")))
 app.get("/airadar/changelog", (_req, res) => res.sendFile(join(__dirname, "public", "airadar", "changelog.html")))
 
 app.get("/privacy", (_req, res) => res.sendFile(join(__dirname, "public", "privacy.html")))

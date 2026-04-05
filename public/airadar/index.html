@@ -189,6 +189,9 @@
 
     .logo-item {
       flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
       color: var(--color-text-body);
       font-size: 1.1rem;
       font-weight: 600;
@@ -197,6 +200,13 @@
       padding: 0.5rem 1.5rem;
       border: 1px solid var(--color-border-strong);
       border-radius: 6px;
+    }
+
+    .logo-dot {
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      flex-shrink: 0;
     }
 
     /* Testimonial */
@@ -255,6 +265,7 @@
     .faq-section {
       border-top: 1px solid var(--color-border);
       padding: 4rem 2rem;
+      scroll-margin-top: 5rem;
     }
 
     .faq-inner {
@@ -470,17 +481,17 @@
     <section class="logos-section">
       <h3>Trusted by leading brands</h3>
       <div class="logos-track">
-        <span class="logo-item">Luminos Beauty</span>
-        <span class="logo-item">ThreadCraft Co.</span>
-        <span class="logo-item">SoleMate</span>
-        <span class="logo-item">Verdant Living</span>
-        <span class="logo-item">NovaFit Gear</span>
+        <span class="logo-item"><span class="logo-dot" style="background:#e8a87c;"></span>Luminos Beauty</span>
+        <span class="logo-item"><span class="logo-dot" style="background:#6c8cbf;"></span>ThreadCraft Co.</span>
+        <span class="logo-item"><span class="logo-dot" style="background:#85c88a;"></span>SoleMate</span>
+        <span class="logo-item"><span class="logo-dot" style="background:#c785c8;"></span>Verdant Living</span>
+        <span class="logo-item"><span class="logo-dot" style="background:#c8a85c;"></span>NovaFit Gear</span>
         <!-- Duplicate for seamless loop -->
-        <span class="logo-item">Luminos Beauty</span>
-        <span class="logo-item">ThreadCraft Co.</span>
-        <span class="logo-item">SoleMate</span>
-        <span class="logo-item">Verdant Living</span>
-        <span class="logo-item">NovaFit Gear</span>
+        <span class="logo-item"><span class="logo-dot" style="background:#e8a87c;"></span>Luminos Beauty</span>
+        <span class="logo-item"><span class="logo-dot" style="background:#6c8cbf;"></span>ThreadCraft Co.</span>
+        <span class="logo-item"><span class="logo-dot" style="background:#85c88a;"></span>SoleMate</span>
+        <span class="logo-item"><span class="logo-dot" style="background:#c785c8;"></span>Verdant Living</span>
+        <span class="logo-item"><span class="logo-dot" style="background:#c8a85c;"></span>NovaFit Gear</span>
       </div>
     </section>
 
@@ -497,7 +508,7 @@
     </section>
 
     <!-- FAQ -->
-    <section class="faq-section">
+    <section class="faq-section" id="faq">
       <div class="faq-inner">
         <h2>Frequently Asked Questions</h2>
 
@@ -536,7 +547,6 @@
           </div>
         </details>
 
-        <p class="faq-more"><a href="/airadar/faq">View all FAQs &rarr;</a></p>
       </div>
     </section>
 
@@ -547,7 +557,6 @@
         <div class="blog-grid" id="blogGrid">
           <p style="color: var(--color-text-muted); grid-column: 1/-1; text-align: center;">Loading posts...</p>
         </div>
-        <p class="blog-more"><a href="/airadar/blog">View all posts &rarr;</a></p>
       </div>
     </section>
   </main>
