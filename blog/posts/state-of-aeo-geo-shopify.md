@@ -40,8 +40,14 @@ draft: true
   - typical AI Overview is approximately 157 words. 99% stay under 328 words. Two thirds fall between 150 and 200 words. Concise, focused content performs best
 
 **AI Mode**
-  - 
+  - AI Overviews (AIO) and AI Mode, powered by the Gemini family of models, use the same data index and ranking logic. However, they produce different text outputs
+  - 4X longer responses, broader sources, favors in depth articles, quora and wikipedia
+  - Google AI Mode generated responses with only about 51% domain overlap and 32% URL overlap compared to Google’s top‑10 organic search results. By contrast, platforms like Perplexity showed much higher alignment (91% domain overlap / 82% URL overlap).
 
 **Distribution of traffic across chatbots**
-- 
-- 
+  - 8.5 billion Google search queries/day
+  - ~3.5 billion chatbot prompts/day
+  60-70% chatgpt
+  20% gemini
+  10% for grok, claude, deepseek, perplexity, copilot
+  14-18% have commercial intent
