@@ -972,12 +972,6 @@
 
       // ── Off-Site Discoverability ──
       html += `<div class="group-box"><h2 class="group-header">Off-Site Discoverability</h2><div class="group-content">`;
-      if (contentAuthority) {
-        html += section('Content Authority', [
-          row('Top Keywords', contentAuthority.topKeywords?.length ? contentAuthority.topKeywords.join(', ') : missing()),
-          row('Brand Positioning', contentAuthority.brandPositioning || missing()),
-        ]);
-      }
 
       // Buyer funnel tabs
       const tabId = 'offsite-tabs-' + Date.now();
@@ -1002,7 +996,7 @@
         },
       ];
 
-      html += `<div class="report-section"><h2 class="section-title">Buyer Funnel Analysis</h2>`;
+      html += `<div class="tabs-nav" id="${tabId}-nav">`;
       html += `<div class="tabs-nav" id="${tabId}-nav">`;
       funnelTabs.forEach((t, i) => {
         html += `<button class="tab-btn${i === 0 ? ' active' : ''}" data-tab="${tabId}-${t.key}" onclick="switchTab('${tabId}', '${t.key}')">${t.label}</button>`;
@@ -1025,7 +1019,12 @@
         html += `</div>`;
       });
 
-      html += `</div>`; // close report-section
+      if (contentAuthority) {
+        html += section('Content Authority', [
+          row('Top Keywords', contentAuthority.topKeywords?.length ? contentAuthority.topKeywords.join(', ') : missing()),
+          row('Brand Positioning', contentAuthority.brandPositioning || missing()),
+        ]);
+      }
 
       html += `</div></div>`;
 
