@@ -233,6 +233,63 @@
       flex-shrink: 0;
     }
 
+    /* Features grid */
+    .features-section {
+      border-top: 1px solid var(--color-border);
+      padding: 4rem 2rem;
+    }
+
+    .features-inner {
+      max-width: 800px;
+      margin: 0 auto;
+    }
+
+    .features-section h2 {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: var(--color-text-primary);
+      text-align: center;
+      margin-bottom: 2.5rem;
+    }
+
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1.5rem;
+    }
+
+    .feature-card {
+      border: 1px solid var(--color-border);
+      border-radius: 10px;
+      background: var(--color-bg-surface);
+      overflow: hidden;
+    }
+
+    .feature-card-img {
+      width: 100%;
+      height: 160px;
+      object-fit: cover;
+      display: block;
+    }
+
+    .feature-card-body {
+      padding: 1.25rem;
+    }
+
+    .feature-card-body h3 {
+      color: var(--color-text-heading);
+      font-size: 1.05rem;
+      font-weight: 600;
+      margin-bottom: 0.5rem;
+    }
+
+    .feature-card-body p {
+      color: var(--color-text-secondary);
+      font-size: 0.85rem;
+      line-height: 1.6;
+      margin: 0;
+    }
+
     /* Testimonial */
     .testimonial-section {
       padding: 4rem 2rem;
@@ -599,6 +656,7 @@
       .cta-banner { flex-direction: column; text-align: center; padding: 2rem; }
       .blog-grid { grid-template-columns: 1fr; }
       .built-for-grid { grid-template-columns: 1fr; }
+      .features-grid { grid-template-columns: 1fr; }
     }
   </style>
 </head>
@@ -734,6 +792,43 @@
           <img src="/airadar/images/claude.svg" alt="Claude" class="ai-model-logo">
           <img src="/airadar/images/perplexity.svg" alt="Perplexity" class="ai-model-logo">
           <img src="/airadar/images/grok.svg" alt="Grok" class="ai-model-logo">
+        </div>
+      </div>
+    </section>
+
+    <!-- Features -->
+    <section class="features-section">
+      <div class="features-inner">
+        <h2>Everything you need to win in AI search</h2>
+        <div class="features-grid">
+          <div class="feature-card">
+            <img src="/airadar/images/track-visibility.png" alt="Track AI Visibility" class="feature-card-img">
+            <div class="feature-card-body">
+              <h3>Track AI Visibility</h3>
+              <p>Monitor how your brand and products appear across ChatGPT, Gemini, Claude, and Perplexity in real time. Get alerts when your visibility changes.</p>
+            </div>
+          </div>
+          <div class="feature-card">
+            <img src="/airadar/images/optimize-onsite.png" alt="Optimize Onsite" class="feature-card-img">
+            <div class="feature-card-body">
+              <h3>Optimize Onsite</h3>
+              <p>Get actionable recommendations to improve your product descriptions, metadata, and structured data so AI engines understand and recommend your store.</p>
+            </div>
+          </div>
+          <div class="feature-card">
+            <img src="/airadar/images/promote-offsite.png" alt="Promote Offsite" class="feature-card-img">
+            <div class="feature-card-body">
+              <h3>Promote Offsite</h3>
+              <p>Strengthen your offsite presence by identifying citation gaps, building brand authority, and ensuring AI models find the right signals about your products.</p>
+            </div>
+          </div>
+          <div class="feature-card">
+            <img src="/airadar/images/analyze-results.png" alt="Analyze Results" class="feature-card-img">
+            <div class="feature-card-body">
+              <h3>Analyze Results</h3>
+              <p>Measure your AI visibility score over time, compare against competitors, and quantify the impact of your optimization efforts with detailed reports.</p>
+            </div>
+          </div>
         </div>
       </div>
     </section>
