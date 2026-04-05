@@ -84,27 +84,29 @@
       min-height: 1.2em;
     }
 
-    /* Progress steps */
+    /* Progress steps - persistent bottom bar */
     .progress-steps {
       width: 100%;
-      max-width: 400px;
-      margin-top: 1.5rem;
-      text-align: left;
+      max-width: 500px;
+      margin: 2rem auto 0;
+      display: flex;
+      gap: 1rem;
     }
 
     .progress-step {
-      margin-bottom: 1rem;
+      flex: 1;
     }
 
     .step-label {
-      color: var(--color-text-secondary);
-      font-size: 0.85rem;
+      color: var(--color-text-muted);
+      font-size: 0.75rem;
       display: block;
       margin-bottom: 0.3rem;
+      text-align: center;
     }
 
     .progress-bar {
-      height: 4px;
+      height: 3px;
       background: #222;
       border-radius: 2px;
       overflow: hidden;
@@ -115,7 +117,6 @@
       width: 0%;
       background: var(--color-accent-green);
       border-radius: 2px;
-      transition: width 0.1s linear;
     }
 
     /* Email gate */
@@ -589,20 +590,6 @@
         <button type="submit">Analyze</button>
       </form>
       <p id="formMsg" class="form-msg"></p>
-      <div id="progressSteps" class="progress-steps" style="display:none;">
-        <div class="progress-step">
-          <span class="step-label">Scan your website</span>
-          <div class="progress-bar"><div class="progress-fill" id="prog1"></div></div>
-        </div>
-        <div class="progress-step">
-          <span class="step-label">Analyze your website's AI Visibility</span>
-          <div class="progress-bar"><div class="progress-fill" id="prog2"></div></div>
-        </div>
-        <div class="progress-step">
-          <span class="step-label">Optimize your website for AI</span>
-          <div class="progress-bar"><div class="progress-fill" id="prog3"></div></div>
-        </div>
-      </div>
     </div>
 
     <!-- Step 2: Email gate -->
@@ -619,6 +606,21 @@
 
     <!-- Results (shown when arriving via email link) -->
     <div id="results"></div>
+
+    <div class="progress-steps" id="progressSteps">
+      <div class="progress-step">
+        <span class="step-label">Scan</span>
+        <div class="progress-bar"><div class="progress-fill" id="prog1"></div></div>
+      </div>
+      <div class="progress-step">
+        <span class="step-label">Analyze</span>
+        <div class="progress-bar"><div class="progress-fill" id="prog2"></div></div>
+      </div>
+      <div class="progress-step">
+        <span class="step-label">Optimize</span>
+        <div class="progress-bar"><div class="progress-fill" id="prog3"></div></div>
+      </div>
+    </div>
   </main>
 
   <!-- Score calculation modal -->
@@ -707,33 +709,7 @@
       reportBtn.disabled = true;
       reportBtn.textContent = 'Validating...';
 
-      const progressSteps = document.getElementById('progressSteps');
-      const prog1 = document.getElementById('prog1');
-      const prog2 = document.getElementById('prog2');
-      const prog3 = document.getElementById('prog3');
-
-      // Reset progress
-      prog1.style.width = '0%';
-      prog2.style.width = '0%';
-      prog3.style.width = '0%';
-      progressSteps.style.display = 'none';
-
-      function animateBar(el, durationMs) {
-        return new Promise(resolve => {
-          const start = Date.now();
-          const tick = () => {
-            const elapsed = Date.now() - start;
-            const pct = Math.min(100, (elapsed / durationMs) * 100);
-            el.style.width = pct + '%';
-            if (pct < 100) requestAnimationFrame(tick);
-            else resolve();
-          };
-          requestAnimationFrame(tick);
-        });
-      }
-
       try {
-        // Step 1: Validate store before showing progress
         const valRes = await fetch('/api/validate-store', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
@@ -747,45 +723,15 @@
           return;
         }
 
-        // Validation passed — show progress bars
-        reportBtn.style.display = 'none';
-        reportForm.store_url.disabled = true;
-        progressSteps.style.display = 'block';
-
-        // Start full report in parallel with animations
-        const apiPromise = fetch('/api/report', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ url: value })
-        }).then(r => r.json());
-
-        await animateBar(prog1, 7000);
-        await animateBar(prog2, 7000);
-
-        const data = await apiPromise;
-
-        await animateBar(prog3, 7000);
-
-        if (!data.ok) {
-          formMsg.textContent = data.error || 'Could not analyze this site';
-          formMsg.style.color = '#a44';
-          progressSteps.style.display = 'none';
-          return;
-        }
-
-        // Valid — show email gate
         currentStoreUrl = value;
         history.pushState({ step: 'email', storeUrl: value }, '', `/airadar/report?store=${encodeURIComponent(value)}`);
         showEmailGate();
       } catch {
         formMsg.textContent = 'Something went wrong. Please try again.';
         formMsg.style.color = '#a44';
-        progressSteps.style.display = 'none';
       } finally {
-        reportBtn.style.display = '';
         reportBtn.textContent = 'Analyze';
         reportBtn.disabled = false;
-        reportForm.store_url.disabled = false;
       }
     });
 
@@ -1165,6 +1111,41 @@
         });
       } catch {}
     }
+
+    // Looping progress bar animation
+    (function loopBars() {
+      const bars = [
+        document.getElementById('prog1'),
+        document.getElementById('prog2'),
+        document.getElementById('prog3')
+      ];
+      let current = 0;
+
+      function animateNext() {
+        const bar = bars[current];
+        bar.style.width = '0%';
+        const start = Date.now();
+        const duration = 7000;
+
+        function tick() {
+          const pct = Math.min(100, ((Date.now() - start) / duration) * 100);
+          bar.style.width = pct + '%';
+          if (pct < 100) {
+            requestAnimationFrame(tick);
+          } else {
+            current = (current + 1) % bars.length;
+            // Reset all bars when looping back to first
+            if (current === 0) {
+              bars.forEach(b => b.style.width = '0%');
+            }
+            animateNext();
+          }
+        }
+        requestAnimationFrame(tick);
+      }
+
+      animateNext();
+    })();
   </script>
 
 </body>
