@@ -72,6 +72,7 @@
     .hero > *:nth-child(2) { animation-delay: 0.3s; }
     .hero > *:nth-child(3) { animation-delay: 0.5s; }
     .hero > *:nth-child(4) { animation-delay: 0.7s; }
+    .hero > *:nth-child(5) { animation-delay: 0.9s; }
 
     .hero-heading {
       display: flex;
@@ -119,6 +120,14 @@
       color: var(--color-text-secondary);
       max-width: 600px;
       line-height: 1.7;
+      margin-bottom: 2.5rem;
+    }
+
+    .hero-image {
+      width: 100%;
+      max-width: 740px;
+      border-radius: 12px;
+      border: 1px solid var(--color-border);
     }
 
     /* USP section */
@@ -281,6 +290,41 @@
       font-size: 1.05rem;
       font-weight: 600;
       margin-bottom: 0.5rem;
+    }
+
+    .feature-card-body h3 a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    .feature-card-body h3 a:hover {
+      text-decoration: underline;
+      text-underline-offset: 3px;
+    }
+
+    /* Feature detail sections */
+    .feature-detail {
+      border-top: 1px solid var(--color-border);
+      padding: 4rem 2rem;
+      scroll-margin-top: 5rem;
+    }
+
+    .feature-detail-inner {
+      max-width: 740px;
+      margin: 0 auto;
+    }
+
+    .feature-detail h2 {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: var(--color-text-primary);
+      margin-bottom: 1rem;
+    }
+
+    .feature-detail p {
+      color: var(--color-text-secondary);
+      font-size: 0.95rem;
+      line-height: 1.7;
     }
 
     .feature-card-body p {
@@ -680,6 +724,7 @@
       <p class="tagline">AI SEO, GEO, AEO optimization — show up in ChatGPT, Gemini, Claude &amp; Perplexity</p>
       <h2 class="hero-subhead">Control How Your Products Appear in AI Search</h2>
       <p class="hero-desc">Take control of how ChatGPT, Gemini, and leading AI models recommend your products. Discover is built around your catalog, putting agents to work on your real reviews, loyalty, and commerce data — for brands, retailers, and agencies.</p>
+      <img src="/airadar/images/hero-placeholder.png" alt="AI Radar Dashboard" class="hero-image">
     </section>
 
     <!-- USPs -->
@@ -734,45 +779,45 @@
       <div class="logos-track-wrapper">
         <div class="logos-set">
           <span class="logo-item">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="4"/><path d="M12 2v4m0 12v4M4.93 4.93l2.83 2.83m8.48 8.48l2.83 2.83M2 12h4m12 0h4M4.93 19.07l2.83-2.83m8.48-8.48l2.83-2.83"/></svg>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="8" y="10" width="8" height="12" rx="1"/><path d="M10 10V6l2-4 2 4v4"/></svg>
             Luminos Beauty
           </span>
           <span class="logo-item">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 3L4 9v12h16V9l-8-6z"/><path d="M9 21V13h6v8"/></svg>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M8 2h8l1 6-2 2h-6L7 8l1-6z"/><path d="M9 10v10a2 2 0 0 0 2 2h2a2 2 0 0 0 2-2V10"/><path d="M8 14h8"/></svg>
             ThreadCraft Co.
           </span>
           <span class="logo-item">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 18h18v1H3z"/><path d="M5 18c0-3 1-5 3-6l1.5-3h5L16 12c2 1 3 3 3 6"/></svg>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M2 20h20"/><path d="M4 20c0-2 1-4 3-5.5L9 11l1-4c.5-2 1.5-3 3-3s2 1.5 2 3l-1 6h4c2 0 3 1 3 3v4"/></svg>
             SoleMate
           </span>
           <span class="logo-item">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 2C8 2 4 6 4 10c0 6 8 12 8 12s8-6 8-12c0-4-4-8-8-8z"/><circle cx="12" cy="10" r="3"/></svg>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M2 16h20v2a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2v-2z"/><path d="M4 16V12a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v4"/><path d="M2 16l-1 4M22 16l1 4"/><path d="M6 10V8a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v2"/></svg>
             Verdant Living
           </span>
           <span class="logo-item">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M18 8a6 6 0 0 0-12 0c0 4 6 10 6 10s6-6 6-10z"/><path d="M9 21h6M12 18v3"/></svg>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2L4 8l2 2v10a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V10l2-2-2-6"/><path d="M4 8h16"/><path d="M12 8v14"/><path d="M8 2l4 3 4-3"/></svg>
             NovaFit Gear
           </span>
         </div>
         <div class="logos-set">
           <span class="logo-item">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="4"/><path d="M12 2v4m0 12v4M4.93 4.93l2.83 2.83m8.48 8.48l2.83 2.83M2 12h4m12 0h4M4.93 19.07l2.83-2.83m8.48-8.48l2.83-2.83"/></svg>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="8" y="10" width="8" height="12" rx="1"/><path d="M10 10V6l2-4 2 4v4"/></svg>
             Luminos Beauty
           </span>
           <span class="logo-item">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 3L4 9v12h16V9l-8-6z"/><path d="M9 21V13h6v8"/></svg>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M8 2h8l1 6-2 2h-6L7 8l1-6z"/><path d="M9 10v10a2 2 0 0 0 2 2h2a2 2 0 0 0 2-2V10"/><path d="M8 14h8"/></svg>
             ThreadCraft Co.
           </span>
           <span class="logo-item">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 18h18v1H3z"/><path d="M5 18c0-3 1-5 3-6l1.5-3h5L16 12c2 1 3 3 3 6"/></svg>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M2 20h20"/><path d="M4 20c0-2 1-4 3-5.5L9 11l1-4c.5-2 1.5-3 3-3s2 1.5 2 3l-1 6h4c2 0 3 1 3 3v4"/></svg>
             SoleMate
           </span>
           <span class="logo-item">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 2C8 2 4 6 4 10c0 6 8 12 8 12s8-6 8-12c0-4-4-8-8-8z"/><circle cx="12" cy="10" r="3"/></svg>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M2 16h20v2a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2v-2z"/><path d="M4 16V12a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v4"/><path d="M2 16l-1 4M22 16l1 4"/><path d="M6 10V8a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v2"/></svg>
             Verdant Living
           </span>
           <span class="logo-item">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M18 8a6 6 0 0 0-12 0c0 4 6 10 6 10s6-6 6-10z"/><path d="M9 21h6M12 18v3"/></svg>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2L4 8l2 2v10a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V10l2-2-2-6"/><path d="M4 8h16"/><path d="M12 8v14"/><path d="M8 2l4 3 4-3"/></svg>
             NovaFit Gear
           </span>
         </div>
@@ -783,7 +828,7 @@
     <section class="ai-models-section">
       <div class="ai-models-inner">
         <div class="ai-models-text">
-          <h2>Get recommended by ChatGPT, Gemini, and other AI models</h2>
+          <h2>Get recommended by ChatGPT, Gemini and other AI models</h2>
           <p>Discover combines AI visibility insights with purpose-built AI agents that improve how your brand appears across AI models — built for DTC brands, omnichannel retailers, and agencies.</p>
         </div>
         <div class="ai-models-logos">
@@ -804,32 +849,64 @@
           <div class="feature-card">
             <img src="/airadar/images/track-visibility.png" alt="Track AI Visibility" class="feature-card-img">
             <div class="feature-card-body">
-              <h3>Track AI Visibility</h3>
+              <h3><a href="#track-visibility">Track AI Visibility</a></h3>
               <p>Monitor how your brand and products appear across ChatGPT, Gemini, Claude, and Perplexity in real time. Get alerts when your visibility changes.</p>
             </div>
           </div>
           <div class="feature-card">
             <img src="/airadar/images/optimize-onsite.png" alt="Optimize Onsite" class="feature-card-img">
             <div class="feature-card-body">
-              <h3>Optimize Onsite</h3>
+              <h3><a href="#optimize-onsite">Optimize Onsite</a></h3>
               <p>Get actionable recommendations to improve your product descriptions, metadata, and structured data so AI models understand and recommend your store.</p>
             </div>
           </div>
           <div class="feature-card">
             <img src="/airadar/images/promote-offsite.png" alt="Promote Offsite" class="feature-card-img">
             <div class="feature-card-body">
-              <h3>Promote Offsite</h3>
+              <h3><a href="#promote-offsite">Promote Offsite</a></h3>
               <p>Strengthen your offsite presence by identifying citation gaps, building brand authority, and ensuring AI models find the right signals about your products.</p>
             </div>
           </div>
           <div class="feature-card">
             <img src="/airadar/images/analyze-results.png" alt="Analyze Results" class="feature-card-img">
             <div class="feature-card-body">
-              <h3>Analyze Results</h3>
+              <h3><a href="#analyze-results">Analyze Results</a></h3>
               <p>Measure your AI visibility score over time, compare against competitors, and quantify the impact of your optimization efforts with detailed reports.</p>
             </div>
           </div>
         </div>
+      </div>
+    </section>
+
+    <!-- Feature detail: Track AI Visibility -->
+    <section class="feature-detail" id="track-visibility">
+      <div class="feature-detail-inner">
+        <h2>Track AI Visibility</h2>
+        <p>See exactly how your brand and products are being represented across every major AI platform. AI Radar continuously queries ChatGPT, Gemini, Claude, Perplexity, and Grok with real shopper questions relevant to your catalog. You'll know when you're being recommended, when you're not, and what your competitors are doing differently.</p>
+      </div>
+    </section>
+
+    <!-- Feature detail: Optimize Onsite -->
+    <section class="feature-detail" id="optimize-onsite">
+      <div class="feature-detail-inner">
+        <h2>Optimize Onsite</h2>
+        <p>Your product pages, descriptions, and structured data are the foundation of AI visibility. AI Radar audits your store against AEO best practices and surfaces specific, actionable changes — from missing schema markup to thin product descriptions that AI models skip over. Every recommendation is prioritized by impact.</p>
+      </div>
+    </section>
+
+    <!-- Feature detail: Promote Offsite -->
+    <section class="feature-detail" id="promote-offsite">
+      <div class="feature-detail-inner">
+        <h2>Promote Offsite</h2>
+        <p>AI models don't just look at your site — they synthesize information from reviews, articles, directories, and third-party mentions. AI Radar identifies where your offsite presence is weak, highlights citation gaps, and helps you build the external authority signals that AI models rely on to make recommendations.</p>
+      </div>
+    </section>
+
+    <!-- Feature detail: Analyze Results -->
+    <section class="feature-detail" id="analyze-results">
+      <div class="feature-detail-inner">
+        <h2>Analyze Results</h2>
+        <p>Track your AI visibility score over time, benchmark against competitors, and measure the real impact of every optimization. AI Radar provides detailed breakdowns by model, by product category, and by question type — so you can see exactly where you're gaining ground and where to focus next.</p>
       </div>
     </section>
 
