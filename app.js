@@ -778,7 +778,6 @@ app.get("/airadar/blog", (_req, res) => {
 
   res.send(blogLayout("Blog", `
     <h1>Blog</h1>
-    <p class="subtitle">Insights on AI search optimization</p>
     ${list}
     ${subscribeForm}
   `))
