@@ -70,6 +70,8 @@
 
     .hero > *:nth-child(1) { animation-delay: 0s; }
     .hero > *:nth-child(2) { animation-delay: 0.3s; }
+    .hero > *:nth-child(3) { animation-delay: 0.5s; }
+    .hero > *:nth-child(4) { animation-delay: 0.7s; }
 
     .hero-heading {
       display: flex;
@@ -100,6 +102,23 @@
       color: var(--color-text-secondary);
       max-width: 560px;
       line-height: 1.6;
+      margin-bottom: 2.5rem;
+    }
+
+    .hero-subhead {
+      font-size: clamp(1.25rem, 3vw, 1.75rem);
+      font-weight: 700;
+      color: var(--color-text-heading);
+      max-width: 600px;
+      line-height: 1.3;
+      margin-bottom: 1rem;
+    }
+
+    .hero-desc {
+      font-size: 0.95rem;
+      color: var(--color-text-secondary);
+      max-width: 600px;
+      line-height: 1.7;
     }
 
     /* USP section */
@@ -434,6 +453,8 @@
         <h1>AI Radar</h1>
       </div>
       <p class="tagline">AI SEO, GEO, AEO optimization — show up in ChatGPT, Gemini, Claude &amp; Perplexity</p>
+      <h2 class="hero-subhead">Control How Your Products Appear in AI Search</h2>
+      <p class="hero-desc">Take control of how ChatGPT, Gemini, and leading AI engines recommend your products. Discover is built around your catalog, putting agents to work on your real reviews, loyalty, and commerce data — for brands, retailers, and agencies.</p>
     </section>
 
     <!-- USPs -->
