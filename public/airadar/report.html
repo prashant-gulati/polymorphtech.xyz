@@ -997,7 +997,6 @@
       ];
 
       html += `<div class="tabs-nav" id="${tabId}-nav">`;
-      html += `<div class="tabs-nav" id="${tabId}-nav">`;
       funnelTabs.forEach((t, i) => {
         html += `<button class="tab-btn${i === 0 ? ' active' : ''}" data-tab="${tabId}-${t.key}" onclick="switchTab('${tabId}', '${t.key}')">${t.label}</button>`;
       });
