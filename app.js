@@ -656,6 +656,7 @@ function getAllPosts() {
       const { data } = matter(readFileSync(join(postsDir, f), "utf-8"))
       return { slug: f.replace(".md", ""), ...data }
     })
+    .filter(p => !p.draft)
     .sort((a, b) => new Date(b.date) - new Date(a.date))
 }
 
