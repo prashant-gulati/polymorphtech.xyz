@@ -6,6 +6,7 @@
   <title>AI Radar — Polymorph AI</title>
   <link rel="icon" type="image/svg+xml" href="/favicon.svg">
   <link rel="stylesheet" href="/shared.css">
+  <script>const t=localStorage.getItem('theme');if(t)document.documentElement.setAttribute('data-theme',t);</script>
   <style>
     @keyframes fadeUp {
       from { opacity: 0; transform: translateY(20px); }
@@ -14,7 +15,7 @@
 
     /* Top banner */
     .top-banner {
-      background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+      background: linear-gradient(135deg, var(--color-gradient-start) 0%, var(--color-gradient-end) 100%);
       border-bottom: 1px solid var(--color-border-strong);
       padding: 0.6rem 2rem;
       text-align: center;
@@ -52,7 +53,7 @@
       padding: 0.2rem;
     }
 
-    .top-banner-close:hover { color: #fff; }
+    .top-banner-close:hover { color: var(--color-text-primary); }
 
     /* Hero */
     .hero {
@@ -92,7 +93,7 @@
       letter-spacing: -0.02em;
       line-height: 1.1;
       margin-bottom: 0;
-      background: linear-gradient(135deg, #fff 0%, #888 100%);
+      background: var(--color-heading-gradient);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
       background-clip: text;
@@ -397,7 +398,7 @@
       align-items: center;
       justify-content: space-between;
       gap: 2.5rem;
-      background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+      background: linear-gradient(135deg, var(--color-gradient-start) 0%, var(--color-gradient-end) 100%);
       border: 1px solid var(--color-border-strong);
       border-radius: 12px;
       padding: 2.5rem 3rem;

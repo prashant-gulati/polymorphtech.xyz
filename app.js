@@ -637,6 +637,7 @@ function simplePage(title, content) {
   <title>${title} — AI Radar</title>
   <link rel="icon" type="image/svg+xml" href="/favicon.svg">
   <link rel="stylesheet" href="/shared.css">
+  <script>const t=localStorage.getItem('theme');if(t)document.documentElement.setAttribute('data-theme',t);</script>
   <link rel="stylesheet" href="/airadar/airadar.css">
 </head>
 <body>
@@ -716,12 +717,12 @@ function blogLayout(title, content) {
     .subscribe-box {
       margin-top: 3rem;
       padding: 1.5rem;
-      border: 1px solid #222;
+      border: 1px solid var(--color-border);
       border-radius: 6px;
-      background: #161616;
+      background: var(--color-card-bg);
     }
     .subscribe-box h3 {
-      color: #ddd;
+      color: var(--color-text-secondary);
       font-size: 1rem;
       margin-bottom: 0.25rem;
     }
@@ -736,25 +737,25 @@ function blogLayout(title, content) {
     .subscribe-form input {
       flex: 1;
       padding: 0.5rem 0.75rem;
-      border: 1px solid #333;
+      border: 1px solid var(--color-border-strong);
       border-radius: 4px;
-      background: #0f0f0f;
-      color: #f0f0f0;
+      background: var(--color-input-bg);
+      color: var(--color-text-primary);
       font-size: 0.9rem;
     }
     .subscribe-form button {
       padding: 0.5rem 1rem;
-      border: 1px solid #333;
+      border: 1px solid var(--color-border-strong);
       border-radius: 4px;
-      background: #f0f0f0;
-      color: #0f0f0f;
+      background: var(--color-btn-bg);
+      color: var(--color-btn-text);
       font-size: 0.9rem;
       font-weight: 600;
       cursor: pointer;
     }
-    .subscribe-form button:hover { background: #ddd; }
+    .subscribe-form button:hover { background: var(--color-btn-hover); }
     .subscribe-msg { font-size: 0.85rem; margin-top: 0.5rem; }
-    .post-meta { color: #666; font-size: 0.85rem; margin-bottom: 1.5rem; }
+    .post-meta { color: var(--color-text-faint); font-size: 0.85rem; margin-bottom: 1.5rem; }
   </style>
 </head>
 <body>

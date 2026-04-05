@@ -14,6 +14,7 @@
   </script>
   <link rel="icon" type="image/svg+xml" href="favicon.svg">
   <link rel="stylesheet" href="shared.css">
+  <script>const t=localStorage.getItem('theme');if(t)document.documentElement.setAttribute('data-theme',t);</script>
   <style>
     @keyframes fadeUp {
       from { opacity: 0; transform: translateY(20px); }
@@ -47,7 +48,7 @@
       letter-spacing: -0.02em;
       line-height: 1.1;
       margin-bottom: 1.5rem;
-      background: linear-gradient(135deg, #fff 0%, #888 100%);
+      background: var(--color-heading-gradient);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
       background-clip: text;

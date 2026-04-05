@@ -18,10 +18,11 @@ document.addEventListener("DOMContentLoaded", () => {
           </div>
         </li>
         <li class="dropdown">
-          <span style="display:flex;flex-direction:column;gap:3px;padding:4px 0;"><span style="display:block;width:18px;height:2px;background:#ddd;border-radius:1px;"></span><span style="display:block;width:18px;height:2px;background:#ddd;border-radius:1px;"></span><span style="display:block;width:18px;height:2px;background:#ddd;border-radius:1px;"></span></span>
+          <span style="display:flex;flex-direction:column;gap:3px;padding:4px 0;"><span style="display:block;width:18px;height:2px;background:var(--color-text-muted);border-radius:1px;"></span><span style="display:block;width:18px;height:2px;background:var(--color-text-muted);border-radius:1px;"></span><span style="display:block;width:18px;height:2px;background:var(--color-text-muted);border-radius:1px;"></span></span>
           <div class="dropdown-menu">
             <a href="/privacy.html">Privacy Policy</a>
             <a href="mailto:support@polymorphtech.xyz">Contact</a>
+            <a href="#" id="themeToggle" onclick="event.preventDefault();toggleTheme()">Light Mode</a>
           </div>
         </li>
       </ul>
@@ -38,6 +39,7 @@ document.addEventListener("DOMContentLoaded", () => {
       <a href="/airadar/changelog" class="mobile-sub">Changelog</a>
       <a href="/privacy.html">Privacy Policy</a>
       <a href="mailto:support@polymorphtech.xyz">Contact</a>
+      <a href="#" id="themeToggleMobile" onclick="event.preventDefault();toggleTheme()">Light Mode</a>
     </div>
   `;
 
@@ -70,6 +72,28 @@ document.addEventListener("DOMContentLoaded", () => {
 
   document.body.prepend(nav);
   document.body.append(footer);
+
+  // Theme toggle
+  const saved = localStorage.getItem('theme');
+  if (saved) document.documentElement.setAttribute('data-theme', saved);
+  updateToggleLabels();
+
+  window.toggleTheme = function() {
+    const current = document.documentElement.getAttribute('data-theme');
+    const next = current === 'light' ? 'dark' : 'light';
+    document.documentElement.setAttribute('data-theme', next);
+    localStorage.setItem('theme', next);
+    updateToggleLabels();
+  };
+
+  function updateToggleLabels() {
+    const isLight = document.documentElement.getAttribute('data-theme') === 'light';
+    const label = isLight ? 'Dark Mode' : 'Light Mode';
+    const dt = document.getElementById('themeToggle');
+    const mt = document.getElementById('themeToggleMobile');
+    if (dt) dt.textContent = label;
+    if (mt) mt.textContent = label;
+  }
 
   // Microsoft Clarity
   (function(c,l,a,r,i,t,y){
