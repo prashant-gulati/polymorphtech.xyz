@@ -803,6 +803,16 @@ app.get("/airadar/blog/:slug", (req, res) => {
   }
 })
 
+// Blog API (for homepage)
+app.get("/api/blog-posts", (_req, res) => {
+  try {
+    const posts = getAllPosts().slice(0, 3)
+    res.json({ ok: true, posts })
+  } catch {
+    res.json({ ok: false, posts: [] })
+  }
+})
+
 // AI Radar sub-pages
 app.get("/airadar/report", (_req, res) => res.sendFile(join(__dirname, "public", "airadar", "report.html")))
 app.get("/airadar/docs", (_req, res) => res.sendFile(join(__dirname, "public", "airadar", "docs.html")))

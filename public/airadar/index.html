@@ -203,6 +203,7 @@
     .testimonial-section {
       border-top: 1px solid var(--color-border);
       padding: 4rem 2rem;
+      background: #c4a882;
     }
 
     .testimonial {
@@ -219,23 +220,23 @@
 
     .testimonial-quote {
       font-size: 1.1rem;
-      color: var(--color-text-body);
+      color: #1a1a1a;
       line-height: 1.7;
       font-style: italic;
       margin-bottom: 1.25rem;
       position: relative;
       padding-left: 1.25rem;
-      border-left: 3px solid var(--color-border-strong);
+      border-left: 3px solid rgba(0,0,0,0.2);
     }
 
     .testimonial-author {
-      color: var(--color-text-heading);
+      color: #111;
       font-weight: 600;
       font-size: 0.95rem;
     }
 
     .testimonial-role {
-      color: var(--color-text-muted);
+      color: #3a3a3a;
       font-size: 0.85rem;
     }
 
@@ -245,15 +246,153 @@
       height: 280px;
       border-radius: 12px;
       object-fit: cover;
-      background: var(--color-bg-surface);
-      border: 1px solid var(--color-border);
     }
+
+    /* FAQ section */
+    .faq-section {
+      border-top: 1px solid var(--color-border);
+      padding: 4rem 2rem;
+    }
+
+    .faq-inner {
+      max-width: 740px;
+      margin: 0 auto;
+    }
+
+    .faq-section h2 {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: var(--color-text-primary);
+      margin-bottom: 2rem;
+      text-align: center;
+    }
+
+    .accordion {
+      border-bottom: 1px solid var(--color-bg-surface);
+    }
+
+    .accordion summary {
+      font-size: 1.05rem;
+      font-weight: 600;
+      color: var(--color-text-heading);
+      cursor: pointer;
+      padding: 1.25rem 0;
+      list-style: none;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .accordion summary::-webkit-details-marker { display: none; }
+
+    .accordion summary::after {
+      content: "+";
+      font-size: 1.25rem;
+      color: var(--color-text-muted);
+    }
+
+    .accordion[open] summary::after { content: "\2212"; }
+
+    .accordion .answer {
+      padding-bottom: 1.25rem;
+      color: var(--color-text-body);
+      font-size: 0.95rem;
+      line-height: 1.7;
+    }
+
+    .faq-more {
+      text-align: center;
+      margin-top: 1.5rem;
+    }
+
+    .faq-more a {
+      color: var(--color-text-secondary);
+      text-decoration: underline;
+      text-underline-offset: 3px;
+      font-size: 0.9rem;
+    }
+
+    .faq-more a:hover { color: var(--color-text-primary); }
+
+    /* Blog section */
+    .blog-section {
+      border-top: 1px solid var(--color-border);
+      padding: 4rem 2rem;
+    }
+
+    .blog-inner {
+      max-width: 740px;
+      margin: 0 auto;
+    }
+
+    .blog-section h2 {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: var(--color-text-primary);
+      margin-bottom: 2rem;
+      text-align: center;
+    }
+
+    .blog-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.5rem;
+    }
+
+    .blog-card {
+      border: 1px solid var(--color-border);
+      border-radius: 8px;
+      padding: 1.25rem;
+      background: var(--color-bg-surface);
+      transition: border-color 0.2s;
+    }
+
+    .blog-card:hover { border-color: var(--color-border-strong); }
+
+    .blog-card a {
+      text-decoration: none;
+    }
+
+    .blog-card h3 {
+      color: var(--color-text-heading);
+      font-size: 0.95rem;
+      font-weight: 600;
+      margin-bottom: 0.5rem;
+      line-height: 1.4;
+    }
+
+    .blog-card .blog-meta {
+      color: var(--color-text-faint);
+      font-size: 0.8rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .blog-card .blog-summary {
+      color: var(--color-text-secondary);
+      font-size: 0.85rem;
+      line-height: 1.5;
+    }
+
+    .blog-more {
+      text-align: center;
+      margin-top: 1.5rem;
+    }
+
+    .blog-more a {
+      color: var(--color-text-secondary);
+      text-decoration: underline;
+      text-underline-offset: 3px;
+      font-size: 0.9rem;
+    }
+
+    .blog-more a:hover { color: var(--color-text-primary); }
 
     @media (max-width: 700px) {
       .usp-grid { grid-template-columns: 1fr; gap: 2rem; }
       .testimonial { flex-direction: column-reverse; text-align: center; }
       .testimonial-quote { border-left: none; padding-left: 0; }
       .testimonial-img { width: 160px; height: 200px; }
+      .blog-grid { grid-template-columns: 1fr; }
     }
   </style>
 </head>
@@ -281,7 +420,7 @@
     <section class="usp-section">
       <div class="usp-grid">
         <div class="usp-item">
-          <span class="usp-stat">1K+</span>
+          <span class="usp-stat">100+</span>
           <span class="usp-label">Brands powered by AI Radar</span>
         </div>
         <div class="usp-item">
@@ -352,9 +491,87 @@
         <img src="/airadar/images/female_asian_professional.png" alt="Customer testimonial" class="testimonial-img">
       </div>
     </section>
+
+    <!-- FAQ -->
+    <section class="faq-section">
+      <div class="faq-inner">
+        <h2>Frequently Asked Questions</h2>
+
+        <details class="accordion">
+          <summary>What is AI Radar?</summary>
+          <div class="answer">
+            <p>AI Radar helps you optimize your online presence so your brand shows up in AI-powered search and assistant platforms like ChatGPT, Gemini, Claude, and Perplexity.</p>
+          </div>
+        </details>
+
+        <details class="accordion">
+          <summary>How does it work?</summary>
+          <div class="answer">
+            <p>Coming soon.</p>
+          </div>
+        </details>
+
+        <details class="accordion">
+          <summary>Who is AI Radar for?</summary>
+          <div class="answer">
+            <p>E-commerce merchants who want to stay ahead of the shift from traditional search to AI-powered discovery.</p>
+          </div>
+        </details>
+
+        <details class="accordion">
+          <summary>How much does it cost?</summary>
+          <div class="answer">
+            <p>Coming soon.</p>
+          </div>
+        </details>
+
+        <details class="accordion">
+          <summary>How do I get started?</summary>
+          <div class="answer">
+            <p>Coming soon.</p>
+          </div>
+        </details>
+
+        <p class="faq-more"><a href="/airadar/faq">View all FAQs &rarr;</a></p>
+      </div>
+    </section>
+
+    <!-- Blog -->
+    <section class="blog-section">
+      <div class="blog-inner">
+        <h2>From the Blog</h2>
+        <div class="blog-grid" id="blogGrid">
+          <p style="color: var(--color-text-muted); grid-column: 1/-1; text-align: center;">Loading posts...</p>
+        </div>
+        <p class="blog-more"><a href="/airadar/blog">View all posts &rarr;</a></p>
+      </div>
+    </section>
   </main>
 
   <script src="/nav.js"></script>
+  <script>
+    fetch('/api/blog-posts')
+      .then(r => r.json())
+      .then(data => {
+        const grid = document.getElementById('blogGrid');
+        if (!data.ok || !data.posts.length) {
+          grid.innerHTML = '<p style="color: var(--color-text-muted); grid-column: 1/-1; text-align: center;">No posts yet.</p>';
+          return;
+        }
+        grid.innerHTML = data.posts.map(p => `
+          <div class="blog-card">
+            <a href="/airadar/blog/${p.slug}">
+              <h3>${p.title}</h3>
+              <p class="blog-meta">${p.date}${p.author ? ' · ' + p.author : ''}</p>
+              ${p.summary ? '<p class="blog-summary">' + p.summary + '</p>' : ''}
+            </a>
+          </div>
+        `).join('');
+      })
+      .catch(() => {
+        document.getElementById('blogGrid').innerHTML = '<p style="color: var(--color-text-muted); grid-column: 1/-1; text-align: center;">Could not load posts.</p>';
+      });
+  </script>
 
 </body>
 </html>
