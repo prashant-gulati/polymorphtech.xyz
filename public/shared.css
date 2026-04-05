@@ -49,8 +49,8 @@ nav {
 }
 
 .nav-logo {
-  width: 56px;
-  height: 56px;
+  height: 36px;
+  width: auto;
 }
 
 .nav-links {

@@ -4,7 +4,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const nav = document.createElement("div");
   nav.innerHTML = `
     <nav>
-      <a class="nav-brand" href="/"><img src="/favicon.svg" alt="${COMPANY_NAME}" class="nav-logo"></a>
+      <a class="nav-brand" href="/"><img src="/polymorph_logo.png" alt="${COMPANY_NAME}" class="nav-logo"></a>
       <ul class="nav-links">
         <li class="dropdown">
           <span>Products</span>
